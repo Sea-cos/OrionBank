@@ -1,5 +1,5 @@
 import { Conta } from "../Entities/Conta";
 
-export interface ILoginRepository {
+export interface IAutenticacaoRepository {
     EfetuarConsultaContaExistente(documentoFederal: string, senha: string): Conta
 }

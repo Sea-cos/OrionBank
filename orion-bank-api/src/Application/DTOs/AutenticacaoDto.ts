@@ -1,6 +1,6 @@
 
 
-export interface LoginDto {
+export interface AutenticacaoDto {
     Login: string;
     Senha: string;
 }
