@@ -20,7 +20,7 @@ class Conta {
     public DtInclusao: Date;
     public Situacao: number;
     public DtSituacao: Date;
-    
+
     constructor(id: number, codigo: string, agencia: string, contaDigito: string, contaPgto: string, documentoFederal: string,
             nomeCompleto: string, conta: string, senha: string, email: string, dtNasc: Date, telefoneCelular: string, cep: string, 
             logradouro: string, numeroResidensial: number, dtInclusao: Date, situacao: number, dtSituacao: Date) {
