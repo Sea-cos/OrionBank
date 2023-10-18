@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
             setUser({ id: "123", email });
             navigate("/");
         }
- 
     };
 
     const logout = () => { 
