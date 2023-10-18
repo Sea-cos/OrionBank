@@ -4,7 +4,7 @@ import { AutenticacaoService } from "../Application/Services/AutenticacaoService
 import { AutenticacaoController } from "../API/Controllers/AutenticacaoController";
 import { AutenticacaoRepository } from "../Data/Repositories/LoginRepository"; 
 
-export const container = new Container();
+const container = new Container();
 
 container
     .bind(AUTENTICACAO.IService)
@@ -20,3 +20,8 @@ container
     .bind(AUTENTICACAO.Controller)
     .toInstance(AutenticacaoController)
     .inTransientScope();
+    
+
+export {
+    container
+}

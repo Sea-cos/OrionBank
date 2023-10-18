@@ -14,14 +14,22 @@ export class AutenticacaoController {
     EfetuarAutenticacao(request: Request, response: Response) {
         try {
 
-            const teste = request.body as AutenticacaoDto;
+            console.log(request.body)
+
+            const {
+                login,
+                senha
+            } = request.body;
+
+            const teste = { Login: login, Senha: senha } as AutenticacaoDto
 
             const conta = this._autenticacaoServices.EfetuaLogin(teste);
             
             return response.status(200).send(conta);
 
-        } catch(ex) {
-            return response.status(200).send({ message: ex });
+        } catch(e) {
+            console.log(e)
+            return response.status(400).send(e)
         }
     }
 }

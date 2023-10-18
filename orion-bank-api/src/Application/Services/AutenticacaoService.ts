@@ -8,12 +8,12 @@ import { AUTENTICACAO } from '../../Config/ApiDiConfig';
 export class AutenticacaoService implements IAutenticacaoService {
 
     constructor(
-        private _autenticacaaoRepository: IAutenticacaoRepository
+        private autenticacaaoRepository: IAutenticacaoRepository,
     ){  }
 
     EfetuaLogin(conta: AutenticacaoDto): Conta {
         console.log("CHEGOUUUUUUUUUUUUUUUUUUUU");
-        const telegrama = this._autenticacaaoRepository.EfetuarConsultaContaExistente(conta.Login, conta.Senha);
+        const telegrama = this.autenticacaaoRepository.EfetuarConsultaContaExistente(conta.Login, conta.Senha);
         
         return telegrama;
     }    
