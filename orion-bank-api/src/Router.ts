@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { AUTENTICACAO } from "./Config/ApiDiConfig";
-import { container } from "./Config/Container";
+import { AutenticacaoController } from "./API/Controllers/AutenticacaoController";
 
 const router = Router();
-const autenticacaoController = container.get(AUTENTICACAO.Controller);
+const autenticacaoController = new AutenticacaoController();
 
 router.post("/autenticacao", autenticacaoController.EfetuarAutenticacao)
 
