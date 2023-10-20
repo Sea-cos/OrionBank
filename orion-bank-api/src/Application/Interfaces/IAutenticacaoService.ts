@@ -1,6 +1,5 @@
-import { AutenticacaoDto } from '../DTOs/AutenticacaoDto' 
-import { Conta } from '../../Domain/Entities/Conta'
+import { AutenticacaoDto, AutenticacaoTokenDto } from '../DTOs/AutenticacaoDto' 
 
 export interface IAutenticacaoService {
-    EfetuarLogin(conta: AutenticacaoDto): Promise<Conta> 
+    EfetuarLogin(conta: AutenticacaoDto): Promise<AutenticacaoTokenDto> 
 }
