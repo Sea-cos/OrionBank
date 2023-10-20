@@ -1,32 +1,124 @@
-#login {
-    display: flex;
-    flex-direction: column;
+/* Botao Login */
+.botaoLogin {
+  align-items: center;
+  background-color: #fff;
+  border: 1.4px solid #DB4648;
+  box-sizing: border-box;
+  color: #DB4648;
+  cursor: pointer;
+  display: inline-flex;
+  fill: #000;
+  font-size: 18px;
+  height: 45px;
+  justify-content: center;
+  letter-spacing: -.8px;
+  line-height: 24px;
+  outline: 0;
+  padding: 0 17px;
+  text-align: center;
+  text-decoration: none;
+  transition: all .3s;
+  user-select: none;
+  border-radius: 5px;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  flex-shrink: 0;
+  font-family: "Inter", sans-serif;
+}
+
+.botaoLogin:focus {
+    color:  #DB4648;
+}
+
+.botaoLogin:hover {
+  color: rgb(255, 255, 255);
+  background-color: #DB4648;
+  fill: #DB4648;
+}
+
+.botaoLogin:active {
+    color:  #DB4648;
+    background-color: rgb(255, 255, 255);
+    fill: #DB4648;
+}
+
+/* Botao Solicitar Conta */
+.botaoSolicitar {
     align-items: center;
+    background-color: #DB4648;
+    border: 1.4px solid #DB4648;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    fill: #000;
+    font-size: 18px;
+    height: 45px;
     justify-content: center;
-    min-height: 100vh;
-    padding: 0 2rem;
-}
-
-#login .form {
-    background-color: #f1f1f1;
-    width: 100%;
-    max-width: 480px;
-    padding: 0.5rem;
-}
-
-#login .field {
-    padding-bottom: 0.5rem;
-}
-
-#login .field label {
-    display: block;
-}
-
-#login .field input {
-    width: 100%;
-}
-
-#login .actions {
+    letter-spacing: -.8px;
+    line-height: 24px;
+    outline: 0;
+    padding: 0 17px;
     text-align: center;
-    margin-top: 0.5rem;
+    text-decoration: none;
+    transition: all .3s;
+    user-select: none;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    flex-shrink: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.botaoSolicitar:focus {
+color: #ffffff;
+}
+
+.botaoSolicitar:hover {
+color: #DB4648;
+background-color:  rgb(255, 255, 255);
+fill: #DB4648;
+}
+
+.botaoSolicitar:active {
+color: rgb(255, 255, 255);
+background-color: #DB4648;
+fill: #DB4648;
+}
+
+@media (min-width: 1000px) {
+    .botaoSolicitar {
+        min-width: 160px;
+    }
+    .botaoLogin {
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 981px) {
+    .botaoSolicitar {
+        min-width: 160px;
+    }
+    .botaoLogin {
+        min-width: 160px;
+        }
+    .button {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .botaoSolicitar {
+        min-width: 160px;
+    }
+    .botaoLogin {
+        min-width: 160px;
+        }
+    .button {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
 }

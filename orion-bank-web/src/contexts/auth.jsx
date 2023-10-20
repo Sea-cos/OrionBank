@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { api, autenticarUsuario } from "../services/api"
 
 export const AuthContext = createContext();
 
@@ -10,40 +11,39 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const recoveredUser = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
 
-        if (recoveredUser){
+        if (recoveredUser && token){
             setUser(JSON.parse(recoveredUser));
+            api.defaults.headers.Authorization = `Bearer ${ token }`;
         }
 
         setLoading(false);
     }, []);
 
-    const login = (email, password) => { 
-        console.log("login auth", { email, password });
-
-        //validar login api
-
-        //criar uma session api
-
-        const loggedUser = {
-            id: "123",
-            email
-        };
+    const login = async (email, password) => { 
+        //Chamar Api do login.
+        const response = await autenticarUsuario(email, password)
+        
+        //Criar uma session para pegar o token.
+        const loggedUser = response.data.user;
+        const token = response.data.token;
 
         localStorage.setItem("user", JSON.stringify(loggedUser));
-        //localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("token", JSON.stringify(token));
 
-        if (password === "123"){
-            setUser({ id: "123", email });
-            navigate("/");
-        }
+        api.defaults.headers.Authorization = `Bearer ${ token }`;
+        //Se o retorno da Api for sucesso, setar o user e mover pra home.
+
+        setUser(loggedUser);
+        navigate("/");
     };
 
     const logout = () => { 
-        console.log("logout");
-        setUser(null);
         localStorage.removeItem("user");
-        //localStorage.removeItem("token");
+        localStorage.removeItem("token");
+        setUser(null);
+        api.defaults.headers.Authorization = null;
         navigate("/login");
     };
 
