@@ -11,8 +11,8 @@
     "http"
   ],
   "paths": {
-    "/getAll": {
-      "get": {
+    "/autenticacao": {
+      "post": {
         "description": "",
         "responses": {
           "default": {
