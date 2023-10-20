@@ -1,7 +1,7 @@
 import Express from "express";
 import dotenv from "dotenv";
 import { router } from "./Router";
-import swaggerUi from "swagger-ui-express"; 
+import swaggerUi from "swagger-ui-express";
 
 const swaggerFile = require("../swagger_output.json");
 

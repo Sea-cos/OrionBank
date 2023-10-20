@@ -1,20 +1,12 @@
-import { IAutenticacaoService } from "../../Application/Interfaces/IAutenticacaoService";
 import { Request, Response } from "express";
 import { AutenticacaoDto } from "../../Application/DTOs/AutenticacaoDto";
-import { injected } from "brandi";
-import { AUTENTICACAO } from "../../Config/ApiDiConfig";
+import { AutenticacaoService } from "../../Application/Services/AutenticacaoService";
 
 export class AutenticacaoController {   
 
-    constructor(
-        private _autenticacaoServices: IAutenticacaoService
-    ){ }
-
     /* Rota: /autenticacao */
-    EfetuarAutenticacao(request: Request, response: Response) {
+    async EfetuarAutenticacao(request: Request, response: Response) {
         try {
-
-            console.log(request.body)
 
             const {
                 login,
@@ -22,10 +14,11 @@ export class AutenticacaoController {
             } = request.body;
 
             const teste = { Login: login, Senha: senha } as AutenticacaoDto
+            const _autenticacaoServices = new AutenticacaoService();
 
-            const conta = this._autenticacaoServices.EfetuaLogin(teste);
+            const autorizado = await _autenticacaoServices.EfetuarLogin(teste);
             
-            return response.status(200).send(conta);
+            return response.status(200).send(autorizado);
 
         } catch(e) {
             console.log(e)
@@ -33,5 +26,3 @@ export class AutenticacaoController {
         }
     }
 }
-
-injected(AutenticacaoController, AUTENTICACAO.IService);
