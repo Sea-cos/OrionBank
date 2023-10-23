@@ -13,16 +13,25 @@ export class AutenticacaoController {
                 senha
             } = request.body;
 
-            const teste = { Login: login, Senha: senha } as AutenticacaoDto
-            const _autenticacaoServices = new AutenticacaoService();
+            const autenticacaoDto = { Login: login, Senha: senha } as AutenticacaoDto
 
-            const autorizado = await _autenticacaoServices.EfetuarLogin(teste);
+            const _autenticacaoServices = new AutenticacaoService();
+            const autorizado = await _autenticacaoServices.EfetuarLogin(autenticacaoDto);
             
+            if(autorizado.Codigo === undefined) {
+                return response.status(401).json({
+                    status: "Não autorizado",
+                    message: "Documento federal ou senha inválido."
+                });
+            }
+
             return response.status(200).send(autorizado);
 
-        } catch(e) {
-            console.log(e)
-            return response.status(400).send(e)
+        } catch(error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
         }
     }
 }
