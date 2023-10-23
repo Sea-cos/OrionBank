@@ -1,5 +1,4 @@
 
-
 export interface Conta {
     ID: number;
     Codigo: string;
