@@ -1,5 +1,5 @@
 import { Conta } from "../../Domain/Entities/Conta";
-import { connection } from "../../../context/ConnectionString"
+import { connection } from "../context/ConnectionString"
 import { IAutenticacaoRepository } from "../../Domain/Interfaces/IAutenticacaoRepository";
 import { AutenticacaoDto } from "../../Application/DTOs/AutenticacaoDto";
 
