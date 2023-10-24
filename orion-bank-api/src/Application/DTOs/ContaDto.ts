@@ -1,10 +1,5 @@
 
-export interface Conta {
-    Codigo: string;
-    Agencia: string;
-    Conta: string;
-    ContaDigito: string;
-    ContaPgto: string;
+export interface ContaDto {
     DocumentoFederal: string;
     NomeCompleto: string;
     Senha: string;
@@ -16,5 +11,5 @@ export interface Conta {
     NumeroResidencial: number;
     DtInclusao: Date;
     Situacao: number;
-    DtSituacao: Date;
+    DtSituacao: Date;    
 }
