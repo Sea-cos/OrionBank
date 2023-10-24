@@ -9257,7 +9257,7 @@ pre code {
   position: relative;
   width: 100%;
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 0px;
 }
 
 .col {
@@ -13783,7 +13783,7 @@ input[type="button"].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid #e3e3e3;
-  border-radius: 20px;
+  border-radius: 9px;
 }
 
 .card > hr {
@@ -13818,12 +13818,13 @@ input[type="button"].btn-block {
   min-height: 1px;
   padding: 1.25rem;
   
+  
 }
 
 .card-body1 {
   flex: 1 1 auto;
-  height: 80px; 
-  padding: 10px 10px;
+  height: 70px; 
+  padding: 5px;
  
 }
 
@@ -19800,7 +19801,8 @@ code {
 .stretch-card > .card {
   width: 100%;
   min-width: 100%;
-  border-radius: 14px;
+  border-radius: 9px;
+  
 }
 
 @media (min-width: 576px) {
@@ -20248,8 +20250,12 @@ code {
   margin-bottom: 0;
 }
 
-.fs-30 {
-  font-size: 30px;
+.fs-23 {
+  font-size: 23px;
+}
+
+.fs-20 {
+  font-size: 20px;
 }
 
 .chartjs-legend ul {
@@ -22096,6 +22102,11 @@ code {
 .card.card-tale {
   background: #EB4E50;
   color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px;
+  
 }
 
 .card.card-tale:hover {
@@ -22127,7 +22138,7 @@ code {
   color: #EB4E50;
   margin-bottom: 15px;
   box-shadow: 1px 1px 7px #d8dada;
-  border-radius: 14px;
+  border-radius: 9px;
 }
 
 .card.card-light-danger:hover {
@@ -28865,8 +28876,6 @@ div.tagsinput span.tag a {
   -moz-transition: width 0.25s ease;
   -ms-transition: width 0.25s ease;
   color: #6C7383;
-  padding-right: 2.375rem;
-  padding-left: 2.375rem;
   width: calc(100% - 235px);
   height: 60px;
 }
@@ -30621,4 +30630,23 @@ div.tagsinput span.tag a {
 
   text-align: center;
   margin-bottom: -10px;
+}
+
+.btnVer{
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+}
+
+@media only screen and (max-width: 767px){
+  .row{
+    margin-left: 0;
+    margin-right: 0;
+    flex-direction: column;
+  }
+
+
 }
