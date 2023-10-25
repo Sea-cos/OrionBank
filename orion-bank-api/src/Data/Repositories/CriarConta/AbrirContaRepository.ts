@@ -7,6 +7,23 @@ import { SolicitacaoAberturaConta } from "../../../Domain/Entities/SolicitacaoAb
 
 export class AbrirContaRepository implements IAbrirContaRepository{
 
+    async BuscarDocumentoFederalExistente(documentoFederal: string): Promise<boolean> {
+        
+        const sql = `SELECT 
+                        DocumentoFederal
+                    FROM
+                        conta
+                    WHERE 
+                        DocumentoFederal = ?`
+
+        const isExiste = await (await connection).query(
+            sql,
+            documentoFederal
+        ) as any
+
+        return isExiste[0].length == 0 ? true : false
+    }
+
     async ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>> {
         
         const parametros =  [
