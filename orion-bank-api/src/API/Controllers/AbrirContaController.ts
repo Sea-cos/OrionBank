@@ -45,4 +45,33 @@ export class AbrirContaController {
             })
         }
     }
+
+    async ObterRegistrosSolicitacaoAberturaConta(request: Request, response: Response) {
+        
+        try {
+
+            const {
+                take,
+                skip
+            } = request.query
+            
+            if(take === undefined || skip === undefined) {
+                return response.status(400).json({
+                    status: "Error",
+                    message: "Informações faltantes."
+                })
+            }
+
+            const abrirContaService = new AbrirContaService()
+            const registros = await abrirContaService.ObterSolicitacoesAberturaDeConta(parseInt(take.toString()), parseInt(skip.toString()));
+
+            return response.status(200).send(registros)
+
+        } catch(error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
+        }
+    }
 }

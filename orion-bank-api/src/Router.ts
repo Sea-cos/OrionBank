@@ -8,7 +8,13 @@ const abrirContaController = new AbrirContaController();
 
 router.post("/autenticacao", autenticacaoController.EfetuarAutenticacao)
 
-router.post("/abrirConta/solicitacao", abrirContaController.SolicitarAberturaDeConta)
+router.post("/abrirConta/solicitacao", 
+    abrirContaController.SolicitarAberturaDeConta
+)
+
+router.get("/abrirConta/obterRegistrosSolicitacao", 
+    abrirContaController.ObterRegistrosSolicitacaoAberturaConta
+)
 
 export {
     router

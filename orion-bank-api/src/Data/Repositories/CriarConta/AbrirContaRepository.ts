@@ -1,10 +1,32 @@
 import { Conta } from "../../../Domain/Entities/Conta";
 import { IAbrirContaRepository } from "../../../Domain/Interfaces/AbrirConta/IAbrirContaRepository";
 import { connection } from "../../context/ConnectionString";
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import { SolicitacaoAberturaDeConta } from '../../../Enums/SituacaoSolicitacaoConta'
+import { SolicitacaoAberturaConta } from "../../../Domain/Entities/SolicitacaoAberturaConta";
 
 export class AbrirContaRepository implements IAbrirContaRepository{
+
+    async ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>> {
+        
+        const parametros =  [
+            take,
+            skip
+        ]
+
+        const sql = "SELECT "
+                        + "* "
+                    + "FROM "
+                        + "solicitacao_abertura_conta "
+                    + "LIMIT ? " 
+                    + "OFFSET ?"
+        const solicitacoesAberturaConta = await (await connection).query(
+            sql,
+            parametros
+        ) as any
+
+        return solicitacoesAberturaConta[0] as Array<SolicitacaoAberturaConta>
+    }
 
     EfetuarAberturaDeConta(conta: Conta) : Promise<void> {
         throw new Error("Method not implemented.");
@@ -12,8 +34,13 @@ export class AbrirContaRepository implements IAbrirContaRepository{
     
     async SolicitacaoAberturaDeConta(mensagemSolicitacao: string) : Promise<void> {
 
-        const fullDate = new Date()
-        const dataAtual =`${fullDate.getFullYear()}-${fullDate.getMonth() + 1}-${fullDate.getDate()}`
+        const parametros = [
+            uuidv4(),
+            mensagemSolicitacao,
+            SolicitacaoAberturaDeConta.Ativa,
+            new Date(),
+            new Date()
+        ]
 
         const sql = "INSERT INTO "
                         + "solicitacao_abertura_conta " 
@@ -23,13 +50,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
 
         await (await connection).query(
             sql,
-            [
-                uuid.v4(),
-                mensagemSolicitacao,
-                SolicitacaoAberturaDeConta.Ativa,
-                dataAtual,
-                dataAtual
-            ]
+            parametros
         );
     }
 }

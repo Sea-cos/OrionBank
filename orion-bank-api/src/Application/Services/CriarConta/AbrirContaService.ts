@@ -1,11 +1,48 @@
 import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
+import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
 
 
 export class AbrirContaService implements IAbrirContaService {
-    EfetuarAberturaDeConta(contaDto: ContaDto): Promise<void> {
+
+    async ObterSolicitacoesAberturaDeConta(take: number, skip: number): Promise<Array<SolicitacaoAberturaContaDto>> {
+        
+        if(take.toString() === "NaN" || take === 0) {
+            throw new Error("Valor de (take) inválido")
+        }
+        
+        if(skip.toString() === "NaN") {
+            throw new Error("Valor de (skip) inválido")
+        }
+
+        const abrirContaRepository = new AbrirContaRepository()
+        const registrosSolicitacao = await abrirContaRepository.ObterSolicitacoesAberturaDeConta(take, skip)
+
+        let registros: Array<SolicitacaoAberturaContaDto> = [];
+
+        if(registrosSolicitacao.length != 0) {
+            for(let cont = 0; cont < registrosSolicitacao.length; cont++) {
+                const conta = JSON.parse(
+                    registrosSolicitacao[cont].MensagemSolicitacao
+                ) as Conta
+
+                registros.push({
+                    ID: registrosSolicitacao[cont].ID,
+                    Codigo: registrosSolicitacao[cont].Codigo,
+                    DtInclusao: registrosSolicitacao[cont].DtInclusao,
+                    DtSituacao: registrosSolicitacao[cont].DtInclusao,
+                    Situacao: registrosSolicitacao[cont].Situacao,
+                    conta: conta
+                })
+            }
+        }
+
+        return registros;
+    }
+
+    async EfetuarAberturaDeConta(contaDto: ContaDto): Promise<void> {
         throw new Error("Method not implemented.");
     }
 
@@ -40,12 +77,12 @@ export class AbrirContaService implements IAbrirContaService {
         }
 
         if(contaDto.TelefoneCelular === null || contaDto.TelefoneCelular.trim() === "" ||
-        contaDto.TelefoneCelular.length === 11) {
+        contaDto.TelefoneCelular.length != 11) {
             throw new Error("Número de telefone é obrigatório.")
         }
 
         if(contaDto.CEP === null || contaDto.CEP.trim() === "" ||
-        contaDto.CEP.length === 8) {
+        contaDto.CEP.length != 8) {
             throw new Error("CEP é obrigatório.")
         }
 
