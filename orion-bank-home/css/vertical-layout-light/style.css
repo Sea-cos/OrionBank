@@ -20213,11 +20213,15 @@ code {
 .card-people {
   position: relative;
   padding-top: 20px;
+  background-color: rgba(219, 70, 72, 0.7);
+  border-radius: 9px;
 }
+
+
 
 .card-people img {
   border-radius: 20px;
-  width: 100%;
+  
 }
 
 .card-people .weather-info {
@@ -28837,7 +28841,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-brand-wrapper .navbar-brand {
-  color: #27367f;
+  color: #EB4E50;
   font-size: 1.5rem;
   margin-right: 0;
   padding: .25rem 0;
@@ -30626,6 +30630,7 @@ div.tagsinput span.tag a {
 
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */
 
+/* CSS INSERIDO MANUAL */
 .teste{
 
   text-align: center;
@@ -30647,6 +30652,38 @@ div.tagsinput span.tag a {
     margin-right: 0;
     flex-direction: column;
   }
-
-
 }
+
+.imgCard {
+  opacity: 1;
+  transition: .5s ease;
+  backface-visibility: hidden;
+  padding-right: 5px;
+}
+
+.card-people:hover .imgCard{
+  opacity: 0.3;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.card-people:hover .middle {
+  opacity: 1;
+}
+
+.texto {
+  
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+

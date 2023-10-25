@@ -193,7 +193,7 @@
                   <div class="card card-tale">
                     <div class="card-body1">
                       <p class="fs-20 mb-3">Saldo atual</p>
-                      <p class="fs-23 mb-0">R$ 520,00</p>
+                      <p class="fs-23 mb-0" id="saldo">R$ 520,00</p>
                     
                     </div>
 
@@ -208,7 +208,7 @@
                   
                 </div>
 
-                              <div class="card">
+              <div class="card">
                 <div class="card-body">
                   <p class="card-title mb-0">Movimentações recentes</p>
                   <div class="table-responsive">
@@ -300,12 +300,20 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 grid-margin" style="margin-left: 15px;">
+            <div class="col-md-6 grid-margin" style="margin-left: 15px;" >
               <div class="card tale-bg">
                 <div class="card-people mt-auto">
-                  <img src="images/dashboard/people.svg" alt="people">
-                  <div class="weather-info">
+
+                  <div style="text-align: center; font-family: inherit; color: #FFFFFF;" class="mb-3 fs-20">Solicite um cartão de crédito</div>
+              
+                  <img src="images/cartao2Img.svg" alt="people" class="imgCard">
+
+                  <div class="middle">
+                    <div class="texto">
+                      <button>Solicitar</button>
+                    </div>
                   </div>
+                  
                 </div>
               </div>
             </div>
@@ -350,19 +358,27 @@
 
 <script>
 
-        // Obtém o botão e a imagem pelo ID
+
+        var idBtn = document.getElementById('saldo')
         var btn = document.getElementById('btnV');
         var imagem = document.getElementById('btnImg');
 
-        // Lista de caminhos das imagens que você deseja alternar
+        
         var imagens = ['images/logoEye.png', 'images/olhoAberto.png'];
-        var indiceAtual = 0; // Inicia com a primeira imagem
+        var indiceAtual = 0; 
 
-        // Adiciona um evento de clique ao botão
+        
         btn.addEventListener('click', function() {
-            // Alterna para o próximo caminho da imagem
+            
             indiceAtual = (indiceAtual + 1) % imagens.length;
             imagem.src = imagens[indiceAtual];
+            
+            if (imagem.src.endsWith('olhoAberto.png')) {
+                idBtn.style.display = "none";
+            } else {
+                idBtn.style.display = "block";
+            }
+
         });
 
 </script>
