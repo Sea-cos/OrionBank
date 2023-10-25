@@ -28,8 +28,55 @@ export class AbrirContaRepository implements IAbrirContaRepository{
         return solicitacoesAberturaConta[0] as Array<SolicitacaoAberturaConta>
     }
 
-    EfetuarAberturaDeConta(conta: Conta) : Promise<void> {
-        throw new Error("Method not implemented.");
+    async EfetuarAberturaDeConta(conta: Conta, codigoSolicitacao: string) : Promise<void> {
+        
+        const parametros = [
+            uuidv4(),
+            conta.Agencia,
+            conta.Conta,
+            conta.ContaDigito,
+            conta.ContaPgto,
+            conta.DocumentoFederal,
+            conta.NomeCompleto,
+            conta.Senha,
+            conta.Email,
+            conta.DtNasc,
+            conta.TelefoneCelular,
+            conta.CEP,
+            conta.Logradouro,
+            conta.NumeroResidencial,
+            conta.DtInclusao,
+            SolicitacaoAberturaDeConta.Ativa,
+            new Date()
+        ]
+
+        const sql = `INSERT INTO conta (Codigo, Agencia, Conta, ContaDigito, ContaPgto, 
+                                        DocumentoFederal, NomeCompleto, Senha, Email, 
+                                        DtNasc, TelefoneCelular, CEP, Logradouro, 
+                                        NumeroResidencial, DtInclusao, Situacao, DtSituacao)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+        await (await connection).query(
+            sql,
+            parametros
+        )
+
+        const parametrosUpdate = [
+            SolicitacaoAberturaDeConta.Aprovada,
+            codigoSolicitacao
+        ]
+
+        const sqlUpdate = `UPDATE
+                                solicitacao_abertura_conta
+                            SET 
+                                Situacao = ?
+                            WHERE 
+                                Codigo = ?`
+        
+        await (await connection).query(
+            sqlUpdate,
+            parametrosUpdate
+        )
     }
     
     async SolicitacaoAberturaDeConta(mensagemSolicitacao: string) : Promise<void> {

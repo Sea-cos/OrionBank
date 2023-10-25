@@ -4,34 +4,32 @@ import { AbrirContaService } from "../../Application/Services/CriarConta/AbrirCo
 
 export class AbrirContaController {
 
-    /* rote: /abrirConta/solicitacao */
     async SolicitarAberturaDeConta(request: Request, response: Response) {
 
         try {
 
             const {
-                DocumentoFederal,
-                NomeCompleto,
-                Senha,
-                Email,
-                DtNasc,
-                TelefoneCelular,
-                CEP,
-
-                Logradouro,
-                NumeroResidencial,
+                documentoFederal,
+                nomeCompleto,
+                senha,
+                email,
+                dtNasc,
+                telefoneCelular,
+                cep,
+                logradouro,
+                numeroResidencial,
             } = request.body
 
             const contaDto = {
-                DocumentoFederal: DocumentoFederal,
-                NomeCompleto: NomeCompleto,
-                Senha: Senha,
-                Email: Email,
-                DtNasc: DtNasc,
-                TelefoneCelular: TelefoneCelular,
-                CEP: CEP,
-                Logradouro: Logradouro,
-                NumeroResidencial: NumeroResidencial
+                DocumentoFederal: documentoFederal,
+                NomeCompleto: nomeCompleto,
+                Senha: senha,
+                Email: email,
+                DtNasc: dtNasc,
+                TelefoneCelular: telefoneCelular,
+                CEP: cep,
+                Logradouro: logradouro,
+                NumeroResidencial: numeroResidencial
             } as ContaDto
 
             const abrirContaService = new AbrirContaService()
@@ -73,5 +71,47 @@ export class AbrirContaController {
                 message: error.message
             })
         }
+    }
+
+    async EfetuarAberturaDeConta(request: Request, response: Response) {
+
+        try {
+            const {
+                codigoSolicitacao,
+                documentoFederal,
+                nomeCompleto,
+                senha,
+                email,
+                dtNasc,
+                telefoneCelular,
+                cep,
+                logradouro,
+                numeroResidencial,
+            } = request.body
+
+            const contaDto = {
+                DocumentoFederal: documentoFederal,
+                NomeCompleto: nomeCompleto,
+                Senha: senha,
+                Email: email,
+                DtNasc: dtNasc,
+                TelefoneCelular: telefoneCelular,
+                CEP: cep,
+                Logradouro: logradouro,
+                NumeroResidencial: numeroResidencial
+            } as ContaDto
+
+            const abrirContaService = new AbrirContaService()
+            await abrirContaService.EfetuarAberturaDeConta(contaDto, codigoSolicitacao)
+
+            return response.status(200).send()
+
+        } catch(error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
+        }
+
     }
 }

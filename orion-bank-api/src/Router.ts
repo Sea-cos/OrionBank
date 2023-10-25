@@ -16,6 +16,9 @@ router.get("/abrirConta/obterRegistrosSolicitacao",
     abrirContaController.ObterRegistrosSolicitacaoAberturaConta
 )
 
+router.post("/abrirConta/efetuarAbertura",
+    abrirContaController.EfetuarAberturaDeConta)
+
 export {
     router
 }
