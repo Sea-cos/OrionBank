@@ -3,7 +3,7 @@ import { SolicitacaoAberturaConta } from "../../Entities/SolicitacaoAberturaCont
 
 
 export interface IAbrirContaRepository {
-    EfetuarAberturaDeConta(conta: Conta) : Promise<void>
+    EfetuarAberturaDeConta(conta: Conta, codigoSolicitacao: string) : Promise<void>
     SolicitacaoAberturaDeConta(mensagemSolicitacao: string) : Promise<void>
     ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>>
 }

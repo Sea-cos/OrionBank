@@ -7,16 +7,21 @@ export class AutenticacaoRepository implements IAutenticacaoRepository {
 
     async EfetuarConsultaContaExistente(conta: AutenticacaoDto): Promise<Conta> {
         
+        const parametros = [
+            conta.Login, 
+            conta.Senha
+        ]
+
         const sql = `SELECT 
                         *
                     FROM
                         conta
                     WHERE (DocumentoFederal = ? AND Senha = MD5(?));`
         
-        const teste = await (await connection).query(
+        const autenticacao = await (await connection).query(
             sql,
-            [conta.Login, conta.Senha]) as unknown as Conta;
+            parametros) as unknown as Conta;
 
-        return teste;
+        return autenticacao;
     }
 }

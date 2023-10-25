@@ -42,8 +42,19 @@ export class AbrirContaService implements IAbrirContaService {
         return registros;
     }
 
-    async EfetuarAberturaDeConta(contaDto: ContaDto): Promise<void> {
-        throw new Error("Method not implemented.");
+    async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
+        let th = this
+
+        th.ValidarCriacaoDeConta(contaDto)
+
+        if(codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
+            throw new Error("Codigo solicitação inválido.")
+        }
+
+        const abrirContaRepository = new AbrirContaRepository()
+        let conta = th.DtoToDomain(contaDto)
+        
+        await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
     }
 
     async SolicitacaoAberturaDeConta(contaDto: ContaDto): Promise<void> {
