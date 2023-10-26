@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ValidacaoToken } from "./Middleware/ValidacaoToken";
 import { AutenticacaoController } from "./API/Controllers/AutenticacaoController";
 import { AbrirContaController } from "./API/Controllers/AbrirContaController";
 
@@ -12,12 +13,13 @@ router.post("/abrirConta/solicitacao",
     abrirContaController.SolicitarAberturaDeConta
 )
 
-router.get("/abrirConta/obterRegistrosSolicitacao", 
-    abrirContaController.ObterRegistrosSolicitacaoAberturaConta
-)
-
 router.post("/abrirConta/efetuarAbertura",
     abrirContaController.EfetuarAberturaDeConta)
+
+router.get("/abrirConta/obterRegistrosSolicitacao",
+    ValidacaoToken,
+    abrirContaController.ObterRegistrosSolicitacaoAberturaConta
+)
 
 export {
     router
