@@ -7553,6 +7553,10 @@ a.bg-dark:hover, a.bg-dark:focus{
   width: 75% !important;
 }
 
+.w-80 {
+  width: 80% !important;
+}
+
 .w-100 {
   width: 100% !important;
 }
@@ -10822,6 +10826,30 @@ a:focus {
 
 .bg-login-image {
   background:url('../img/transfer-money.svg');
+  background-position: center;
+  background-repeat:no-repeat;
+}
+
+.bg-solicitar-image {
+  background:url('../img/undraw_sign_up.svg');
+  background-position: center;
+  background-repeat:no-repeat;
+}
+
+.bg-solicitar-image-dois {
+  background:url('../img/undraw_mobile.svg');
+  background-position: center;
+  background-repeat:no-repeat;
+}
+
+.bg-solicitar-image-tres {
+  background:url('../img/undraw_coolness.svg');
+  background-position: center;
+  background-repeat:no-repeat;
+}
+
+.bg-solicitar-image-quatro {
+  background:url('../img/undraw_happy_news.svg');
   background-position: center;
   background-repeat:no-repeat;
 }

@@ -10,8 +10,10 @@ import{
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import SolicitarConta from '../pages/SolicitarConta';
+import SucessoSolicitacao from '../pages/SolicitarConta/SucessoSolicitacao';
 
-import { AuthProvider, AuthContext } from "../contexts/auth";
+import { AuthProvider, AuthContext } from "../contexts/AuthContext";
+import { SolicitarContaProvider } from "../contexts/SolicitarContaContext";
 
 const AppRoutes = () => {
 
@@ -31,13 +33,16 @@ const AppRoutes = () => {
 
     return (
         <Router>
-            <AuthProvider>
-                <Routes>
-                    <Route exact path="/login" element={ <Login/> }/>
-                    <Route exact path="/" element={ <Private><Home/></Private>}/>
-                    <Route exact path="/solicitarconta" element={ <SolicitarConta/> }/>
-                </Routes>
-            </AuthProvider>
+            <SolicitarContaProvider>
+                <AuthProvider>
+                    <Routes>
+                        <Route exact path="/login" element={ <Login/> }/>
+                        <Route exact path="/" element={ <Private><Home/></Private>}/>
+                        <Route exact path="/solicitarconta" element={ <SolicitarConta/> }/>
+                        <Route exact path="/sucessoSolicitacao/:nome" element={ <SucessoSolicitacao/> }/>
+                    </Routes>
+                </AuthProvider>
+            </SolicitarContaProvider>
         </Router>
     );
 };
