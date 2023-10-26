@@ -1,3 +1,5 @@
+import React, { useContext } from "react";
+
 import{
     BrowserRouter as Router,
     Route,
@@ -8,15 +10,39 @@ import{
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import SolicitarConta from '../pages/SolicitarConta';
+import SucessoSolicitacao from '../pages/SolicitarConta/SucessoSolicitacao';
+
+import { AuthProvider, AuthContext } from "../contexts/AuthContext";
+import { SolicitarContaProvider } from "../contexts/SolicitarContaContext";
 
 const AppRoutes = () => {
+
+    const Private = ({ children }) => {
+        const { authenticated, loading } = useContext(AuthContext);
+
+        if (loading){
+            return <div className="loading"> Carregando...</div>
+        }
+        
+        if (!authenticated){
+            return <Navigate to = "/login"/>
+        }
+
+        return children;
+    }
+
     return (
         <Router>
-            <Routes>
-                <Route exact path="/login" element={Login}/>
-                <Route exact path="/" element={Home}/>
-                <Route exact path="/solicitarconta" element={SolicitarConta}/>
-            </Routes>
+            <SolicitarContaProvider>
+                <AuthProvider>
+                    <Routes>
+                        <Route exact path="/login" element={ <Login/> }/>
+                        <Route exact path="/" element={ <Private><Home/></Private>}/>
+                        <Route exact path="/solicitarconta" element={ <SolicitarConta/> }/>
+                        <Route exact path="/sucessoSolicitacao/:nome" element={ <SucessoSolicitacao/> }/>
+                    </Routes>
+                </AuthProvider>
+            </SolicitarContaProvider>
         </Router>
     );
 };

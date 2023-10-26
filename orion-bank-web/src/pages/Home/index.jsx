@@ -1,7 +1,21 @@
 import React from "react";
+import { useContext } from "react";
+
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Home = () => {
-    return <h1>HomePage</h1>;
+    const { logout } = useContext(AuthContext);
+
+    const handleLogout = () => {
+        logout();
+    }
+
+    return (
+        <>
+            <h1>HomePage</h1>
+            <button onClick={handleLogout}> Logout </button>
+        </>
+    );
 };
 
 export default Home;
