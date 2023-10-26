@@ -74,6 +74,7 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <input 
                                                                 type="text" 
+                                                                required
                                                                 className="name form-control"
                                                                 id="name" 
                                                                 aria-describedby="nameHelp"
@@ -84,7 +85,8 @@ const SolicitarConta = () => {
                                                         </div>
                                                         <div className="col-sm-6">
                                                             <input 
-                                                                type="text" 
+                                                                type="text"
+                                                                required 
                                                                 className="sobrenome form-control"
                                                                 id="sobrenome" 
                                                                 aria-describedby="sobrenomeHelp"
@@ -98,7 +100,8 @@ const SolicitarConta = () => {
                                                     <div className="form-group row">
                                                         <div className="col-sm-12 mb-0 mb-sm-0">
                                                             <input 
-                                                                type="email" 
+                                                                type="email"
+                                                                required
                                                                 className="email form-control"
                                                                 id="email" 
                                                                 aria-describedby="emailHelp"
@@ -112,7 +115,8 @@ const SolicitarConta = () => {
                                                     <div className="form-group row">
                                                         <div className="col-sm-12 mb-0 mb-sm-0">
                                                             <InputMask 
-                                                                type="text" 
+                                                                type="text"
+                                                                required 
                                                                 mask="99/99/9999"
                                                                 className="date form-control"
                                                                 id="dtNasc" 
@@ -127,7 +131,8 @@ const SolicitarConta = () => {
                                                     <div className="form-group row">
                                                         <div className="col-sm-12 mb-3 mb-sm-0">
                                                             <InputMask 
-                                                                type="phone" 
+                                                                type="phone"
+                                                                required
                                                                 mask="(99) 99999-9999"
                                                                 className="phone form-control"
                                                                 id="phone" 
@@ -146,7 +151,8 @@ const SolicitarConta = () => {
                                                     <div className="form-group row">
                                                         <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <input 
-                                                                type="text" 
+                                                                type="text"
+                                                                required
                                                                 className="cep form-control"
                                                                 id="cep" 
                                                                 aria-describedby="cepHelp"
@@ -157,7 +163,8 @@ const SolicitarConta = () => {
                                                         </div>
                                                         <div className="col-sm-6">
                                                             <input 
-                                                                type="text" 
+                                                                type="text"
+                                                                required
                                                                 className="numero form-control"
                                                                 id="numero" 
                                                                 aria-describedby="numeroHelp"
@@ -171,7 +178,8 @@ const SolicitarConta = () => {
                                                     <div className="form-group row">
                                                         <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <input 
-                                                                type="text" 
+                                                                type="text"
+                                                                required
                                                                 className="estado form-control"
                                                                 id="estado" 
                                                                 aria-describedby="estadoHelp"
@@ -182,7 +190,8 @@ const SolicitarConta = () => {
                                                         </div>
                                                         <div className="col-sm-6">
                                                             <input 
-                                                                type="text" 
+                                                                type="text"
+                                                                required
                                                                 className="cidade form-control"
                                                                 id="cidade" 
                                                                 aria-describedby="cidadeHelp"
@@ -196,7 +205,8 @@ const SolicitarConta = () => {
                                                     <div className="form-group row">
                                                         <div className="col-sm-12 mb-0 mb-sm-0">
                                                             <input 
-                                                                type="text" 
+                                                                type="text"
+                                                                required
                                                                 className="logadouro form-control"
                                                                 id="logadouro" 
                                                                 aria-describedby="logadouroHelp"
@@ -228,7 +238,7 @@ const SolicitarConta = () => {
                                                         </div> 
 
                                                         <div className="form-group">
-                                                            <button type="submit" onClick={handleSubmit} className="botao-um"> Enviar </button>
+                                                            <button type="submit" className="botao-um"> Enviar </button>
                                                             <Link to="/login"><button type="button" className="botao-dois"> Cancelar </button></Link>
                                                         </div> 
                                                     </div> 

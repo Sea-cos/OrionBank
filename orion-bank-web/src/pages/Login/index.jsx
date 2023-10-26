@@ -23,7 +23,7 @@ const Login = () => {
     };
 
     return(
-        <div className="container ">
+        <div className="container">
             <div className="row justify-content-center align-items-center vh-100">
                 <div className="col-xl-10 col-lg-12 col-md-9">
                     <div className="card o-hidden border-0 shadow-lg my-5">
@@ -68,7 +68,7 @@ const Login = () => {
                                             <hr/>  
                                             <div className="form-group">
                                                 <Link to="/solicitarConta"><button type="button" className="botao-um"> Solicitar Conta </button></Link>
-                                                <button type="submit" onClick={handleSubmit} className="botao-dois"> Login </button>
+                                                <button type="submit" className="botao-dois"> Login </button>
                                             </div>
                                         </form>
                                     </div>

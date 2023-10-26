@@ -7,7 +7,6 @@ export const SolicitarContaContext = createContext();
 
 export function SolicitarContaProvider({ children }) {
     const [solicitacao, setSolicitacao] = useState(null);
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const solicitar = async (solicitacao) => {
@@ -23,8 +22,6 @@ export function SolicitarContaProvider({ children }) {
             }
 
         } catch (error) {
-            setError(error);
-            navigate("/sucessoSolicitacao/" + solicitacao.nome);
             showErrorNotification(error.message);
         }
 
@@ -32,7 +29,7 @@ export function SolicitarContaProvider({ children }) {
     };
 
     return (
-        <SolicitarContaContext.Provider value={{ solicitacao, setSolicitacao, solicitar, error }}>
+        <SolicitarContaContext.Provider value={{ solicitacao, setSolicitacao, solicitar }}>
             {children}
         </SolicitarContaContext.Provider>
     );
