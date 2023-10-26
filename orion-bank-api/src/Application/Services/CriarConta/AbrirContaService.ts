@@ -45,7 +45,7 @@ export class AbrirContaService implements IAbrirContaService {
     async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
         let th = this
 
-        th.ValidarCriacaoDeConta(contaDto)
+        await th.ValidarCriacaoDeConta(contaDto)
 
         if(codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
             throw new Error("Codigo solicitação inválido.")
@@ -54,6 +54,11 @@ export class AbrirContaService implements IAbrirContaService {
         const abrirContaRepository = new AbrirContaRepository()
         let conta = th.DtoToDomain(contaDto)
         
+        conta.Agencia = th.GerarNumeroAleatorio(4)
+        conta.Conta = th.GerarNumeroAleatorio(8)
+        conta.ContaDigito = "8"
+        conta.ContaPgto = th.GerarNumeroAleatorio(9)
+
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
     }
 
@@ -66,6 +71,11 @@ export class AbrirContaService implements IAbrirContaService {
         const conta = th.DtoToDomain(contaDto)
 
         await abrirContaRepository.SolicitacaoAberturaDeConta(JSON.stringify(conta));
+    }
+
+    private GerarNumeroAleatorio(quantidade: number) : string {
+        const numero = Math.random().toString().replace("0.", "")
+        return numero.substring(0, quantidade).toString()
     }
     
     private async ValidarCriacaoDeConta(contaDto: ContaDto) : Promise<void> {

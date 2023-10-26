@@ -27,16 +27,19 @@ export class AbrirContaRepository implements IAbrirContaRepository{
     async ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>> {
         
         const parametros =  [
+            SolicitacaoAberturaDeConta.Ativa,
             take,
             skip
         ]
 
-        const sql = "SELECT "
-                        + "* "
-                    + "FROM "
-                        + "solicitacao_abertura_conta "
-                    + "LIMIT ? " 
-                    + "OFFSET ?"
+        const sql = `SELECT
+                        *
+                    FROM
+                        solicitacao_abertura_conta
+                    WHERE
+                        Situacao = ?
+                    LIMIT ? OFFSET ?`
+
         const solicitacoesAberturaConta = await (await connection).query(
             sql,
             parametros
@@ -106,11 +109,11 @@ export class AbrirContaRepository implements IAbrirContaRepository{
             new Date()
         ]
 
-        const sql = "INSERT INTO "
-                        + "solicitacao_abertura_conta " 
-                            + "(Codigo, MensagemSolicitacao, Situacao, DtSituacao, DtInclusao) "
-                    + "VALUES "
-                        + "(?, ?, ?, ?, ?)"
+        const sql = `INSERT INTO
+                        solicitacao_abertura_conta 
+                            (Codigo, MensagemSolicitacao, Situacao, DtSituacao, DtInclusao)
+                    VALUES
+                        (?, ?, ?, ?, ?)`
 
         await (await connection).query(
             sql,

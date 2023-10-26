@@ -21,7 +21,7 @@ export class AbrirContaController {
             } = request.body
 
             const contaDto = {
-                DocumentoFederal: documentoFederal,
+                DocumentoFederal: documentoFederal.replace(/[^a-zA-Z0-9\s]/g, ''),
                 NomeCompleto: nomeCompleto,
                 Senha: senha,
                 Email: email,
