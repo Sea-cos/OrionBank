@@ -30652,6 +30652,12 @@ div.tagsinput span.tag a {
     margin-right: 0;
     flex-direction: column;
   }
+
+  .div-maior{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas de largura igual */
+    grid-gap: 10px; /* Espaço entre as divs */
+  }
 }
 
 .imgCard {
@@ -30685,5 +30691,9 @@ div.tagsinput span.tag a {
   color: white;
   font-size: 16px;
   padding: 16px 32px;
+}
+
+.div-maior {
+
 }
 
