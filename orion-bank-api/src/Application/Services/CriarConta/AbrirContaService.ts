@@ -96,10 +96,6 @@ export class AbrirContaService implements IAbrirContaService {
             throw new Error("Nome é obrigatório. Nome tem que estar entre 5 e 200 caracteres.")
         }
 
-        if(contaDto.Senha === null || contaDto.Senha.trim() === "") {
-            throw new Error("Senha é obrigatória.")
-        }
-
         if(contaDto.Email === null || contaDto.Email.trim() === "" || 
         contaDto.Email.length > 100) {
             throw new Error("Email é obrigatório. Email tem que conter no máximo 100 caracteres.")
@@ -141,7 +137,7 @@ export class AbrirContaService implements IAbrirContaService {
         return {
             DocumentoFederal: contaDto.DocumentoFederal,
             NomeCompleto: contaDto.NomeCompleto,
-            Senha: contaDto.Senha,
+            Senha: this.GerarNumeroAleatorio(8),
             Email: contaDto.Email,
             DtNasc: contaDto.DtNasc,
             TelefoneCelular: contaDto.TelefoneCelular,

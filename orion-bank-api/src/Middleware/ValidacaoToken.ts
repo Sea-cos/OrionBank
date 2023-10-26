@@ -8,7 +8,6 @@ export function ValidacaoToken(request: Request, response: Response, next: NextF
     try {
 
         const secret = process.env.SECRET_JWT as string;
-
         const autenticacao = request.headers.authorization
 
         if(!autenticacao) {
