@@ -116,13 +116,13 @@
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="index.html">
-              <i class="icon-grid menu-icon"></i>
+              <i class="menu-icon"> <img src="images/navHome.png" alt=""></i>
               <span class="menu-title">Inicio</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
+              <i  class="menu-icon" >  <img src="images/navExtrato.png" alt=""></i>
               <span class="menu-title">Extrato</span>
               <i class="menu-arrow"></i>
             </a>
@@ -136,7 +136,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
+              <i class="menu-icon"> <img src="images/navTransf.png" alt=""></i>
               <span class="menu-title">Transferencias</span>
               <i class="menu-arrow"></i>
             </a>
@@ -148,7 +148,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="icon-bar-graph menu-icon"></i>
+              <i class="menu-icon"> <img src="images/navPix.png" alt=""></i>
               <span class="menu-title">Area Pix</span>
               <i class="menu-arrow"></i>
             </a>
@@ -160,7 +160,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-head menu-icon"></i>
+              <i class="menu-icon"> <img src="images/navUser.png" alt=""></i>
               <span class="menu-title">Conta</span>
               <i class="menu-arrow"></i>
             </a>
@@ -189,18 +189,20 @@
           <div class="row">
             <div class="col-md-4 grid-margin transparent">
               <div class="row">
-                <div class="col-md-12 mb-5 stretch-card transparent">
+                <div class="col-md-12 mb-3 stretch-card transparent">
                   <div class="card card-tale">
                     <div class="card-body1">
                       <p class="fs-20 mb-3">Saldo atual</p>
-                      <p class="fs-23 mb-0">R$ 520,00</p>
+                      <div id="divteste">
+                        <p class="fs-23 mb-0" id="saldo">R$ 520,00</p>
+                      </div>
                     
                     </div>
 
                     <div> 
                       
                       <button class="btnVer" type="submit" id="btnV" value="1"> 
-                        <img style="width: 35px;" src="images/logoEye.png" alt="" id="btnImg"> 
+                        <img style="width: 35px; margin-right: 8px;" src="images/logoEye.png" alt="" id="btnImg"> 
                       </button>
                              
                     </div>
@@ -208,7 +210,7 @@
                   
                 </div>
 
-                              <div class="card">
+              <div class="card">
                 <div class="card-body">
                   <p class="card-title mb-0">Movimentações recentes</p>
                   <div class="table-responsive">
@@ -264,7 +266,7 @@
             </div>
 
             </div>
-            <div style="padding-left: 10px;">
+            <div style="padding-left: 10px;" class="div-maior">
               <div class="card card-light-danger">
                 <div class="card-body">
                   <P><img src="images/logoPix.png" alt="simbolo pix"></P>
@@ -300,12 +302,20 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 grid-margin" style="margin-left: 15px;">
+            <div class="col-md-6 grid-margin" style="margin-left: 15px;" >
               <div class="card tale-bg">
                 <div class="card-people mt-auto">
-                  <img src="images/dashboard/people.svg" alt="people">
-                  <div class="weather-info">
+
+                  <div style="text-align: center; font-family: inherit; color: #FFFFFF;" class="mb-3 fs-20">Solicite um cartão de crédito</div>
+              
+                  <img src="images/cartao2Img.svg" alt="people" class="imgCard">
+
+                  <div class="middle">
+                    <div class="texto">
+                      <button class="btn-icon">Solicitar</button>
+                    </div>
                   </div>
+                  
                 </div>
               </div>
             </div>
@@ -350,19 +360,30 @@
 
 <script>
 
-        // Obtém o botão e a imagem pelo ID
+
+        var idBtn = document.getElementById('saldo')
         var btn = document.getElementById('btnV');
         var imagem = document.getElementById('btnImg');
 
-        // Lista de caminhos das imagens que você deseja alternar
+        
         var imagens = ['images/logoEye.png', 'images/olhoAberto.png'];
-        var indiceAtual = 0; // Inicia com a primeira imagem
+        var indiceAtual = 0; 
 
-        // Adiciona um evento de clique ao botão
+        
         btn.addEventListener('click', function() {
-            // Alterna para o próximo caminho da imagem
+            
             indiceAtual = (indiceAtual + 1) % imagens.length;
             imagem.src = imagens[indiceAtual];
+
+            
+            if (imagem.src.endsWith('olhoAberto.png')) {
+                idBtn.style.display = "none";
+                
+            } else {
+                idBtn.style.display = "block";
+                
+            }                    
+        
         });
 
 </script>
