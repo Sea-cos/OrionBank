@@ -3,7 +3,7 @@ import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
-
+import { EnviarEmail } from "../../../Middleware/ConfigurarEmail";
 
 export class AbrirContaService implements IAbrirContaService {
 
@@ -60,6 +60,7 @@ export class AbrirContaService implements IAbrirContaService {
         conta.ContaPgto = th.GerarNumeroAleatorio(9)
 
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
+        await EnviarEmail(conta.Email, conta.NomeCompleto)
     }
 
     async SolicitacaoAberturaDeConta(contaDto: ContaDto): Promise<void> {
