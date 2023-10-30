@@ -9,14 +9,14 @@ function ConfigurarEmail() : nodemailer.Transporter<SMTPTransport.SentMessageInf
     const senhaEmail = process.env.SENHA_EMAIL;
 
     return nodemailer.createTransport({
-        host: "smtp.gmail.com",
+        host: "outlook.office365.com",
         port: 587,
-        secure: true,
+        secure: false,
         auth: {
-          user: email,
-          pass: senhaEmail
+            user: email,
+            pass: senhaEmail
         }
-    });
+    })
 }
 
 export async function EnviarEmail(emailConta: string, nome: string) : Promise<void> {
@@ -30,10 +30,5 @@ export async function EnviarEmail(emailConta: string, nome: string) : Promise<vo
         html: `<p>prezado/a ${nome}, sua conta foi aprovada!</p>`
     }
 
-   await smtp.sendMail({
-        from: email,
-        to: emailConta,
-        subject: "OrionBank - CONTA APROVADA",
-        html: `<p>prezado/a ${nome}, sua conta foi aprovada!</p>`
-   })
+   await smtp.sendMail(configEmail)
 }
