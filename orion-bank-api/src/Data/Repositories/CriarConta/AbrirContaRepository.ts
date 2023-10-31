@@ -51,7 +51,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
     async EfetuarAberturaDeConta(conta: Conta, codigoSolicitacao: string) : Promise<void> {
         
         const parametros = [
-            uuidv4(),
+            conta.Codigo,
             conta.Agencia,
             conta.Conta,
             conta.ContaDigito,
