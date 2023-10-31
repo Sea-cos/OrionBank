@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
 import { verify } from "jsonwebtoken";
+import dotenv from "dotenv";
 dotenv.config();
 
 export function ValidacaoToken(request: Request, response: Response, next: NextFunction) {
@@ -28,5 +28,4 @@ export function ValidacaoToken(request: Request, response: Response, next: NextF
             message: "Token inválido"
         })
     }
-
 }

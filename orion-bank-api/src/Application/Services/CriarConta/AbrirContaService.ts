@@ -3,7 +3,7 @@ import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
-
+import { EnviarEmail } from "../../../Middleware/ConfigurarEmail";
 
 export class AbrirContaService implements IAbrirContaService {
 
@@ -53,13 +53,16 @@ export class AbrirContaService implements IAbrirContaService {
 
         const abrirContaRepository = new AbrirContaRepository()
         let conta = th.DtoToDomain(contaDto)
+        const senha = th.GerarNumeroAleatorio(8)
         
         conta.Agencia = th.GerarNumeroAleatorio(4)
         conta.Conta = th.GerarNumeroAleatorio(8)
         conta.ContaDigito = "8"
         conta.ContaPgto = th.GerarNumeroAleatorio(9)
+        conta.Senha = senha;
 
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
+        await EnviarEmail(conta.Email, conta.NomeCompleto, senha)
     }
 
     async SolicitacaoAberturaDeConta(contaDto: ContaDto): Promise<void> {
@@ -137,7 +140,6 @@ export class AbrirContaService implements IAbrirContaService {
         return {
             DocumentoFederal: contaDto.DocumentoFederal,
             NomeCompleto: contaDto.NomeCompleto,
-            Senha: this.GerarNumeroAleatorio(8),
             Email: contaDto.Email,
             DtNasc: contaDto.DtNasc,
             TelefoneCelular: contaDto.TelefoneCelular,
