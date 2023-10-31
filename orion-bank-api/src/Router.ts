@@ -13,13 +13,18 @@ router.post("/abrirConta/solicitacao",
     abrirContaController.SolicitarAberturaDeConta
 )
 
-router.post("/abrirConta/efetuarAbertura",
+router.post("/abrirConta/aprovarSolicitacao",
+    ValidacaoToken,
     abrirContaController.EfetuarAberturaDeConta)
 
 router.get("/abrirConta/obterRegistrosSolicitacao",
     ValidacaoToken,
     abrirContaController.ObterRegistrosSolicitacaoAberturaConta
 )
+
+router.post("/abrirConta/reprovarSolicitadao/:codigo",
+    ValidacaoToken,
+    abrirContaController.ReprovarAberturaDeConta)
 
 export {
     router

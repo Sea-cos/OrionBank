@@ -7,4 +7,5 @@ export interface IAbrirContaRepository {
     SolicitacaoAberturaDeConta(mensagemSolicitacao: string) : Promise<void>
     BuscarDocumentoFederalExistente(documentoFederal: string) : Promise<boolean>
     ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>>
+    ReprovarAberturaDeConta(codigo: string) : Promise<SolicitacaoAberturaConta>
 }

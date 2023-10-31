@@ -3,7 +3,7 @@ import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
-import { EnviarEmail } from "../../../Middleware/ConfigurarEmail";
+import { EnviarEmailAprovacao, EnviarEmailReprovacao } from "../../../Middleware/ConfigurarEmail";
 
 export class AbrirContaService implements IAbrirContaService {
 
@@ -62,7 +62,7 @@ export class AbrirContaService implements IAbrirContaService {
         conta.Senha = senha;
 
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
-        await EnviarEmail(conta.Email, conta.NomeCompleto, senha)
+        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha)
     }
 
     async SolicitacaoAberturaDeConta(contaDto: ContaDto): Promise<void> {
@@ -74,6 +74,14 @@ export class AbrirContaService implements IAbrirContaService {
         const conta = th.DtoToDomain(contaDto)
 
         await abrirContaRepository.SolicitacaoAberturaDeConta(JSON.stringify(conta));
+    }
+
+    async ReprovarAberturaDeConta(codigo: string): Promise<void> {
+
+        const abrirContaRepository = new AbrirContaRepository()
+        const conta = await abrirContaRepository.ReprovarAberturaDeConta(codigo)
+        const contaJson = JSON.parse(conta.MensagemSolicitacao)
+        await EnviarEmailReprovacao(contaJson.Email, contaJson.NomeCompleto)
     }
 
     private GerarNumeroAleatorio(quantidade: number) : string {

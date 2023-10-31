@@ -19,7 +19,7 @@ function ConfigurarEmail() : nodemailer.Transporter<SMTPTransport.SentMessageInf
     })
 }
 
-export async function EnviarEmail(emailConta: string, nome: string, senha: string) : Promise<void> {
+export async function EnviarEmailAprovacao(emailConta: string, nome: string, senha: string) : Promise<void> {
     const smtp = ConfigurarEmail()
     
     const email = process.env.EMAIL;
@@ -60,4 +60,40 @@ export async function EnviarEmail(emailConta: string, nome: string, senha: strin
     }
 
    await smtp.sendMail(configEmail)
+}
+
+export async function EnviarEmailReprovacao(emailConta: string, nome: string) {
+    const smtp = ConfigurarEmail()
+    
+    const email = process.env.EMAIL;
+    const contaReprovada = `<h3>
+                                <strong>Pedimos desculpa senhor/a ${nome}</strong>,
+                                mas infelizmente nosso time de analistas, achou alguma inconsistência em seus dados!
+                            </h3>
+                            <br/>
+                            <br/>
+                            <img 
+                                src="cid:${email}"
+                                alt="Imagem logo orion bank"
+                                style="
+                                    width: 350px; 
+                                    height: 100px
+                                ;" 
+                            />`
+
+    const configEmail = {
+        from: email,
+        to: emailConta,
+        subject: "Orion Bank - CONTA REPROVADA",
+        html: contaReprovada,
+        attachments: [
+            {
+                filename: "logo-orion-bank.png",
+                path: "src/Middleware/Logo/logo-orion-bank.png", 
+                cid: email, 
+            }
+        ]
+    }
+
+    await smtp.sendMail(configEmail)
 }
