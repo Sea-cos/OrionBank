@@ -4,6 +4,8 @@ import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
 import { EnviarEmailAprovacao, EnviarEmailReprovacao } from "../../../Middleware/ConfigurarEmail";
+import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
+import { v4 as uuidv4 } from 'uuid';
 
 export class AbrirContaService implements IAbrirContaService {
 
@@ -45,6 +47,7 @@ export class AbrirContaService implements IAbrirContaService {
     async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
         let th = this
 
+        contaDto.DocumentoFederal = contaDto.DocumentoFederal.replace(/[^0-9]/g, '')
         await th.ValidarCriacaoDeConta(contaDto)
 
         if(codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
@@ -60,9 +63,13 @@ export class AbrirContaService implements IAbrirContaService {
         conta.ContaDigito = "8"
         conta.ContaPgto = th.GerarNumeroAleatorio(9)
         conta.Senha = senha;
+        conta.Codigo = uuidv4()
 
-        await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
-        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha)
+        await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao);
+        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha);
+
+        const saldo = new SaldoRepository();
+        await saldo.IniciarSaldoInicialConta(conta.Codigo);
     }
 
     async SolicitacaoAberturaDeConta(contaDto: ContaDto): Promise<void> {
