@@ -112,4 +112,24 @@ export class AbrirContaController {
         }
 
     }
+    
+    async ReprovarAberturaDeConta(request: Request, response: Response){
+        try {
+
+            const {
+                codigo
+            } = request.params
+
+            const abrirContaService = new AbrirContaService()
+            await abrirContaService.ReprovarAberturaDeConta(codigo)
+
+            return response.status(200).send()
+
+        } catch(error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
+        }
+    }
 }

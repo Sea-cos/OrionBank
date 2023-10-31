@@ -5,4 +5,5 @@ export interface IAbrirContaService {
     EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string) : Promise<void>
     SolicitacaoAberturaDeConta(contaDto: ContaDto) : Promise<void>
     ObterSolicitacoesAberturaDeConta(take: number, skip: number): Promise<Array<SolicitacaoAberturaContaDto>>
+    ReprovarAberturaDeConta(codigo: string) : Promise<void>
 }
