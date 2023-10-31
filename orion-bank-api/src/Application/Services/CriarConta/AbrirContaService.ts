@@ -80,6 +80,11 @@ export class AbrirContaService implements IAbrirContaService {
 
         const abrirContaRepository = new AbrirContaRepository()
         const conta = await abrirContaRepository.ReprovarAberturaDeConta(codigo)
+
+        if(conta === null || !conta) {
+            throw new Error("Conta inexistente.")
+        }
+
         const contaJson = JSON.parse(conta.MensagemSolicitacao)
         await EnviarEmailReprovacao(contaJson.Email, contaJson.NomeCompleto)
     }
