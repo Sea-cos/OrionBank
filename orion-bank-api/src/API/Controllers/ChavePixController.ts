@@ -21,7 +21,7 @@ export class ChavePixController {
             } as ChavePixDto
 
             const criarChaveService = new ChavePixService()
-            await criarChaveService.CriarChavePix(chavePix)
+            await criarChaveService.CriarChavePix(chavePixDto)
 
             return response.status(200).send()
 

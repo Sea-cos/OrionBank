@@ -3,11 +3,13 @@ import { ValidacaoToken } from "./Middleware/ValidacaoToken";
 import { AutenticacaoController } from "./API/Controllers/AutenticacaoController";
 import { AbrirContaController } from "./API/Controllers/AbrirContaController";
 import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController";
+import { ChavePixController } from "./API/Controllers/ChavePixController";
 
 const router = Router();
 const autenticacaoController = new AutenticacaoController();
 const abrirContaController = new AbrirContaController();
 const alterarSenhaController = new AlterarSenhaController()
+const chavePixController = new ChavePixController()
 
 router.post("/autenticacao", 
     autenticacaoController.EfetuarAutenticacao
@@ -35,6 +37,10 @@ router.post("/abrirConta/reprovarSolicitadao/:codigo",
 router.post("/alterarSenha",
     ValidacaoToken,
     alterarSenhaController.AlterarSenha
+)
+router.post("/chavePix/criar",
+    ValidacaoToken,
+    chavePixController.CriarChave
 )
 
 export {
