@@ -15,6 +15,8 @@ router.post("/autenticacao",
     autenticacaoController.EfetuarAutenticacao
 )
 
+//#region Abrir Conta
+
 router.post("/abrirConta/solicitacao", 
     abrirContaController.SolicitarAberturaDeConta
 )
@@ -38,10 +40,17 @@ router.post("/alterarSenha",
     ValidacaoToken,
     alterarSenhaController.AlterarSenha
 )
+
+//#endregion
+
+//#region Chave Pix
+
 router.post("/chavePix/criar",
     ValidacaoToken,
     chavePixController.CriarChave
 )
+
+//#endregion
 
 export {
     router

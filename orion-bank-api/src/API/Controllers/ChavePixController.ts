@@ -17,7 +17,7 @@ export class ChavePixController {
             const chavePixDto = {
                 CodigoConta: codigoConta,
                 Chave_Pix: chavePix,
-                TipoChave: tipoChave,
+                TipoChave: parseInt(tipoChave),
             } as ChavePixDto
 
             const criarChaveService = new ChavePixService()
