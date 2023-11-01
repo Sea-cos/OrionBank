@@ -19,7 +19,7 @@ function ConfigurarEmail() : nodemailer.Transporter<SMTPTransport.SentMessageInf
     })
 }
 
-export async function EnviarEmailAprovacao(emailConta: string, nome: string, senha: string) : Promise<void> {
+export async function EnviarEmailAprovacao(emailConta: string, nome: string, senha: string, codigo: string) : Promise<void> {
     const smtp = ConfigurarEmail()
     
     const email = process.env.EMAIL;
@@ -32,6 +32,9 @@ export async function EnviarEmailAprovacao(emailConta: string, nome: string, sen
                             </p>
                             <p>
                                 Senha para primeiro acesso: ${senha}
+                            </p>
+                            <p>
+                                CODIGO COLOCAR NA URL DPS: ${codigo}
                             </p>
                             <a href="https://www.google.com.br">Clique aqui!</a>  
                             <br/>

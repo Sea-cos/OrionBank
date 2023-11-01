@@ -3,7 +3,7 @@ import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
-import { EnviarEmailAprovacao, EnviarEmailReprovacao } from "../../../Middleware/ConfigurarEmail";
+import { EnviarEmailAprovacao, EnviarEmailReprovacao } from "../../../Middleware/EnviarEmail";
 import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,23 +50,24 @@ export class AbrirContaService implements IAbrirContaService {
         contaDto.DocumentoFederal = contaDto.DocumentoFederal.replace(/[^0-9]/g, '')
         await th.ValidarCriacaoDeConta(contaDto)
 
-        if(codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
+        if(codigoSolicitacao === undefined || codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
             throw new Error("Codigo solicitação inválido.")
         }
 
         const abrirContaRepository = new AbrirContaRepository()
         let conta = th.DtoToDomain(contaDto)
         const senha = th.GerarNumeroAleatorio(8)
+        const codigo = uuidv4()
         
         conta.Agencia = th.GerarNumeroAleatorio(4)
         conta.Conta = th.GerarNumeroAleatorio(8)
         conta.ContaDigito = "8"
         conta.ContaPgto = th.GerarNumeroAleatorio(9)
         conta.Senha = senha;
-        conta.Codigo = uuidv4()
+        conta.Codigo = codigo
 
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao);
-        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha);
+        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha, codigo);
 
         const saldo = new SaldoRepository();
         await saldo.IniciarSaldoInicialConta(conta.Codigo);
