@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { AlterarSenhaService } from "../../Application/Services/AlterarSenhaService";
 
-
 export class AlterarSenhaController {
 
     async AlterarSenha(request: Request, response: Response) {

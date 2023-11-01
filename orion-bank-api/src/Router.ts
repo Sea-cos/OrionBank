@@ -9,7 +9,9 @@ const autenticacaoController = new AutenticacaoController();
 const abrirContaController = new AbrirContaController();
 const alterarSenhaController = new AlterarSenhaController()
 
-router.post("/autenticacao", autenticacaoController.EfetuarAutenticacao)
+router.post("/autenticacao", 
+    autenticacaoController.EfetuarAutenticacao
+)
 
 router.post("/abrirConta/solicitacao", 
     abrirContaController.SolicitarAberturaDeConta
@@ -17,7 +19,8 @@ router.post("/abrirConta/solicitacao",
 
 router.post("/abrirConta/aprovarSolicitacao",
     ValidacaoToken,
-    abrirContaController.EfetuarAberturaDeConta)
+    abrirContaController.EfetuarAberturaDeConta
+)
 
 router.get("/abrirConta/obterRegistrosSolicitacao",
     ValidacaoToken,
