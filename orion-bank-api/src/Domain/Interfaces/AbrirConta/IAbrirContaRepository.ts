@@ -8,4 +8,5 @@ export interface IAbrirContaRepository {
     BuscarDocumentoFederalExistente(documentoFederal: string) : Promise<boolean>
     ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>>
     ReprovarAberturaDeConta(codigo: string) : Promise<SolicitacaoAberturaConta>
+    BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta>
 }
