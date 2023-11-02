@@ -47,7 +47,7 @@ export class AbrirContaService implements IAbrirContaService {
     async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
         let th = this
 
-        contaDto.DocumentoFederal = contaDto.DocumentoFederal.replace(/[^0-9]/g, '')
+        contaDto.DocumentoFederal = contaDto.DocumentoFederal.replace(/[^0-9]/g, "")
         await th.ValidarCriacaoDeConta(contaDto)
 
         if(codigoSolicitacao === undefined || codigoSolicitacao === null || codigoSolicitacao.trim() === "") {

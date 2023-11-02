@@ -1,7 +1,10 @@
+import { ChavePixRepository } from "../../../Data/Repositories/ChavePix/ChavePixRepository";
 import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
+import { ChavePix } from "../../../Domain/Entities/ChavePix";
 import { TipoChavePix } from "../../../Enums/TipoChavePix";
 import { ChavePixDto } from "../../DTOs/ChavePixDto";
 import { IChavePixService } from "../../Interfaces/ChavePix/IChavePixService";
+import { v4 as uuidv4 } from "uuid";
 
 export class ChavePixService implements IChavePixService {
 
@@ -9,6 +12,9 @@ export class ChavePixService implements IChavePixService {
         
         let th = this;
         await th.ValidarParametros(chavePix)
+
+        const chavePixRepository = new ChavePixRepository()
+        await chavePixRepository.CriarChavePix(th.DomainToDto(chavePix))
     }
 
     private async ValidarParametros(chavePix: ChavePixDto) : Promise<void> {
@@ -32,7 +38,16 @@ export class ChavePixService implements IChavePixService {
 
         const contaRepository = new AbrirContaRepository()      
         if(await contaRepository.BuscarContaPorChavePix(chavePix.Chave_Pix, chavePix.CodigoConta)) {
-            throw new Error("Chave pix inválida.")
+            throw new Error("Chave pix já existente.")
         }
+    }
+
+    private DomainToDto(chavePix: ChavePixDto) : ChavePix{
+        return {
+            Codigo: uuidv4(),
+            CodigoConta: chavePix.CodigoConta,
+            Chave_Pix: chavePix.Chave_Pix,
+            TipoChave: chavePix.TipoChave
+        } as ChavePix
     }
 }

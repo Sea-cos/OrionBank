@@ -4,7 +4,6 @@ import { AutenticacaoService } from "../../Application/Services/AutenticacaoServ
 
 export class AutenticacaoController {   
 
-    /* Rota: /autenticacao */
     async EfetuarAutenticacao(request: Request, response: Response) {
         try {
 
