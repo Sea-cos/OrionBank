@@ -22,6 +22,21 @@ export class ChavePixService implements IChavePixService {
         await chavePixRepository.CriarChavePix(th.DomainToDto(chavePix))
     }
 
+    async ObterChavePixPorCodigoConta(codigoConta: string): Promise<Array<ChavePix>> {
+
+        if(codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
+            throw new Error("Erro interno.")
+        }
+
+        const chavePixRepository = new ChavePixRepository()
+        const chavesPix = await chavePixRepository.ObterChavePixPorCodigoConta(codigoConta)
+
+        if(chavesPix.length === 0) {
+            throw new Error("Não há chaves pix para está conta.")
+        }
+        return chavesPix
+    }
+
     private async ValidarParametros(chavePix: ChavePixDto) : Promise<void> {
 
         const tipoChave = TipoChavePix[chavePix.TipoChave === 1 ? "DocumentoFederal" 

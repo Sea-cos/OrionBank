@@ -32,4 +32,26 @@ export class ChavePixController {
             })
         }
     }
+
+    async ObterChavesPixPorCodigoConta(request: Request, response: Response) {
+
+        try {
+
+            const {
+                codigoConta
+            } = request.query
+
+            const criarChaveService = new ChavePixService()
+            const chavesPix = await criarChaveService.ObterChavePixPorCodigoConta(codigoConta === undefined ? "" : codigoConta.toString())
+
+            return response.status(200).send(chavesPix)
+
+        } catch(error: any) {
+            return response.status(400).send({
+                status: "Error",
+                message: error.message
+            })
+        }
+
+    }
 }
