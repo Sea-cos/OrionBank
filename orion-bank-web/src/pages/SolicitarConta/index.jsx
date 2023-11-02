@@ -1,44 +1,89 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 import InputMask from 'react-input-mask';
-import { SolicitarContaContext } from "../../contexts/SolicitarContaContext";
 import Circulo from "../../assets/img/circulo.svg";
 import CirculoPreto from "../../assets/img/circulo-preto.svg"
 import Avancar from "../../assets/img/avancar.svg";
 import Retroceder from "../../assets/img/retroceder.svg";
 import { showErrorNotification } from '../../shared/notificationUtils';
+import { Link } from "react-router-dom";
+import { SolicitarContaContext } from "../../contexts/SolicitarContaContext";
+import { BuscarCEPContext } from "../../contexts/BuscarCEPContext";
 import "./styles.css";
 
 const SolicitarConta = () => {
     const solicitarContaContext = useContext(SolicitarContaContext);
     const solicitar = solicitarContaContext.solicitar;
+    const buscarCEPContext = useContext(BuscarCEPContext);
+    const buscarCep = buscarCEPContext.buscarCep;
+    const camposChecagem = [
+        'nome', 
+        'sobrenome', 
+        'email', 
+        'dtNasc', 
+        'telefoneCelular', 
+        'estado', 
+        'cidade',
+        'logadouro',
+        'cep',
+        'numero'];
 
     const [solicitacaoRequest, setSolicitacaoRequest] = useState({ 
-        nome: '', 
-        sobrenome: '',
-        email: '', 
-        dtNasc: '',
-        telefoneCelular: '',
-        estado: '',
-        cidade: '',
-        logadouro: '',
-        cep: '',
-        numero: ''
+        nome: "", 
+        sobrenome: "",
+        email: "", 
+        dtNasc: "",
+        telefoneCelular: "",
+        estado: "",
+        cidade: "",
+        logradouro: "",
+        cep: "",
+        numero: ""
     });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("request", {solicitacaoRequest});
+        debugger
+        validarPrenchimento();
+        const todosPreenchidos = camposChecagem.every(fieldName => Boolean(solicitacaoRequest[fieldName]));
 
-        if (isChecked){
+        if (isChecked && todosPreenchidos){
             await solicitar(solicitacaoRequest);
         } else {
             showErrorNotification("Aceite os termos e politica de privacidade.");
         }
     };
 
+    const validarPrenchimento = () => {
+        if (solicitacaoRequest.nome === "")
+            showErrorNotification(`O campo Nome é obrigatório.`);
+
+        if (solicitacaoRequest.sobrenome === "")
+            showErrorNotification(`O campo Sobrenome é obrigatório.`);
+
+        if (solicitacaoRequest.email === "")
+            showErrorNotification(`O campo Email é obrigatório.`);
+
+        if (solicitacaoRequest.dtNasc === "")
+            showErrorNotification(`O campo Data de Nascimento é obrigatório.`);
+
+        if (solicitacaoRequest.telefoneCelular === "")
+            showErrorNotification(`O campo Telefone é obrigatório.`);
+
+        if (solicitacaoRequest.cidade === "")
+            showErrorNotification(`O campo Cidade é obrigatório.`);
+
+        if (solicitacaoRequest.logadouro === "")
+            showErrorNotification(`O campo Logadouro é obrigatório.`);
+
+        if (solicitacaoRequest.cep === "")
+            showErrorNotification(`O campo CEP é obrigatório.`);
+
+        if (solicitacaoRequest.numero === "")
+            showErrorNotification(`O campo Número é obrigatório.`);
+    };
 
     const [etapa, setEtapa] = useState(1);
+    const [isChecked, setIsChecked] = useState(false);
 
     const avancarEtapa = () => {
         setEtapa(etapa + 1);
@@ -48,10 +93,32 @@ const SolicitarConta = () => {
         setEtapa(etapa - 1);
     }
 
-    const [isChecked, setIsChecked] = useState(false);
-
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
+    };
+
+    const [cepInput, setCepInput] = useState("");
+
+    const buscarCEPDigitado = async () => {
+        const response = await buscarCep(cepInput.replace(/\D/g, ''));
+
+        setSolicitacaoRequest({
+            ...solicitacaoRequest,
+            cep: cepInput,
+            logradouro: response.logradouro,
+            estado: response.uf,
+            cidade: response.localidade,
+        });
+    }
+
+    useEffect(() => {
+        if (cepInput !== solicitacaoRequest.cep && cepInput.replace(/\D/g, '').length === 8){
+            buscarCEPDigitado();
+        }
+    });
+
+    const handleCepChange = (e) => {
+        setCepInput(e.target.value);
     };
 
     return (
@@ -64,7 +131,17 @@ const SolicitarConta = () => {
                                 <div className="col-lg-6">
                                     <div className="p-5">
                                         <div className="text-center">
-                                            <h1 style={{ color: '#DB4648' }} className="h2 mb-4">Solicitar Conta</h1>
+                                        {etapa < 3 && (
+                                            <>
+                                                <h1 style={{ color: '#DB4648' }} className="h2 mb-0">Solicitar Conta</h1>
+                                                <label className="subtitulo mb-4">Preencha os dados do cadastro</label>
+                                            </>
+                                        )}
+                                        {etapa === 3 && (
+                                            <>
+                                                <h1 style={{ color: '#DB4648' }} className="h2 mb-4">Solicitar Conta</h1>
+                                            </>
+                                        )}
                                         </div>
 
                                         <form className="user" onSubmit={handleSubmit}>
@@ -74,7 +151,6 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <input 
                                                                 type="text" 
-                                                                required
                                                                 className="name form-control"
                                                                 id="name" 
                                                                 aria-describedby="nameHelp"
@@ -86,7 +162,6 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-6">
                                                             <input 
                                                                 type="text"
-                                                                required 
                                                                 className="sobrenome form-control"
                                                                 id="sobrenome" 
                                                                 aria-describedby="sobrenomeHelp"
@@ -101,7 +176,6 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-12 mb-0 mb-sm-0">
                                                             <input 
                                                                 type="email"
-                                                                required
                                                                 className="email form-control"
                                                                 id="email" 
                                                                 aria-describedby="emailHelp"
@@ -116,7 +190,6 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-12 mb-0 mb-sm-0">
                                                             <InputMask 
                                                                 type="text"
-                                                                required 
                                                                 mask="99/99/9999"
                                                                 className="date form-control"
                                                                 id="dtNasc" 
@@ -132,7 +205,6 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-12 mb-3 mb-sm-0">
                                                             <InputMask 
                                                                 type="phone"
-                                                                required
                                                                 mask="(99) 99999-9999"
                                                                 className="phone form-control"
                                                                 id="phone" 
@@ -152,23 +224,23 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <input 
                                                                 type="text"
-                                                                required
                                                                 className="cep form-control"
                                                                 id="cep" 
                                                                 aria-describedby="cepHelp"
                                                                 placeholder="CEP"
-                                                                value={solicitacaoRequest.cep}
-                                                                onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, cep: e.target.value })}
+                                                                maxLength={9}
+                                                                value={cepInput}
+                                                                onChange={handleCepChange}
                                                             />
                                                         </div>
                                                         <div className="col-sm-6">
                                                             <input 
                                                                 type="text"
-                                                                required
                                                                 className="numero form-control"
                                                                 id="numero" 
                                                                 aria-describedby="numeroHelp"
                                                                 placeholder="Numero"
+                                                                maxLength={10}
                                                                 value={solicitacaoRequest.numero}
                                                                 onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, numero: e.target.value })}
                                                             />
@@ -179,25 +251,23 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <input 
                                                                 type="text"
-                                                                required
                                                                 className="estado form-control"
                                                                 id="estado" 
                                                                 aria-describedby="estadoHelp"
                                                                 placeholder="Estado"
                                                                 value={solicitacaoRequest.estado}
-                                                                onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, estado: e.target.value })}
+                                                                disabled
                                                             />
                                                         </div>
                                                         <div className="col-sm-6">
                                                             <input 
                                                                 type="text"
-                                                                required
                                                                 className="cidade form-control"
                                                                 id="cidade" 
                                                                 aria-describedby="cidadeHelp"
                                                                 placeholder="Cidade"
                                                                 value={solicitacaoRequest.cidade}
-                                                                onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, cidade: e.target.value })}
+                                                                disabled
                                                             />
                                                         </div>
                                                     </div> 
@@ -206,13 +276,12 @@ const SolicitarConta = () => {
                                                         <div className="col-sm-12 mb-0 mb-sm-0">
                                                             <input 
                                                                 type="text"
-                                                                required
-                                                                className="logadouro form-control"
-                                                                id="logadouro" 
-                                                                aria-describedby="logadouroHelp"
-                                                                placeholder="Logadouro"
-                                                                value={solicitacaoRequest.logadouro}
-                                                                onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, logadouro: e.target.value })}
+                                                                className="logradouro form-control"
+                                                                id="logradouro" 
+                                                                aria-describedby="logradourooHelp"
+                                                                placeholder="Logradouro"
+                                                                value={solicitacaoRequest.logradouro}
+                                                                disabled
                                                             />
                                                         </div>
                                                     </div> 

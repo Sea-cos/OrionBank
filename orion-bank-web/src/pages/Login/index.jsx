@@ -2,24 +2,30 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import InputMask from 'react-input-mask';
-import "./styles.css"
+import { showErrorNotification } from '../../shared/notificationUtils';
+import Titulo from "../../assets/img/titulo.svg";
+import "./styles.css";
 
 const Login = () => {
-
     const authContext = useContext(AuthContext);
     const login = authContext.login;
     
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [autenticarRequest, setAutenticarRequest] = useState({ login: "", senha: ""});
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        autenticarRequest.login = autenticarRequest.login.replace(/\D/g, '');
 
-        console.log("submit", {email, password});
+        if (validarPrenchimento())
+            login(autenticarRequest);
+        else 
+            showErrorNotification("Preencha todos os campos!");
+    };
 
-        //Aqui eu chamo meu login dentro do auth.
-        login(email, password);
+    const validarPrenchimento = () => {
+        return autenticarRequest.email !== undefined && autenticarRequest.password !== undefined;
     };
 
     return(
@@ -32,7 +38,8 @@ const Login = () => {
                                 <div className="col-lg-6">
                                     <div className="p-5">
                                         <div className="text-center">
-                                            <h1 style={{ color: '#DB4648' }} className="h2 mb-4">Login</h1>
+                                            <img src={Titulo} className="circulo-preto" alt=""/>
+                                            <h1 style={{ color: 'black', opacity: '70%' }} className="h4 mb-4 mt-0">Login</h1>
                                         </div>
 
                                         <form className="user" onSubmit={ handleSubmit }>
@@ -44,9 +51,8 @@ const Login = () => {
                                                     id="cpf" 
                                                     aria-describedby="cpfHelp"
                                                     placeholder="CPF"
-                                                    value={email}
-                                                    required
-                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    value={autenticarRequest.login}
+                                                    onChange={(e) => setAutenticarRequest({ ...autenticarRequest, login: e.target.value })}
                                                 />
                                             </div>
                                             <div className="form-group">
@@ -56,16 +62,14 @@ const Login = () => {
                                                     id="password" 
                                                     placeholder="Senha"
                                                     name="nome"
-                                                    value={password}
-                                                    required
-                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    value={autenticarRequest.senha}
+                                                    onChange={(e) => setAutenticarRequest({ ...autenticarRequest, senha: e.target.value })}
                                                 />
                                                 <div className="text-right">
                                                     <a className="small" href="forgot-password.html">Esqueceu sua senha?</a>
                                                 </div>
                                             </div>
                                             
-                                            <hr/>  
                                             <div className="form-group">
                                                 <Link to="/solicitarConta"><button type="button" className="botao-um"> Solicitar Conta </button></Link>
                                                 <button type="submit" className="botao-dois"> Login </button>
