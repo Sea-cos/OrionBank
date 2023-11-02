@@ -13,8 +13,18 @@ export function SolicitarContaProvider({ children }) {
 
         try 
         {
-            const response = await solicitarConta(solicitacao);
+            const request = {
+                documentoFederal: solicitacao.documentoFederal.replace(/\D/g, ''),
+                nomeCompleto: `${solicitacao.nome} ${solicitacao.sobrenome}`,
+                email: solicitacao.email,
+                dtNasc: solicitacao.dtNasc,
+                telefoneCelular: solicitacao.telefoneCelular.replace(/\D/g, ''),
+                cep: solicitacao.cep.replace(/\D/g, ''),
+                logradouro: solicitacao.logradouro,
+                numeroResidencial: solicitacao.numero,
+            };
 
+            await solicitarConta(request);
             navigate(`/sucessoSolicitacao/${solicitacao.nome}`);
         } catch (error) {
             showErrorNotification(error.message);

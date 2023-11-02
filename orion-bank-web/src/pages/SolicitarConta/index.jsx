@@ -23,9 +23,10 @@ const SolicitarConta = () => {
         'telefoneCelular', 
         'estado', 
         'cidade',
-        'logadouro',
+        'logradouro',
         'cep',
-        'numero'];
+        'numero',
+        'documentoFederal'];
 
     const [solicitacaoRequest, setSolicitacaoRequest] = useState({ 
         nome: "", 
@@ -37,7 +38,8 @@ const SolicitarConta = () => {
         cidade: "",
         logradouro: "",
         cep: "",
-        numero: ""
+        numero: "",
+        documentoFederal: ""
     });
 
     const handleSubmit = async (e) => {
@@ -80,6 +82,9 @@ const SolicitarConta = () => {
 
         if (solicitacaoRequest.numero === "")
             showErrorNotification(`O campo Número é obrigatório.`);
+
+        if (solicitacaoRequest.documentoFederal === "")
+            showErrorNotification(`O campo Documento Federal é obrigatório.`);
     };
 
     const [etapa, setEtapa] = useState(1);
@@ -105,9 +110,9 @@ const SolicitarConta = () => {
         setSolicitacaoRequest({
             ...solicitacaoRequest,
             cep: cepInput,
-            logradouro: response.logradouro,
-            estado: response.uf,
-            cidade: response.localidade,
+            logradouro: response?.logradouro ?? "",
+            estado: response?.uf ?? "",
+            cidade: response?.localidade ?? "",
         });
     }
 
@@ -187,22 +192,20 @@ const SolicitarConta = () => {
                                                     </div> 
 
                                                     <div className="form-group row">
-                                                        <div className="col-sm-12 mb-0 mb-sm-0">
+                                                        <div className="col-sm-6 mb-3 mb-sm-0">
                                                             <InputMask 
                                                                 type="text"
                                                                 mask="99/99/9999"
                                                                 className="date form-control"
                                                                 id="dtNasc" 
                                                                 aria-describedby="dateHelp"
-                                                                placeholder="Data de Nascimento"
+                                                                placeholder="Nascimento"
                                                                 value={solicitacaoRequest.dtNasc}
                                                                 onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, dtNasc: e.target.value })}
                                                             />
                                                         </div>
-                                                    </div> 
 
-                                                    <div className="form-group row">
-                                                        <div className="col-sm-12 mb-3 mb-sm-0">
+                                                        <div className="col-sm-6">
                                                             <InputMask 
                                                                 type="phone"
                                                                 mask="(99) 99999-9999"
@@ -212,6 +215,21 @@ const SolicitarConta = () => {
                                                                 placeholder="Telefone Celular"
                                                                 value={solicitacaoRequest.telefoneCelular}
                                                                 onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, telefoneCelular: e.target.value })}
+                                                            />
+                                                        </div>
+                                                    </div> 
+
+                                                    <div className="form-group row">
+                                                        <div className="col-sm-12 mb-0 mb-sm-0">
+                                                            <InputMask 
+                                                                type="text"
+                                                                mask="999.999.999-99"
+                                                                className="documento form-control"
+                                                                id="documento" 
+                                                                aria-describedby="documentoHelp"
+                                                                placeholder="Documento Federal"
+                                                                value={solicitacaoRequest.documentoFederal}
+                                                                onChange={(e) => setSolicitacaoRequest({ ...solicitacaoRequest, documentoFederal: e.target.value })}
                                                             />
                                                         </div>
                                                     </div>   

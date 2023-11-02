@@ -10,18 +10,21 @@ export function BuscarCEPProvider({ children }) {
     const buscarCep = async (cep) => {
         try 
         {
+            debugger
             const response = await buscarCEP(cep);
         
+            if (response.erro)
+                showErrorNotification("O CEP informado é inválido.");
+
             const endereco = {
                 logradouro: response?.logradouro ?? "",
                 bairro: response?.bairro ?? "",
                 localidade: response?.localidade ?? "",
                 uf: response?.uf ?? "",
             };
-            
             return endereco;
         } catch (error) {
-            showErrorNotification(error.message);
+            showErrorNotification("O CEP informado é inválido.");
         }
     };
 
