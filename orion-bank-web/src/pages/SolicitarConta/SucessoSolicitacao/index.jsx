@@ -2,10 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import "../styles.css";
 
 const SucessoSolicitacao = () => {
-
     const { nome } = useParams();
 
-    console.log(nome);
     return (
         <div className="container">
             <div className="row justify-content-center align-items-center vh-100">

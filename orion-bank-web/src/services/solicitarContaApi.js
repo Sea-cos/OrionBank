@@ -5,5 +5,10 @@ export const api = axios.create({
 });
 
 export const solicitarConta = async (solicitacao) => {
-    return api.post("/abrirConta/solicitacao", { solicitacao })
+    try {
+        const response = api.post("/abrirConta/solicitacao", { solicitacao });
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
 }

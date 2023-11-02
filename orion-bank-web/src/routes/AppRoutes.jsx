@@ -14,12 +14,14 @@ import SucessoSolicitacao from '../pages/SolicitarConta/SucessoSolicitacao';
 
 import { AuthProvider, AuthContext } from "../contexts/AuthContext";
 import { SolicitarContaProvider } from "../contexts/SolicitarContaContext";
+import { BuscarCEPProvider } from "../contexts/BuscarCEPContext";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const AppRoutes = () => {
 
     const Private = ({ children }) => {
         const { authenticated, loading } = useContext(AuthContext);
-
+        
         if (loading){
             return <div className="loading"> Carregando...</div>
         }
@@ -32,18 +34,21 @@ const AppRoutes = () => {
     }
 
     return (
-        <Router>
-            <SolicitarContaProvider>
-                <AuthProvider>
-                    <Routes>
-                        <Route exact path="/login" element={ <Login/> }/>
-                        <Route exact path="/" element={ <Private><Home/></Private>}/>
-                        <Route exact path="/solicitarconta" element={ <SolicitarConta/> }/>
-                        <Route exact path="/sucessoSolicitacao/:nome" element={ <SucessoSolicitacao/> }/>
-                    </Routes>
-                </AuthProvider>
-            </SolicitarContaProvider>
-        </Router>
+            <Router>
+                <SolicitarContaProvider>
+                    <BuscarCEPProvider>
+                        <AuthProvider>
+                            <Routes>
+                                <Route exact path="/login" element={ <Login/> }/>
+                                <Route exact path="/" element={ <Private><Home/></Private>}/>
+                                <Route exact path="/solicitarconta" element={ <SolicitarConta/> }/>
+                                <Route exact path="/sucessoSolicitacao/:nome" element={ <SucessoSolicitacao/> }/>
+                                <Route path="*" element={<ErrorBoundary/>}/>
+                            </Routes>
+                        </AuthProvider>
+                    </BuscarCEPProvider>
+                </SolicitarContaProvider>
+            </Router>
     );
 };
 
