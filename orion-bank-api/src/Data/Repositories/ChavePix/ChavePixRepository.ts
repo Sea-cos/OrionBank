@@ -13,7 +13,7 @@ export class ChavePixRepository implements IChavePixRepository {
             chavePix.Codigo,
             chavePix.CodigoConta,
             chavePix.Chave_Pix,
-            TipoChavePix[chavePix.TipoChave === 1 ? "DocumentoFederal" : chavePix.TipoChave === 2 ? "Email" : "Aleatoria"],
+            TipoChavePix[chavePix.TipoChave === 1 ? "DocumentoFederal" : chavePix.TipoChave === 2 ? "Email" : "Telefone"],
             Situacao.Ativa,
             new Date(),
             new Date()
