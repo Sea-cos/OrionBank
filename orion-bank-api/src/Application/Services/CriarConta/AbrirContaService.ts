@@ -3,7 +3,9 @@ import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
-
+import { EnviarEmailAprovacao, EnviarEmailReprovacao } from "../../../Middleware/EnviarEmail";
+import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
+import { v4 as uuidv4 } from 'uuid';
 
 export class AbrirContaService implements IAbrirContaService {
 
@@ -45,21 +47,30 @@ export class AbrirContaService implements IAbrirContaService {
     async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
         let th = this
 
+        contaDto.DocumentoFederal = contaDto.DocumentoFederal.replace(/[^0-9]/g, '')
         await th.ValidarCriacaoDeConta(contaDto)
 
-        if(codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
+        if(codigoSolicitacao === undefined || codigoSolicitacao === null || codigoSolicitacao.trim() === "") {
             throw new Error("Codigo solicitação inválido.")
         }
 
         const abrirContaRepository = new AbrirContaRepository()
         let conta = th.DtoToDomain(contaDto)
+        const senha = th.GerarNumeroAleatorio(8)
+        const codigo = uuidv4()
         
         conta.Agencia = th.GerarNumeroAleatorio(4)
         conta.Conta = th.GerarNumeroAleatorio(8)
         conta.ContaDigito = "8"
         conta.ContaPgto = th.GerarNumeroAleatorio(9)
+        conta.Senha = senha;
+        conta.Codigo = codigo
 
-        await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao)
+        await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao);
+        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha, codigo);
+
+        const saldo = new SaldoRepository();
+        await saldo.IniciarSaldoInicialConta(conta.Codigo);
     }
 
     async SolicitacaoAberturaDeConta(contaDto: ContaDto): Promise<void> {
@@ -71,6 +82,19 @@ export class AbrirContaService implements IAbrirContaService {
         const conta = th.DtoToDomain(contaDto)
 
         await abrirContaRepository.SolicitacaoAberturaDeConta(JSON.stringify(conta));
+    }
+
+    async ReprovarAberturaDeConta(codigo: string): Promise<void> {
+
+        const abrirContaRepository = new AbrirContaRepository()
+        const conta = await abrirContaRepository.ReprovarAberturaDeConta(codigo)
+
+        if(conta === null || !conta) {
+            throw new Error("Conta inexistente.")
+        }
+
+        const contaJson = JSON.parse(conta.MensagemSolicitacao)
+        await EnviarEmailReprovacao(contaJson.Email, contaJson.NomeCompleto)
     }
 
     private GerarNumeroAleatorio(quantidade: number) : string {
@@ -137,7 +161,6 @@ export class AbrirContaService implements IAbrirContaService {
         return {
             DocumentoFederal: contaDto.DocumentoFederal,
             NomeCompleto: contaDto.NomeCompleto,
-            Senha: this.GerarNumeroAleatorio(8),
             Email: contaDto.Email,
             DtNasc: contaDto.DtNasc,
             TelefoneCelular: contaDto.TelefoneCelular,

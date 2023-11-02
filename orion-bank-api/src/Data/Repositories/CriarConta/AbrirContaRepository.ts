@@ -51,7 +51,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
     async EfetuarAberturaDeConta(conta: Conta, codigoSolicitacao: string) : Promise<void> {
         
         const parametros = [
-            uuidv4(),
+            conta.Codigo,
             conta.Agencia,
             conta.Conta,
             conta.ContaDigito,
@@ -119,5 +119,41 @@ export class AbrirContaRepository implements IAbrirContaRepository{
             sql,
             parametros
         );
+    }
+
+    async ReprovarAberturaDeConta(codigo: string) : Promise<SolicitacaoAberturaConta> {
+
+        const parametros = [
+            SolicitacaoAberturaDeConta.Recusada,
+            new Date(),
+            codigo
+        ]
+
+        const sqlUpdate = `UPDATE
+                                solicitacao_abertura_conta
+                            SET
+                                Situacao = ?,
+                                DtSituacao = ?
+                            WHERE Codigo = ?`
+
+        await (await connection).query(
+            sqlUpdate,
+            parametros
+        )
+
+        const sqlSelect = `SELECT
+                                *
+                            FROM
+                                solicitacao_abertura_conta
+                            WHERE Codigo = ?`
+
+        const conta = await (await connection).query(
+            sqlSelect,
+            [
+                codigo
+            ]
+        ) as any
+
+        return conta[0][0]
     }
 }
