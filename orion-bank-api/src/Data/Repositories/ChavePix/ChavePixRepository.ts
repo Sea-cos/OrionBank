@@ -67,4 +67,43 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
+    async ObterChavepixPorCodigo(codigo: string) : Promise<ChavePix> {
+
+        const sql = `SELECT *
+                    FROM
+                        chave_pix
+                    WHERE
+                        Codigo = ?`
+
+        const chavePix = await (await connection).query(
+                            sql,
+                            [
+                                codigo
+                            ]
+                        ) as any
+
+        return chavePix[0][0] as ChavePix
+
+    }
+
+    async InativarChavePix(codigo: string) : Promise<void> {
+
+        const parametros = [
+            Situacao.Inativa,
+            codigo
+        ]
+
+        const sql = `UPDATE chave_pix
+                    SET
+                        Situacao = ?
+                    WHERE
+                        Codigo = ?`
+
+        await (await connection).query(
+            sql,
+            parametros
+        )
+
+    }
+
 }

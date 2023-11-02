@@ -54,4 +54,26 @@ export class ChavePixController {
         }
 
     }
+
+    async InativarChavePix(request: Request, response: Response) {
+
+        try {
+
+            const {
+                codigoChave
+            } = request.query
+
+            const criarChaveService = new ChavePixService()
+            await criarChaveService.InativarChavePix(codigoChave === undefined ? "" : codigoChave.toString())
+
+            return response.status(200).send()
+
+        } catch(error: any) {
+            return response.status(400).send({
+                status: "Error",
+                message: error.message
+            })
+        }
+
+    }
 }

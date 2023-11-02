@@ -55,6 +55,11 @@ router.get("/chavePix/obterPorCodigoConta",
     chavePixController.ObterChavesPixPorCodigoConta       
 )
 
+router.post("/chavePix/inativarChave",
+    ValidacaoToken,
+    chavePixController.InativarChavePix
+)
+
 //#endregion
 
 export {
