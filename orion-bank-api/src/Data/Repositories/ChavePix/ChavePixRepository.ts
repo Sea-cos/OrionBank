@@ -30,4 +30,22 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
+    async ObterChavePixPorChave(chavePix: string) : Promise<ChavePix> {
+
+        const sql = `SELECT *
+                    FROM 
+                        chave_pix
+                    WHERE
+                        ChavePix = ?`
+
+        const chave = await (await connection).query(
+                        sql,
+                        [
+                            chavePix
+                        ]
+                    ) as any
+
+        return chave[0][0]
+    }
+
 }

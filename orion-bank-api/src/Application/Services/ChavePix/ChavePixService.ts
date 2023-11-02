@@ -14,6 +14,11 @@ export class ChavePixService implements IChavePixService {
         await th.ValidarParametros(chavePix)
 
         const chavePixRepository = new ChavePixRepository()
+        const chave = await chavePixRepository.ObterChavePixPorChave(chavePix.Chave_Pix)
+        if(chave) {
+            throw new Error("Chave pix já existente.")
+        }
+
         await chavePixRepository.CriarChavePix(th.DomainToDto(chavePix))
     }
 

@@ -176,7 +176,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
                             Email = ?
                         OR
                             TelefoneCelular = ?
-                    )`
+                    ) AND Codigo != ?`
 
         const conta = await (await connection).query(
                     sql,
