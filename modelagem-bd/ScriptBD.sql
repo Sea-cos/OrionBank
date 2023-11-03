@@ -1,3 +1,4 @@
+
 CREATE SCHEMA IF NOT EXISTS `OrionDB` DEFAULT CHARACTER SET utf8 ;
 USE `OrionDB` ;
 
@@ -29,7 +30,7 @@ ENGINE = InnoDB;
 
 
 
-CREATE TABLE IF NOT EXISTS `OrionDB`.`ChaveFavorita` (
+CREATE TABLE IF NOT EXISTS `OrionDB`.`Chave_Favorita` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Codigo` CHAR(38) NOT NULL,
   `CodigoConta` CHAR(38) NOT NULL,
@@ -37,8 +38,8 @@ CREATE TABLE IF NOT EXISTS `OrionDB`.`ChaveFavorita` (
   `TipoChave` INT NOT NULL,
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
   PRIMARY KEY (`Codigo`),
-  INDEX `fk_cad.ChaveFavorita_cad.Conta_idx` (`CodigoConta` ASC),
-  CONSTRAINT `fk_cad.ChaveFavorita_cad.Conta`
+  INDEX `fk_cad.Chave_Favorita_cad.Conta_idx` (`CodigoConta` ASC),
+  CONSTRAINT `fk_cad.Chave_Favorita_cad.Conta`
     FOREIGN KEY (`CodigoConta`)
     REFERENCES `OrionDB`.`Conta` (`Codigo`)
     ON DELETE NO ACTION
@@ -47,7 +48,7 @@ ENGINE = InnoDB;
 
 
 
-CREATE TABLE IF NOT EXISTS `OrionDB`.`SolicitacaoAberturaConta` (
+CREATE TABLE IF NOT EXISTS `OrionDB`.`Solicitacao_Abertura_Conta` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Codigo` CHAR(38) NOT NULL,
   `MensagemSolicitacao` VARCHAR(9000) NOT NULL,
@@ -60,20 +61,20 @@ ENGINE = InnoDB;
 
 
 
-CREATE TABLE IF NOT EXISTS `OrionDB`.`ChavePix` (
+CREATE TABLE IF NOT EXISTS `OrionDB`.`Chave_Pix` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Codigo` CHAR(38) NOT NULL,
   `CodigoConta` CHAR(38) NOT NULL,
-  `ChavePix` VARCHAR(200) NOT NULL,
+  `Chave_Pix` VARCHAR(200) NOT NULL,
   `TipoChave` INT NOT NULL,
   `Situacao` INT NOT NULL,
   `DtSituacao` DATETIME NOT NULL,
   `DtInclusao` DATETIME NOT NULL,
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
   PRIMARY KEY (`Codigo`),
-  UNIQUE INDEX `ChavePix_UNIQUE` (`ChavePix` ASC),
-  INDEX `fk_cad.ChavePix_cad.Conta1_idx` (`CodigoConta` ASC),
-  CONSTRAINT `fk_cad.ChavePix_cad.Conta1`
+  UNIQUE INDEX `Chave_Pix_UNIQUE` (`Chave_Pix` ASC),
+  INDEX `fk_cad.Chave_Pix_cad.Conta1_idx` (`CodigoConta` ASC),
+  CONSTRAINT `fk_cad.Chave_Pix_cad.Conta1`
     FOREIGN KEY (`CodigoConta`)
     REFERENCES `OrionDB`.`Conta` (`Codigo`)
     ON DELETE NO ACTION
@@ -88,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `OrionDB`.`Movimento` (
   `CodigoContaOrigem` CHAR(38) NOT NULL,
   `CodigoContaDestino` CHAR(38) NOT NULL,
   `Valor` DECIMAL NOT NULL,
-  `ChavePix` VARCHAR(100) NULL,
+  `Chave_Pix` VARCHAR(100) NULL,
   `EMV` VARCHAR(8000) NULL,
   `InfoAdicional` VARCHAR(255) NULL,
   `DescMovimento` VARCHAR(10) NULL,
@@ -124,7 +125,7 @@ ENGINE = InnoDB;
 
 
 
-CREATE TABLE IF NOT EXISTS `OrionDB`.`SaldoData` (
+CREATE TABLE IF NOT EXISTS `OrionDB`.`Saldo_Data` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Codigo` CHAR(38) NOT NULL,
   `CodigoConta` CHAR(38) NOT NULL,
@@ -132,9 +133,9 @@ CREATE TABLE IF NOT EXISTS `OrionDB`.`SaldoData` (
   `SaldoFinal` DECIMAL NOT NULL,
   `DtInclusao` DATETIME NOT NULL,
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
-  INDEX `fk_mov.SaldoData_cad.Conta1_idx` (`CodigoConta` ASC),
+  INDEX `fk_mov.Saldo_Data_cad.Conta1_idx` (`CodigoConta` ASC),
   PRIMARY KEY (`Codigo`),
-  CONSTRAINT `fk_mov.SaldoData_cad.Conta1`
+  CONSTRAINT `fk_mov.Saldo_Data_cad.Conta1`
     FOREIGN KEY (`CodigoConta`)
     REFERENCES `OrionDB`.`Conta` (`Codigo`)
     ON DELETE NO ACTION
@@ -143,18 +144,18 @@ ENGINE = InnoDB;
 
 
 
-CREATE TABLE IF NOT EXISTS `OrionDB`.`QrCode` (
+CREATE TABLE IF NOT EXISTS `OrionDB`.`Qr_Code` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Codigo` CHAR(38) NOT NULL,
   `CodigoConta` CHAR(38) NOT NULL,
-  `ChavePix` VARCHAR(100) NULL,
+  `Chave_Pix` VARCHAR(100) NULL,
   `Valor` DECIMAL NOT NULL,
   `EMV` VARCHAR(8000) NULL,
   `DtInclusao` DATETIME NOT NULL,
   PRIMARY KEY (`Codigo`),
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
-  INDEX `fk_cad.QrCode_cad.Conta1_idx` (`CodigoConta` ASC),
-  CONSTRAINT `fk_cad.QrCode_cad.Conta1`
+  INDEX `fk_cad.Qr_Code_cad.Conta1_idx` (`CodigoConta` ASC),
+  CONSTRAINT `fk_cad.Qr_Code_cad.Conta1`
     FOREIGN KEY (`CodigoConta`)
     REFERENCES `OrionDB`.`Conta` (`Codigo`)
     ON DELETE NO ACTION

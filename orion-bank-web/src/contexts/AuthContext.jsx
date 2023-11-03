@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
             showSuccessNotification("Usuário encontrado!")
             setUser(loggedUser);
             navigate("/");
-            
+
         } catch(error) {
             showErrorNotification(error.message);
         }

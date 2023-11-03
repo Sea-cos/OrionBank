@@ -11,7 +11,7 @@ export class AutenticacaoController {
                 login,
                 senha
             } = request.body;
-
+            console.log(login, senha)
             const autenticacaoDto = { Login: login, Senha: senha } as AutenticacaoDto
 
             const _autenticacaoServices = new AutenticacaoService();
