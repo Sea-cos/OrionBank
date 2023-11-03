@@ -1,8 +1,4 @@
-
-
-export interface ChavePix {
-    ID: number;
-    Codigo: string;
+export interface ChavePixDto {
     CodigoConta: string;
     Chave_Pix: string;
     TipoChave: number;

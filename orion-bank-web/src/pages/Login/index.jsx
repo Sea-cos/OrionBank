@@ -1,54 +1,59 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import InputMask from 'react-input-mask';
 import { showErrorNotification } from '../../shared/notificationUtils';
+import InputMask from 'react-input-mask';
 import Titulo from "../../assets/img/titulo.svg";
 import "./styles.css";
 
 const Login = () => {
     const authContext = useContext(AuthContext);
     const login = authContext.login;
-    
-    const [autenticarRequest, setAutenticarRequest] = useState({ login: "", senha: ""});
+
+    const [autenticarRequest, setAutenticarRequest] = useState({ login: "", senha: "" });
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         autenticarRequest.login = autenticarRequest.login.replace(/\D/g, '');
 
         if (validarPrenchimento())
             login(autenticarRequest);
-        else 
+        else
             showErrorNotification("Preencha todos os campos!");
     };
 
     const validarPrenchimento = () => {
-        return autenticarRequest.email !== undefined && autenticarRequest.password !== undefined;
+        debugger
+        if (autenticarRequest.login !== "" && autenticarRequest.senha !== ""){
+            return true;
+        } else {
+            return false;
+        }
     };
 
-    return(
+    return (
         <div className="container">
             <div className="row justify-content-center align-items-center vh-100">
                 <div className="col-xl-10 col-lg-12 col-md-9">
                     <div className="card o-hidden border-0 shadow-lg my-5">
                         <div className="card-body p-0">
                             <div className="row">
-                                <div className="col-lg-6">
+                                <div className="col-lg-7">
                                     <div className="p-5">
                                         <div className="text-center">
-                                            <img src={Titulo} className="circulo-preto" alt=""/>
+                                            <img src={Titulo} className="circulo-preto" alt="" />
                                             <h1 style={{ color: 'black', opacity: '70%' }} className="h4 mb-4 mt-0">Login</h1>
                                         </div>
 
-                                        <form className="user" onSubmit={ handleSubmit }>
+                                        <form className="user" onSubmit={handleSubmit}>
                                             <div className="form-group">
-                                                <InputMask 
-                                                    mask="999.999.999-99" 
-                                                    type="text" 
+                                                <InputMask
+                                                    mask="999.999.999-99"
+                                                    type="text"
                                                     className="cpf form-control"
-                                                    id="cpf" 
+                                                    id="cpf"
                                                     aria-describedby="cpfHelp"
                                                     placeholder="CPF"
                                                     value={autenticarRequest.login}
@@ -56,28 +61,29 @@ const Login = () => {
                                                 />
                                             </div>
                                             <div className="form-group">
-                                                <input 
-                                                    type="password" 
+                                                <input
+                                                    type="password"
                                                     className="password form-control"
-                                                    id="password" 
+                                                    id="password"
                                                     placeholder="Senha"
                                                     name="nome"
                                                     value={autenticarRequest.senha}
+                                                    maxLength={8}
                                                     onChange={(e) => setAutenticarRequest({ ...autenticarRequest, senha: e.target.value })}
                                                 />
                                                 <div className="text-right">
-                                                    <a className="small" href="forgot-password.html">Esqueceu sua senha?</a>
+                                                    <Link to="/recuperar" className="forgot small">Esqueceu sua senha?</Link>
                                                 </div>
                                             </div>
-                                            
-                                            <div className="form-group">
-                                                <Link to="/solicitarConta"><button type="button" className="botao-um"> Solicitar Conta </button></Link>
-                                                <button type="submit" className="botao-dois"> Login </button>
+
+                                            <div className="buttonsLogin form-group">
+                                                <button type="submit" className="botao-um"> Login </button>
+                                                <Link to="/solicitarConta"><button type="submit" className="botao-dois"> Solicitar Conta </button></Link>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                                <div className="col-lg-5 d-none d-lg-block bg-login-image"></div>
                             </div>
                         </div>
                     </div>

@@ -35,6 +35,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `npm install bootstrap`
 ### `npm install @mui/material @emotion/react @emotion/styled`
 ### `npm install react-input-mask`
-### `npm install sweetalert2`
 ### `npm i react-toastify`
-
+### `npm install date-fns`

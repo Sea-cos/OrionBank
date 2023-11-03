@@ -1,43 +1,54 @@
 /* Botao Login */
 .botao-dois {
-  align-items: center;
-  background-color: #fff;
-  border: 1.4px solid #DB4648;
-  box-sizing: border-box;
-  color: #DB4648;
-  cursor: pointer;
-  display: inline-flex;
-  fill: #000;
-  font-size: 18px;
-  height: 45px;
-  justify-content: center;
-  letter-spacing: -.8px;
-  line-height: 24px;
-  outline: 0;
-  padding: 0 17px;
-  text-align: center;
-  text-decoration: none;
-  transition: all .3s;
-  user-select: none;
-  border-radius: 5px;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  flex-shrink: 0;
-  font-family: "Inter", sans-serif;
+    align-items: center;
+    background-color: #fff;
+    border: 1.4px solid #DB4648;
+    box-sizing: border-box;
+    color: #DB4648;
+    cursor: pointer;
+    display: inline-flex;
+    fill: #000;
+    font-size: 18px;
+    height: 45px;
+    justify-content: center;
+    letter-spacing: -.8px;
+    line-height: 24px;
+    outline: 0;
+    padding: 0 17px;
+    text-align: center;
+    text-decoration: none;
+    transition: all .3s;
+    user-select: none;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    flex-shrink: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.buttonsLogin {
+    margin-top: 10%;
+}
+
+.forgot {
+    color: #DB4648;
+}
+.forgot:hover {
+    color: #7a2729;
 }
 
 .botao-dois:focus {
-    color:  #DB4648;
+    color: #DB4648;
 }
 
 .botao-dois:hover {
-  color: rgb(255, 255, 255);
-  background-color: #DB4648;
-  fill: #DB4648;
+    color: rgb(255, 255, 255);
+    background-color: #DB4648;
+    fill: #DB4648;
 }
 
 .botao-dois:active {
-    color:  #DB4648;
+    color: #DB4648;
     background-color: rgb(255, 255, 255);
     fill: #DB4648;
 }
@@ -71,19 +82,19 @@
 }
 
 .botao-um:focus {
-color: #ffffff;
+    color: #ffffff;
 }
 
 .botao-um:hover {
-color: #DB4648;
-background-color:  rgb(255, 255, 255);
-fill: #DB4648;
+    color: #DB4648;
+    background-color: rgb(255, 255, 255);
+    fill: #DB4648;
 }
 
 .botao-um:active {
-color: rgb(255, 255, 255);
-background-color: #DB4648;
-fill: #DB4648;
+    color: rgb(255, 255, 255);
+    background-color: #DB4648;
+    fill: #DB4648;
 }
 
 @media (min-width: 992px) {
@@ -91,6 +102,7 @@ fill: #DB4648;
         min-width: 160px;
         margin-right: 7%;
     }
+
     .botao-dois {
         min-width: 160px;
     }
@@ -101,6 +113,7 @@ fill: #DB4648;
         min-width: 170px;
         margin-right: 13%;
     }
+
     .botao-dois {
         min-width: 170px;
     }
@@ -112,6 +125,7 @@ fill: #DB4648;
         margin-right: 0%;
         margin-bottom: 7%;
     }
+
     .botao-dois {
         min-width: 170px;
     }
