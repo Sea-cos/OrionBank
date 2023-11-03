@@ -1,3 +1,4 @@
+import React from 'react';
 import './TesteSidebar.css'
 // adicionar import de icones
 
