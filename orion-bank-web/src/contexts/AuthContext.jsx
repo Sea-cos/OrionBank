@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (autenticarRequest) => { 
-
         try 
         {
             const response = await autenticarUsuario(autenticarRequest)
