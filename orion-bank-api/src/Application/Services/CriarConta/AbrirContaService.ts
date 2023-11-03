@@ -3,9 +3,12 @@ import { Conta } from "../../../Domain/Entities/Conta";
 import { ContaDto } from "../../DTOs/ContaDto";
 import { SolicitacaoAberturaContaDto } from "../../DTOs/SolicitacaoAberturaContaDto";
 import { IAbrirContaService } from "../../Interfaces/CriarConta/IAbrirContaService";
-import { EnviarEmailAprovacao, EnviarEmailReprovacao } from "../../../Middleware/EnviarEmail";
+import { EnviarEmail } from "../../../Middleware/EnviarEmail";
 import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
 import { v4 as uuidv4 } from 'uuid';
+import { TituloEmail } from "../../../Enums/TituloEmail";
+import dotenv from "dotenv";
+dotenv.config();
 
 export class AbrirContaService implements IAbrirContaService {
 
@@ -67,7 +70,34 @@ export class AbrirContaService implements IAbrirContaService {
         conta.Codigo = codigo
 
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao);
-        await EnviarEmailAprovacao(conta.Email, conta.NomeCompleto, senha, codigo);
+
+        const urlAlteralSenha = process.env.URL_CRIAR_SENHA;
+
+        const htmlAprovacao =  `<h3>
+                                    <strong>PARABÉNS ${conta.NomeCompleto}</strong>,
+                                    sua conta foi aprovada!
+                                </h3>
+                                <p>
+                                    Para dar continuidade com sua conta, peço que acesse o link abaixo para alterar sua senha de acesso!
+                                </p>
+                                <p>
+                                    Senha para primeiro acesso: ${senha}
+                                </p>
+                                <p>
+                                    CODIGO COLOCAR NA URL DPS: ${codigo}
+                                </p>
+                                <a href="${urlAlteralSenha}">Clique aqui!</a>  
+                                <br/>
+                                <br/>
+                                <img 
+                                    src="cid:${conta.Email}"
+                                    alt="Imagem logo orion bank"
+                                    style="
+                                        width: 350px; 
+                                        height: 100px;" 
+                                />`;
+
+        await EnviarEmail(conta.Email, htmlAprovacao, TituloEmail.Aprovado);
 
         const saldo = new SaldoRepository();
         await saldo.IniciarSaldoInicialConta(conta.Codigo);
@@ -93,8 +123,25 @@ export class AbrirContaService implements IAbrirContaService {
             throw new Error("Conta inexistente.")
         }
 
-        const contaJson = JSON.parse(conta.MensagemSolicitacao)
-        await EnviarEmailReprovacao(contaJson.Email, contaJson.NomeCompleto)
+        const contaJson = JSON.parse(conta.MensagemSolicitacao) as Conta
+
+        const htmlReprovacao = `<h3>
+                                <strong>Pedimos desculpa senhor/a ${contaJson.NomeCompleto}</strong>,
+                                mas infelizmente nosso time de analistas, achou alguma inconsistência em seus dados!
+                            </h3>
+                            <br/>
+                            <br/>
+                            <img 
+                                src="cid:${contaJson.Email}"
+                                alt="Imagem logo orion bank"
+                                style="
+                                    width: 350px; 
+                                    height: 100px
+                                ;" 
+                            />`
+
+
+        await EnviarEmail(contaJson.Email, htmlReprovacao, TituloEmail.Reprovado)
     }
 
     private GerarNumeroAleatorio(quantidade: number) : string {
@@ -210,7 +257,6 @@ export class AbrirContaService implements IAbrirContaService {
     private ValidarCNPJ(cnpj: string) {
         cnpj = cnpj.replace(/[^\d]+/g,'');
     
-        // Elimina CNPJs invalidos conhecidos
         if (cnpj == "00000000000000" || 
             cnpj == "11111111111111" || 
             cnpj == "22222222222222" || 
@@ -223,7 +269,6 @@ export class AbrirContaService implements IAbrirContaService {
             cnpj == "99999999999999")
             return false;
             
-        // Valida DVs
         let tamanho = cnpj.length - 2
         let numeros = cnpj.substring(0,tamanho);
         let digitos = cnpj.substring(tamanho);
