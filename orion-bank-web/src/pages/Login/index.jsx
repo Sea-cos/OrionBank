@@ -25,7 +25,12 @@ const Login = () => {
     };
 
     const validarPrenchimento = () => {
-        return autenticarRequest.email !== undefined && autenticarRequest.password !== undefined;
+        debugger
+        if (autenticarRequest.login !== "" && autenticarRequest.senha !== ""){
+            return true;
+        } else {
+            return false;
+        }
     };
 
     return (
