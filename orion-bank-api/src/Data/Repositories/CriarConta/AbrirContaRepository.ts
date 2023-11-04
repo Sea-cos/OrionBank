@@ -206,4 +206,41 @@ export class AbrirContaRepository implements IAbrirContaRepository{
         return conta[0][0] as Conta
 
     }
+
+    async BuscarContaPorEmail(email: string) : Promise<boolean> {
+
+        const sql = `SELECT *
+                    FROM
+                        conta
+                    WHERE
+                        Email = ?`
+
+        const conta = await (await connection).query(
+            sql,
+            [
+                email
+            ]
+        ) as any
+
+        return conta[0].length == 0 ? true : false
+
+    }
+
+    async BuscarContaPorTelefone(telefone: string) : Promise<boolean> {
+
+        const sql = `SELECT *
+                    FROM
+                        conta
+                    WHERE
+                        TelefoneCelular = ?`
+
+        const conta = await (await connection).query(
+            sql,
+            [
+                telefone
+            ]
+        ) as any
+        
+        return conta[0].length == 0 ? true : false
+    }
 }
