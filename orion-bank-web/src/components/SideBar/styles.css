@@ -1,0 +1,123 @@
+/* SIDE BAR OPEN */
+
+#sidebar.sidebar-open {
+    background: #ffffff;
+    color: black;
+    box-shadow: 7px 0px 20px rgba(0, 0, 0, 0.041);
+    padding: 2% 1% 0% 1%;
+    margin-top: 0rem;
+    display: flex;
+    transition-duration: 0.45s;
+    min-height: calc(100vh - 60px);
+    font-family: "Inter";
+    margin-right: 0px;
+    min-width: 240px;
+    max-width: 270px;
+}
+
+#sidebar.sidebar-open.custom ul li a {
+    color: rgb(0, 0, 0);
+    text-align: left;
+    display: flex;
+    transition-duration: 0.45s;
+}
+
+#sidebar.sidebar-open.custom a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+#sidebar.sidebar-open.custom li:hover {
+    background: #DB4648;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#sidebar.sidebar-open.custom i {
+    margin-right: 1rem;
+}
+
+/* SIDE BAR CLOSED */
+
+#sidebar.sidebar-closed {
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    box-shadow: 7px 0px 20px rgba(0, 0, 0, 0.041);
+    min-height: calc(100vh - 60px);
+    min-width: 80px;
+    max-width: 80px;
+    padding-top: 2%;
+    display: flex;
+    transition-duration: 0.45s;
+}
+
+#sidebar.sidebar-closed.custom ul li a {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    display: flex;
+    transition-duration: 0.45s;
+    max-width: 80px;
+    padding: 10px 25px;
+}
+
+#sidebar.sidebar-closed.custom span {
+    display: none;
+}
+
+#sidebar.sidebar-closed.custom a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#sidebar.sidebar-closed.custom li:hover {
+    background: #DB4648;
+    cursor: pointer;
+}
+
+/* ------------------------ */
+
+.top-content {
+    height: 90%;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    #sidebar.sidebar-open {
+        background: #ffffff;
+        color: rgb(0, 0, 0);
+        box-shadow: 7px 0px 20px rgba(0, 0, 0, 0.041);
+        min-height: calc(100vh - 60px);
+        min-width: 80px;
+        max-width: 80px;
+        padding-top: 2%;
+        display: flex;
+        transition-duration: 0.45s;
+        margin-left: 0px !important;
+    }
+
+    #sidebar.sidebar-open.custom ul li a {
+        color: rgb(0, 0, 0);
+        text-align: center;
+        display: flex;
+        transition-duration: 0.45s;
+        max-width: 80px;
+        padding: 10px 25px;
+    }
+
+    #sidebar.sidebar-open.custom span {
+        display: none;
+    }
+
+    #sidebar.sidebar-open.custom a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    #sidebar.sidebar-open.custom li:hover {
+        background: #DB4648;
+        cursor: pointer;
+    }
+}
+

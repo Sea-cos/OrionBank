@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 
 import Login from '../pages/Login';
 import Home from '../pages/Home';
+import Layout from '../pages/Layout';
 import SolicitarConta from '../pages/SolicitarConta';
 import SucessoSolicitacao from '../pages/SolicitarConta/SucessoSolicitacao';
 import RecuperarSenha from '../pages/RecuperarSenha';
@@ -21,23 +22,25 @@ const AppRoutes = () => {
             return <div className="loading"> Carregando...</div>
         }
 
-        if (!authenticated) {
-            return <Navigate to="/login" />
-        }
+        // if (!authenticated) {
+        //     return <Navigate to="/login" />
+        // }
 
         return children;
     }
 
     return (
         <Routes>
-            <Route exact path="/login" element={<Login />}/>
-            <Route exact path="/" element={<Private><Home/></Private>}/>
-            <Route exact path="/solicitarconta" element={<SolicitarConta/>} />
-            <Route exact path="/sucessoSolicitacao/:nome" element={<SucessoSolicitacao/>} />
-            <Route exact path="/recuperar" element={<RecuperarSenha/>}/>
-            <Route exact path="/sucessoRecuperar/:tipoSucesso" element={<SucessoRecuperarSenha/>} />
-            <Route exact path="/termosPoliticas" element={<TermosPolitica/>} />
-            <Route path="*" element={<ErrorBoundary pathError={true}/>} />
+            <Route path="*" element={<ErrorBoundary pathError={true} />} />
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/solicitarconta" element={<SolicitarConta />} />
+            <Route exact path="/sucessoSolicitacao/:nome" element={<SucessoSolicitacao />} />
+            <Route exact path="/recuperar" element={<RecuperarSenha />} />
+            <Route exact path="/sucessoRecuperar/:tipoSucesso" element={<SucessoRecuperarSenha />} />
+            <Route exact path="/termosPoliticas" element={<TermosPolitica />} />
+            <Route path="/" element={<Layout/>}>
+                <Route exact index element={<Private><Home /></Private>} />
+            </Route>
         </Routes>
     );
 };
