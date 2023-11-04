@@ -13,7 +13,7 @@ export class AlterarSenhaRepository implements IAlterarSenhaRepository {
 
         const sql = `UPDATE conta
                     SET
-                        Senha = ?
+                        Senha = MD5(?)
                     WHERE Codigo = ?`
 
         await (await connection).query(

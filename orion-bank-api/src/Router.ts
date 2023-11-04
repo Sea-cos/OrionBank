@@ -3,14 +3,21 @@ import { ValidacaoToken } from "./Middleware/ValidacaoToken";
 import { AutenticacaoController } from "./API/Controllers/AutenticacaoController";
 import { AbrirContaController } from "./API/Controllers/AbrirContaController";
 import { ChavePixController } from "./API/Controllers/ChavePixController";
+import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController";
 
 const router = Router();
 const autenticacaoController = new AutenticacaoController();
 const abrirContaController = new AbrirContaController();
 const chavePixController = new ChavePixController()
+const alterarSenhaController = new AlterarSenhaController()
 
 router.post("/autenticacao", 
     autenticacaoController.EfetuarAutenticacao
+)
+
+router.post("/autenticacao/alterarSenha",
+    ValidacaoToken,
+    alterarSenhaController.AlterarSenha
 )
 
 router.get("/autenticacao/recuperarSenha/:documentoFederal",

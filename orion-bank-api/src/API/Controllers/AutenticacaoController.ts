@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { AutenticacaoDto } from "../../Application/DTOs/AutenticacaoDto";
 import { AutenticacaoService } from "../../Application/Services/AutenticacaoService";
 import { AbrirContaService } from "../../Application/Services/CriarConta/AbrirContaService";
+
+
 export class AutenticacaoController {   
 
     async EfetuarAutenticacao(request: Request, response: Response) {
