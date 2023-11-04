@@ -3,8 +3,6 @@ import { useContext } from "react";
 import "./styles.css"
 
 import { AuthContext } from "../../contexts/AuthContext";
-import Sidebar from "../../components/Sidebar";
-import TopNav from "../../components/TesteSidebar";
 
 const Home = () => {
     const { logout } = useContext(AuthContext);
@@ -15,17 +13,9 @@ const Home = () => {
 
     return (
         <>
-
-        <TopNav></TopNav>
-
-        
-
-        <div className="main-panel">
-            Bem vindo, Marcos
-        </div>
-            
-            
-            <button onClick={handleLogout}> Logout </button>
+            <div className="home-page">
+                <button onClick={handleLogout}> Logout </button>
+            </div>
         </>
     );
 };
