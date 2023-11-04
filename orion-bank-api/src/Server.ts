@@ -10,9 +10,10 @@ const swaggerFile = require("../swagger_output.json");
 const app = Express();
 dotenv.config();
 
+app.use(cors());
 app.use(Express.json())
 app.use(router);
-app.use(cors());
+
 app.use("/swagger/api", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(

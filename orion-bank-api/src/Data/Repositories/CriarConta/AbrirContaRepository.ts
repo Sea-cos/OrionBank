@@ -48,6 +48,26 @@ export class AbrirContaRepository implements IAbrirContaRepository{
         return solicitacoesAberturaConta[0] as Array<SolicitacaoAberturaConta>
     }
 
+    async BuscarContaPorDocumentoFederal(documentoFederal: string) : Promise<Conta> {
+
+        const sql = `SELECT 
+                        *
+                    FROM
+                        Conta
+                    WHERE
+                        DocumentoFederal = ?`
+
+        const conta = await (await connection).query(
+            sql,
+            [
+                documentoFederal
+            ]
+        ) as any
+
+        return conta[0][0] as Conta
+
+    }
+
     async EfetuarAberturaDeConta(conta: Conta, codigoSolicitacao: string) : Promise<void> {
         
         const parametros = [

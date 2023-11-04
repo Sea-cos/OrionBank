@@ -8,6 +8,8 @@ import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepositor
 import { v4 as uuidv4 } from 'uuid';
 import { TituloEmail } from "../../../Enums/TituloEmail";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { AutenticacaoTokenDto } from "../../DTOs/AutenticacaoDto";
 dotenv.config();
 
 export class AbrirContaService implements IAbrirContaService {
@@ -47,6 +49,52 @@ export class AbrirContaService implements IAbrirContaService {
         return registros;
     }
 
+    async BuscarContaPorDocumentoFederal(documentoFederal: string) : Promise<boolean> {
+
+        let th = this;
+        if (!th.ValidarDocumentoFederal(documentoFederal.replace(/[^0-9]/g, ""))) {
+            throw new Error("Documento federal inválido.")
+        }
+
+        const abrirContaRepository = new AbrirContaRepository()
+        const conta = await abrirContaRepository.BuscarContaPorDocumentoFederal(documentoFederal.replace(/[^0-9]/g, ""))
+
+        if(!conta) {
+            return false;
+        }
+
+        const token = th.CriarTokenJWT(conta)
+
+        const htmlRecuperacao = `<h3>
+                                    <strong>TENTATIVA DE ALTERAÇÃO DE SENHA!!!</strong>
+                                </h3>
+                                <br/>
+
+                                <p>
+                                    Caso não tenha sido você que solicitou a alteração de senha, apenas ignore este email.
+                                </p>
+                                <p>
+                                    Caso tenha sido você que solitou a troca de senha, clique no link abaixo!
+                                </p>
+
+                                <a href="${process.env.URL_CRIAR_SENHA}/recuperar?codigo=${token.Codigo}&token=${token.Token}">Clique aqui!</a>
+
+                                <br/>
+                                <br/>
+
+                                <img 
+                                    src="cid:${conta.Email}"
+                                    alt="Imagem logo orion bank"
+                                    style="
+                                        width: 350px; 
+                                        height: 100px;" 
+                                />`
+
+        await EnviarEmail(conta.Email, htmlRecuperacao, TituloEmail.Recuperacao);
+        return true;
+
+    }
+
     async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
         let th = this
 
@@ -71,22 +119,16 @@ export class AbrirContaService implements IAbrirContaService {
 
         await abrirContaRepository.EfetuarAberturaDeConta(conta, codigoSolicitacao);
 
-        const urlAlteralSenha = process.env.URL_CRIAR_SENHA;
+        const token = th.CriarTokenJWT(conta)
 
         const htmlAprovacao =  `<h3>
                                     <strong>PARABÉNS ${conta.NomeCompleto}</strong>,
                                     sua conta foi aprovada!
                                 </h3>
                                 <p>
-                                    Para dar continuidade com sua conta, peço que acesse o link abaixo para alterar sua senha de acesso!
+                                    Para dar continuidade com sua conta, peço que acesse o link abaixo para criar uma senha de acesso!
                                 </p>
-                                <p>
-                                    Senha para primeiro acesso: ${senha}
-                                </p>
-                                <p>
-                                    CODIGO COLOCAR NA URL DPS: ${codigo}
-                                </p>
-                                <a href="${urlAlteralSenha}">Clique aqui!</a>  
+                                <a href="${process.env.URL_CRIAR_SENHA}/recuperar?codigo=${token.Codigo}&token=${token.Token}">Clique aqui!</a>  
                                 <br/>
                                 <br/>
                                 <img 
@@ -126,19 +168,21 @@ export class AbrirContaService implements IAbrirContaService {
         const contaJson = JSON.parse(conta.MensagemSolicitacao) as Conta
 
         const htmlReprovacao = `<h3>
-                                <strong>Pedimos desculpa senhor/a ${contaJson.NomeCompleto}</strong>,
-                                mas infelizmente nosso time de analistas, achou alguma inconsistência em seus dados!
-                            </h3>
-                            <br/>
-                            <br/>
-                            <img 
-                                src="cid:${contaJson.Email}"
-                                alt="Imagem logo orion bank"
-                                style="
-                                    width: 350px; 
-                                    height: 100px
-                                ;" 
-                            />`
+                                    <strong>Pedimos desculpa senhor/a ${contaJson.NomeCompleto}</strong>,
+                                </h3>
+                                <P>
+                                    mas infelizmente nosso time de analistas, achou alguma inconsistência em seus dados!
+                                </P>
+                                <br/>
+                                <br/>
+                                <img 
+                                    src="cid:${contaJson.Email}"
+                                    alt="Imagem logo orion bank"
+                                    style="
+                                        width: 350px; 
+                                        height: 100px
+                                    ;" 
+                                />`
 
 
         await EnviarEmail(contaJson.Email, htmlReprovacao, TituloEmail.Reprovado)
@@ -297,5 +341,28 @@ export class AbrirContaService implements IAbrirContaService {
             return false;
             
         return true;
+    }
+
+    private CriarTokenJWT(conta: Conta): AutenticacaoTokenDto {
+
+        const secret = process.env.SECRET_JWT as string;
+        const token = jwt.sign(
+            {
+                Nome: conta.NomeCompleto,
+                Email: conta.Email
+            },
+            secret, 
+            { 
+                expiresIn: '24h' 
+            }
+        );
+
+        const autenticador = {
+            Token: token,
+            Codigo: conta.Codigo
+        } as AutenticacaoTokenDto
+
+        return autenticador;
+
     }
 }

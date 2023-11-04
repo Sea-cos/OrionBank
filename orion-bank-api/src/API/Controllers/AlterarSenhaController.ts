@@ -8,13 +8,12 @@ export class AlterarSenhaController {
         try {
 
             const {
-                novaSenha,
-                senhaAntiga,
+                senha,
                 codigo
             } = request.body
 
             const alterarSenha = new AlterarSenhaService()
-            await alterarSenha.AtualizarSenha(codigo, novaSenha, senhaAntiga)
+            await alterarSenha.AtualizarSenha(codigo, senha)
 
             return response.status(200).send()
 
