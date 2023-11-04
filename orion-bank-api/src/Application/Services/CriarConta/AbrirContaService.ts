@@ -206,6 +206,8 @@ export class AbrirContaService implements IAbrirContaService {
             throw new Error("Documento federal já existente.")
         }
 
+        
+
         if(contaDto.NomeCompleto === null || contaDto.NomeCompleto.trim() === "" ||
         contaDto.NomeCompleto.length > 200 || contaDto.NomeCompleto.length < 5) {
             throw new Error("Nome é obrigatório. Nome tem que estar entre 5 e 200 caracteres.")
@@ -216,9 +218,17 @@ export class AbrirContaService implements IAbrirContaService {
             throw new Error("Email é obrigatório. Email tem que conter no máximo 100 caracteres.")
         }
 
+        if(await abrirContaRepository.BuscarContaPorEmail(contaDto.Email) != true) {
+            throw new Error("Email já existente.")
+        }
+
         if(contaDto.TelefoneCelular === null || contaDto.TelefoneCelular.trim() === "" ||
         contaDto.TelefoneCelular.length != 11) {
             throw new Error("Número de telefone é obrigatório.")
+        }
+
+        if(await abrirContaRepository.BuscarContaPorTelefone(contaDto.TelefoneCelular) != true) {
+            throw new Error("telefone já existente.")
         }
 
         if(contaDto.CEP === null || contaDto.CEP.trim() === "" ||

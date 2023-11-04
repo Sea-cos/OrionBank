@@ -10,4 +10,6 @@ export interface IAbrirContaRepository {
     ObterSolicitacoesAberturaDeConta(take: number, skip: number) : Promise<Array<SolicitacaoAberturaConta>>
     ReprovarAberturaDeConta(codigo: string) : Promise<SolicitacaoAberturaConta>
     BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta>
+    BuscarContaPorEmail(email: string, telefone: string) : Promise<boolean>
+    BuscarContaPorTelefone(telefone: string) : Promise<boolean>
 }
