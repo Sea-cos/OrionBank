@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { AutenticacaoDto } from "../../Application/DTOs/AutenticacaoDto";
 import { AutenticacaoService } from "../../Application/Services/AutenticacaoService";
-
 export class AutenticacaoController {   
 
     async EfetuarAutenticacao(request: Request, response: Response) {
@@ -11,7 +10,7 @@ export class AutenticacaoController {
                 login,
                 senha
             } = request.body;
-            console.log(login, senha)
+            
             const autenticacaoDto = { Login: login, Senha: senha } as AutenticacaoDto
 
             const _autenticacaoServices = new AutenticacaoService();
@@ -32,5 +31,20 @@ export class AutenticacaoController {
                 message: error.message
             })
         }
+    }
+
+    async RecuperarSenha(request: Request, response: Response) {
+
+        try {
+
+            const { documentoFederal } = request.params
+
+        } catch(error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
+        }
+
     }
 }

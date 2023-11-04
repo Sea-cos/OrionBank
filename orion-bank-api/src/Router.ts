@@ -15,6 +15,10 @@ router.post("/autenticacao",
     autenticacaoController.EfetuarAutenticacao
 )
 
+router.get("/autenticacao/recuperarSenha/:documentoFederal",
+    autenticacaoController.RecuperarSenha
+)
+
 //#region Abrir Conta
 
 router.post("/abrirConta/solicitacao", 
