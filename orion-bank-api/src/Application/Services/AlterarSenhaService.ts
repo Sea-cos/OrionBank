@@ -14,25 +14,25 @@ export class AlterarSenhaService implements IAlterarSenhaService {
     }
 
 
-    private ValidarParametros(codigo: string, novaSenha: string) {
+    private ValidarParametros(codigo: string, senha: string) {
 
         const caracteresEspeciais = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/;
         const numericosSenha = /\d/;
         const caracterMaiusculo = /[A-Z]/;
 
-        if(novaSenha === null || novaSenha.trim() === "") {
+        if(senha === null || senha.trim() === "") {
             throw new Error("Senha é obrigatória.")
         }
 
-        if(!caracteresEspeciais.test(novaSenha)) {
+        if(!caracteresEspeciais.test(senha)) {
             throw new Error("Senha deve conter pelo menos 1 caracter especial.")
         }
 
-        if(!numericosSenha.test(novaSenha)) {
+        if(!numericosSenha.test(senha)) {
             throw new Error("Senha deve conter pelo menos 1 dígito numérico.")
         }
 
-        if(!caracterMaiusculo.test(novaSenha)) {
+        if(!caracterMaiusculo.test(senha)) {
             throw new Error("Senha deve conter pelo menos uma letra maiúscula.")
         }
 
