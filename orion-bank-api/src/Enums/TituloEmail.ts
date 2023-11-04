@@ -1,4 +1,5 @@
 export const TituloEmail = {
-    Aprovado: "Orion Bank - CONTA APROVADA",
-    Reprovado: "Orion Bank - CONTA REPROVADA"
+    Aprovado: "ORION BANK - CONTA APROVADA",
+    Recuperacao: "ORION BANK - RECUPERAR SENHA",
+    Reprovado: "ORION BANK - CONTA REPROVADA"
 }

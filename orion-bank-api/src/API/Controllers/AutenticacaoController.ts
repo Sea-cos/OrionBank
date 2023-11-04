@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AutenticacaoDto } from "../../Application/DTOs/AutenticacaoDto";
 import { AutenticacaoService } from "../../Application/Services/AutenticacaoService";
+import { AbrirContaService } from "../../Application/Services/CriarConta/AbrirContaService";
 export class AutenticacaoController {   
 
     async EfetuarAutenticacao(request: Request, response: Response) {
@@ -38,6 +39,18 @@ export class AutenticacaoController {
         try {
 
             const { documentoFederal } = request.params
+
+            const abrirContaRepository = new AbrirContaService()
+            const conta = await abrirContaRepository.BuscarContaPorDocumentoFederal(documentoFederal)
+
+            if(!conta) {
+                return response.status(404).json({
+                    status: "Error",
+                    message: "Conta não encontrada."
+                })
+            }
+
+            return response.status(200).send()
 
         } catch(error: any) {
             return response.status(400).json({

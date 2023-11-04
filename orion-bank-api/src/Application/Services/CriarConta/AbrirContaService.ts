@@ -49,6 +49,52 @@ export class AbrirContaService implements IAbrirContaService {
         return registros;
     }
 
+    async BuscarContaPorDocumentoFederal(documentoFederal: string) : Promise<boolean> {
+
+        let th = this;
+        if (!th.ValidarDocumentoFederal(documentoFederal.replace(/[^0-9]/g, ""))) {
+            throw new Error("Documento federal inválido.")
+        }
+
+        const abrirContaRepository = new AbrirContaRepository()
+        const conta = await abrirContaRepository.BuscarContaPorDocumentoFederal(documentoFederal.replace(/[^0-9]/g, ""))
+
+        if(!conta) {
+            return false;
+        }
+
+        const token = th.CriarTokenJWT(conta)
+
+        const htmlRecuperacao = `<h3>
+                                    <strong>TENTATIVA DE ALTERAÇÃO DE SENHA!!!</strong>
+                                </h3>
+                                <br/>
+
+                                <p>
+                                    Caso não tenha sido você que solicitou a alteração de senha, apenas ignore este email.
+                                </p>
+                                <p>
+                                    Caso tenha sido você que solitou a troca de senha, clique no link abaixo!
+                                </p>
+
+                                <a href="${process.env.URL_CRIAR_SENHA}/recuperar?codigo=${token.Codigo}&token=${token.Token}">Clique aqui!</a>
+
+                                <br/>
+                                <br/>
+
+                                <img 
+                                    src="cid:${conta.Email}"
+                                    alt="Imagem logo orion bank"
+                                    style="
+                                        width: 350px; 
+                                        height: 100px;" 
+                                />`
+
+        await EnviarEmail(conta.Email, htmlRecuperacao, TituloEmail.Recuperacao);
+        return true;
+
+    }
+
     async EfetuarAberturaDeConta(contaDto: ContaDto, codigoSolicitacao: string): Promise<void> {
         let th = this
 
@@ -80,7 +126,7 @@ export class AbrirContaService implements IAbrirContaService {
                                     sua conta foi aprovada!
                                 </h3>
                                 <p>
-                                    Para dar continuidade com sua conta, peço que acesse o link abaixo para alterar sua senha de acesso!
+                                    Para dar continuidade com sua conta, peço que acesse o link abaixo para criar uma senha de acesso!
                                 </p>
                                 <a href="${process.env.URL_CRIAR_SENHA}/recuperar?codigo=${token.Codigo}&token=${token.Token}">Clique aqui!</a>  
                                 <br/>
@@ -123,8 +169,10 @@ export class AbrirContaService implements IAbrirContaService {
 
         const htmlReprovacao = `<h3>
                                     <strong>Pedimos desculpa senhor/a ${contaJson.NomeCompleto}</strong>,
-                                    mas infelizmente nosso time de analistas, achou alguma inconsistência em seus dados!
                                 </h3>
+                                <P>
+                                    mas infelizmente nosso time de analistas, achou alguma inconsistência em seus dados!
+                                </P>
                                 <br/>
                                 <br/>
                                 <img 
