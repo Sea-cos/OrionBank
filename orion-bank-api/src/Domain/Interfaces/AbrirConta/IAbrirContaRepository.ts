@@ -12,4 +12,5 @@ export interface IAbrirContaRepository {
     BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta>
     BuscarContaPorEmail(email: string, telefone: string) : Promise<boolean>
     BuscarContaPorTelefone(telefone: string) : Promise<boolean>
+    BuscarContaPorCodigo(codigo: string) : Promise<Conta>
 }

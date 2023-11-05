@@ -26,6 +26,11 @@ router.get("/autenticacao/recuperarSenha/:documentoFederal",
 
 //#region Abrir Conta
 
+router.get("/conta/buscarCodigo/:codigo",
+    ValidacaoToken,
+    abrirContaController.BuscarContaPorCodigo
+)
+
 router.post("/abrirConta/solicitacao", 
     abrirContaController.SolicitarAberturaDeConta
 )
