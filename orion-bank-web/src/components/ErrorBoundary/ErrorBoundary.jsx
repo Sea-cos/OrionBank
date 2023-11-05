@@ -20,26 +20,25 @@ class ErrorBoundary extends Component {
     }
 
     render() {
+        if (this.state.hasError) {
+            return (
+                <div className='containerError'>
+                    <img src={ErroServer} alt="404" />
+                    <h4 style={{ color: "#3f3d56" }}>Algo deu errado.</h4>
+                    <Link to="/login" className="btn-back">Voltar</Link>
+                </div>
+            );
+        }
         if (this.props.pathError) {
-            console.log(this.props.pathError)
             return (
                 <div className='containerError'>
                     <img src={ErroPath} alt="404" />
                     <h4 style={{ color: "#3f3d56" }}>Ops! Veio para o lugar errado.</h4>
-                    <Link to="/login"><a class="btn-back">Voltar</a></Link>
+                    <Link to="/login" className="btn-back">Voltar</Link>
                 </div>
             );
         }
 
-        if (this.state.hasError) {
-            return (
-                <div className='containerError'>
-                <img src={ErroServer} alt="404" />
-                <h4 style={{ color: "#3f3d56" }}>Algo deu errado.</h4>
-                <Link to="/login"><a class="btn-back">Voltar</a></Link>
-            </div>
-            );
-        }
         return this.props.children;
     }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Bell from "../../assets/img/sino.svg";
+import { Link } from "react-router-dom";
 import '@popperjs/core';
 import './styles.css';
 
@@ -8,15 +9,15 @@ const Sino = ({notificacao, message, count}) => {
         <div className="sino">
             <ul className="navbar-nav navbar-nav-right">
                 <li className="nav-item dropdown">
-                    <a className="nav-link count-indicator" id="notificationDropdown" data-toggle="dropdown">
+                    <Link className="nav-link count-indicator" id="notificationDropdown" data-toggle="dropdown">
                         <i>
-                            <img src={Bell} />
+                            <img src={Bell} alt="" />
                         </i>
-                        <span class="badge rounded-pill badge-notification bg-danger custom-notfication">{count}</span>
-                    </a>
+                        <span className="badge rounded-pill badge-notification bg-danger custom-notfication">{count}</span>
+                    </Link>
                     <div className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
                         <p className="mb-0 font-weight-normal float-left dropdown-header">Notificações</p>
-                        <a className="dropdown-item preview-item">
+                        <Link className="dropdown-item preview-item">
                             <div className="preview-thumbnail">
                                 <div className="preview-icon bg-success">
                                     <i className="ti-info-alt mx-0"></i>
@@ -28,7 +29,7 @@ const Sino = ({notificacao, message, count}) => {
                                     {message}
                                 </p>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </li>
             </ul>

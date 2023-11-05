@@ -72,12 +72,12 @@ const SideBar = ({ isOpen, sidebarData }) => {
                 </div>
                 <div className='bottom-content'>
                     <li className="sidebar-item">
-                        <a onClick={handleLogout}>
+                        <Link to="/login" onClick={handleLogout}>
                             <i className="menu-icon">
                                 <img src={Logout} alt="" />
                             </i>
                             <span>Logout</span>
-                        </a>
+                        </Link>
                     </li>
                 </div>
             </ul>
