@@ -1,7 +1,8 @@
 .navbar.custom-navbar {
-    background: rgb(255, 252, 252);
+    background: rgb(255, 255, 255);
     box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 0px;
+    height: 70px;
 }
 
 .custom-botao {
@@ -16,30 +17,59 @@
     line-height: 1.5;
     border-radius: 0.25rem;
     margin-right: 87%;
-}
-
-.custom-botao:hover {
-    color: #DB4648;
-    background-color: #ffffff;
-    border-color: #DB4648;
+    transition: 1s;
 }
 
 .logo-header {
     width: 15%;
+}
+
+.logo-bank-header {
+    width: 0%;
+    padding-right: 0;
+}
+
+.navbar-titulo {
+    margin-right: 80px;
+    margin-left: 2%;
     transition-duration: 0.45s;
 }
 
-.logo-header.hidden {
-    display: none;
-    transition-duration: 0.45s;
+.navbar-logo {
+    margin-right: 156px;
+    margin-left: 1%;
+}
+
+.move-button {
+    transform: translateX(-360%);
+    transition: transform 0.5s;
+}
+
+.back-button-move {
+    transition: transform  0.3s;
 }
 
 @media (max-width: 768px) {
     .logo-header {
         width: 30%;
-        transition-duration: 0.45s;
     }
+
     .custom-botao {
         margin-right: 57%;
+    }
+
+    .navbar-titulo {
+        margin-left: 2%;
+        transition-duration: 0.45s;
+    }
+
+    .move-button {
+        transform: translateX(0%);
+        transition: transform 0.5s;
+    }
+
+    .navbar-logo {
+        margin-right: 156px;
+        margin-left: 1%;
     }
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ErroPath from "../assets/img/path-error.svg";
-import ErroServer from "../assets/img/server-error.svg";
+import ErroPath from "../../assets/img/path-error.svg";
+import ErroServer from "../../assets/img/server-error.svg";
 import { Link } from "react-router-dom";
-import './css/errorboundary.css';
+import './styles.css';
 
 class ErrorBoundary extends Component {
     state = {
