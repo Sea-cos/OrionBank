@@ -4473,8 +4473,22 @@ input[type="button"].btn-block {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid #e3e6f0;
-  border-radius: 0.35rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 9rem;
+}
+
+.card.card-tale {
+  background: #EB4E50;
+  color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px;
+  
+}
+
+.card.card-tale:hover {
+  background: #96b2fb;
 }
 
 .card > hr {
@@ -4508,6 +4522,13 @@ input[type="button"].btn-block {
   flex: 1 1 auto;
   min-height: 1px;
   padding: 1.25rem;
+}
+
+.card-body1 {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 5px;
+ 
 }
 
 .card-title {
@@ -11279,3 +11300,20 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+.grid-margin {
+  margin-bottom: 2.5rem;
+}
+
+.fs-20{
+  font-size: 20px;
+}
+
+.fs-23{
+  font-size: 23px;
+}
+
+.saldo{
+
+}
+
