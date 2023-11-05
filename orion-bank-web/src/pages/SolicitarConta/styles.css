@@ -63,7 +63,7 @@
 .checkboxForm {
   text-align: justify;
   align-items: center;
-  font-size: 70%;
+  font-size: 80%;
   display: flex;
   justify-content: center;
   align-items: baseline;
@@ -71,6 +71,8 @@
 }
 
 .checkbox {
+  margin-top: 0.4rem;
+  cursor: pointer;
   margin-right: 0.4rem;
 }
 

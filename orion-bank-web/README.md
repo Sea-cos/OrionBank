@@ -37,5 +37,6 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `npm install react-input-mask`
 ### `npm i react-toastify`
 ### `npm install date-fns`
+### `npm install jsonwebtoken`
 
 ### `npm i react-toastify@9.0.3`

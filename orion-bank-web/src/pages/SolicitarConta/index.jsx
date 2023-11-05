@@ -359,7 +359,7 @@ const SolicitarConta = () => {
                                                                 checked={isChecked}
                                                                 onChange={handleCheckboxChange}
                                                             />
-                                                            <label>
+                                                            <label className="label-check-box">
                                                                 Eu concordo com os
                                                                 <Link className="termos" target="_blank" to="/termosPoliticas"> Termos </Link>
                                                                 e
