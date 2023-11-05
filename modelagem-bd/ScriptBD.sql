@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `OrionDB`.`Conta` (
   `DtInclusao` DATETIME NOT NULL,
   `Situacao` INT NOT NULL,
   `DtSituacao` DATETIME NOT NULL,
+  `TipoConta` INT NOT NULL,
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
   PRIMARY KEY (`Codigo`),
   UNIQUE INDEX `DocumentoFederal_UNIQUE` (`DocumentoFederal` ASC),
