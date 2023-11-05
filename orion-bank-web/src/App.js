@@ -1,6 +1,6 @@
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
-import ErrorBoundary from './components/ErrorBoundary';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from "./contexts/AuthContext";
 import { SolicitarContaProvider } from "./contexts/SolicitarContaContext";

@@ -11,7 +11,7 @@ import SucessoRecuperarSenha from '../pages/RecuperarSenha/SucessoRecuperar';
 import TermosPolitica from '../pages/TermosPolitica';
 
 import { AuthContext } from "../contexts/AuthContext";
-import ErrorBoundary from "../components/ErrorBoundary";
+import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 
 const AppRoutes = () => {
 

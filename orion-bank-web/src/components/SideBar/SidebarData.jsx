@@ -8,7 +8,7 @@ import NavAdmin from "../../assets/img/navAdmin.svg";
 export const SidebarData = [
   {
     title: 'Home',
-    path: '',
+    path: '/',
     icon: NavHome,
     iconClosed: NavHome,
     iconOpened: NavHome
@@ -20,15 +20,9 @@ export const SidebarData = [
     iconOpened: NavAdmin,
     subNav: [
       {
-        title: 'Contas',
+        title: 'Solicitações de Conta',
         cName: 'sub-nav',
-        subSubNav: [ 
-          {
-            title: 'Solicitações',
-            path: '',
-            cName: 'sub-nav',
-          },
-        ]
+        path: ''
       }
     ]
   },
@@ -52,7 +46,7 @@ export const SidebarData = [
     iconOpened: NavTransf,
     subNav: [
       {
-        title: 'Consultar',
+        title: 'Transferir',
         path: '',
         cName: 'sub-nav'
       }
@@ -65,7 +59,22 @@ export const SidebarData = [
     iconOpened: NavPix,
     subNav: [
       {
-        title: 'Consultar',
+        title: 'Cadastrar Chave',
+        path: '',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Pix Por Chave',
+        path: '',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Pix Copia e Cola',
+        path: '',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'QR Code',
         path: '',
         cName: 'sub-nav'
       }
@@ -78,7 +87,7 @@ export const SidebarData = [
     iconOpened: NavUser,
     subNav: [
       {
-        title: 'Consultar',
+        title: 'Dados',
         path: '',
         cName: 'sub-nav'
       }

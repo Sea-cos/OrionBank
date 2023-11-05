@@ -1,0 +1,17 @@
+.sino {
+    position: fixed;
+    right: 40px;
+    cursor: pointer;
+}
+
+.custom-notfication {
+    background-color: #DB4648 !important;
+    color: rgb(255, 255, 255);
+}
+
+@media (max-width: 768px) {
+    .sino {
+        right: 80px;
+        cursor: pointer;
+    }
+}
