@@ -8,4 +8,5 @@ export interface IAbrirContaService {
     ObterSolicitacoesAberturaDeConta(take: number, skip: number): Promise<Array<SolicitacaoAberturaContaDto>>
     ReprovarAberturaDeConta(codigo: string) : Promise<void>
     BuscarContaPorDocumentoFederal(documentoFederal: string) : Promise<boolean>
+    BuscarContaPorCodigo(codigo: string) : Promise<Conta>
 }

@@ -7,6 +7,25 @@ import { SolicitacaoAberturaConta } from "../../../Domain/Entities/SolicitacaoAb
 
 export class AbrirContaRepository implements IAbrirContaRepository{
 
+    async BuscarContaPorCodigo(codigo: string): Promise<Conta> {
+
+        const sql = `SELECT *
+                    FROM
+                        conta
+                    WHERE
+                        Codigo = ?`
+
+        const conta = await (await connection).query(
+            sql,
+            [
+                codigo
+            ]
+        ) as any
+        
+        return conta[0][0] as Conta
+
+    }
+
     async BuscarDocumentoFederalExistente(documentoFederal: string): Promise<boolean> {
         
         const sql = `SELECT 

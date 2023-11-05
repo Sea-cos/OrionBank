@@ -14,6 +14,19 @@ dotenv.config();
 
 export class AbrirContaService implements IAbrirContaService {
 
+    async BuscarContaPorCodigo(codigo: string) : Promise<Conta> {
+
+        if(codigo === null || codigo.trim().length != 36) {
+            throw new Error("Erro interno.")
+        }
+
+        const abrirContaRepository = new AbrirContaRepository()
+        const conta = await abrirContaRepository.BuscarContaPorCodigo(codigo)
+
+        return conta
+
+    }
+
     async ObterSolicitacoesAberturaDeConta(take: number, skip: number): Promise<Array<SolicitacaoAberturaContaDto>> {
         
         if(take.toString() === "NaN" || take === 0) {
@@ -204,9 +217,7 @@ export class AbrirContaService implements IAbrirContaService {
             contaDto.DocumentoFederal
         ) != true) {
             throw new Error("Documento federal já existente.")
-        }
-
-        
+        }        
 
         if(contaDto.NomeCompleto === null || contaDto.NomeCompleto.trim() === "" ||
         contaDto.NomeCompleto.length > 200 || contaDto.NomeCompleto.length < 5) {

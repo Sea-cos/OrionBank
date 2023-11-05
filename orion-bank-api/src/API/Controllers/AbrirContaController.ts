@@ -132,4 +132,31 @@ export class AbrirContaController {
             })
         }
     }
+
+    async BuscarContaPorCodigo(request: Request, response: Response) {
+
+        try {
+
+            const { codigo } = request.params
+
+            const abrirContaService = new AbrirContaService()
+            const conta = await abrirContaService.BuscarContaPorCodigo(codigo)
+
+            if(!conta) {
+                return response.status(404).json({
+                    status: "Error",
+                    message: "Conta não encontrada"
+                })
+            }
+
+            return response.status(200).send(conta)
+
+        } catch(error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
+        }
+
+    }
 }
