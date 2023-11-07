@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `OrionDB`.`Movimento` (
   `Codigo` CHAR(38) NOT NULL,
   `CodigoContaOrigem` CHAR(38) NOT NULL,
   `CodigoContaDestino` CHAR(38) NOT NULL,
-  `Valor` DECIMAL NOT NULL,
+  `Valor` DECIMAL(10, 2) NOT NULL,
   `Chave_Pix` VARCHAR(100) NULL,
   `EMV` VARCHAR(8000) NULL,
   `InfoAdicional` VARCHAR(255) NULL,
