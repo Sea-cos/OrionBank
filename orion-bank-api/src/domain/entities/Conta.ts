@@ -17,4 +17,5 @@ export interface Conta {
     DtInclusao: Date;
     Situacao: number;
     DtSituacao: Date;
+    TipoConta: number;
 }
