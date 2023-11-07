@@ -370,7 +370,8 @@ export class AbrirContaService implements IAbrirContaService {
         const token = jwt.sign(
             {
                 Nome: conta.NomeCompleto,
-                Email: conta.Email
+                Email: conta.Email,
+                TipoConta: conta.TipoConta
             },
             secret, 
             { 

@@ -28,7 +28,8 @@ export class AutenticacaoService implements IAutenticacaoService {
         const token = jwt.sign(
             {
                 Nome: conta.NomeCompleto,
-                Email: conta.Email
+                Email: conta.Email,
+                TipoConta: conta.TipoConta
             },
             secret, 
             { 
@@ -56,4 +57,3 @@ export class AutenticacaoService implements IAutenticacaoService {
         }
     } 
 }
-

@@ -1,6 +1,7 @@
 import { ISaldoRepository } from "../../../Domain/Interfaces/Saldo/ISaldoRepository";
 import { v4 as uuidv4 } from 'uuid';
 import { connection } from "../../context/ConnectionString";
+import { Saldo } from "../../../Domain/Entities/Saldo";
 
 export class SaldoRepository implements ISaldoRepository {
 
@@ -42,6 +43,25 @@ export class SaldoRepository implements ISaldoRepository {
             sqlSaldoConta,
             parametrosSaldoConta
         )
+    }
+
+    async ObterSaldoPorCodigo(codigo: string) : Promise<Saldo> {
+
+        const sql = `SELECT 
+                        *
+                    FROM
+                        saldo
+                    WHERE
+                        Codigo = ?`
+
+        const saldo = await (await connection).query(
+            sql,
+            [
+                codigo
+            ]
+        ) as any
+
+        return saldo[0][0] as Saldo
     }
     
 }

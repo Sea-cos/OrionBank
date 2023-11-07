@@ -4,6 +4,7 @@ import { connection } from "../../context/ConnectionString";
 import { v4 as uuidv4 } from 'uuid';
 import { SolicitacaoAberturaDeConta } from '../../../Enums/SituacaoSolicitacaoConta'
 import { SolicitacaoAberturaConta } from "../../../Domain/Entities/SolicitacaoAberturaConta";
+import { TipoConta } from "../../../Enums/TipoConta";
 
 export class AbrirContaRepository implements IAbrirContaRepository{
 
@@ -106,13 +107,14 @@ export class AbrirContaRepository implements IAbrirContaRepository{
             conta.NumeroResidencial,
             conta.DtInclusao,
             SolicitacaoAberturaDeConta.Ativa,
-            new Date()
+            new Date(),
+            TipoConta.User
         ]
 
         const sql = `INSERT INTO conta (Codigo, Agencia, Conta, ContaDigito, ContaPgto, 
                                         DocumentoFederal, NomeCompleto, Senha, Email, 
                                         DtNasc, TelefoneCelular, CEP, Logradouro, 
-                                        NumeroResidencial, DtInclusao, Situacao, DtSituacao)
+                                        NumeroResidencial, DtInclusao, Situacao, DtSituacao, TipoConta)
                     VALUES (?, ?, ?, ?, ?, ?, ?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
         await (await connection).query(
