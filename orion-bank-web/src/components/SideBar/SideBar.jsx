@@ -37,7 +37,7 @@ const SideBar = ({ isOpen, sidebarData }) => {
                                 <i className="menu-icon">
                                     <img src={item.icon} alt="" />
                                 </i>
-                                <span>{item.title}</span>
+                                <span className='menu-title'>{item.title}</span>
                             </Link>
                             {item.subNav && (
                                 <ul className={`sub-nav ${activeItem === item.title ? 'open' : ''}`}>

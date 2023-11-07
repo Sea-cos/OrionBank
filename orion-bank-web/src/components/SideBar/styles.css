@@ -3,6 +3,11 @@ li {
 }
 
 /* SIDE BAR OPEN */
+#sidebar.sidebar-open .custom-ul {
+    margin-top: 1.45rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
 
 #sidebar.sidebar-open .sub-nav>li>a {
     padding-left: 1px;
@@ -16,14 +21,13 @@ li {
     background: #ffffff;
     color: black;
     box-shadow: 7px 0px 20px rgba(0, 0, 0, 0.041);
-    padding: 2% 1% 0% 1%;
     margin-top: 0rem;
-    display: flex;
+    display: block;
     transition-duration: 0.45s;
     min-height: calc(100vh - 60px);
     font-family: "Inter";
     margin-right: 0px;
-    min-width: 240px;
+    min-width: 270px;
     max-width: 270px;
 }
 
@@ -81,9 +85,13 @@ li {
     min-height: calc(100vh - 60px);
     min-width: 80px;
     max-width: 80px;
-    padding-top: 2%;
     display: flex;
     transition-duration: 0.45s;
+}
+
+#sidebar.sidebar-closed .custom-ul {
+    margin-top: 1.45rem;
+    z-index: 10
 }
 
 #sidebar.sidebar-closed.custom ul li a {
@@ -137,6 +145,12 @@ li {
     padding: 0px 0px 0px 0px;
 }
 
+#sidebar.sidebar-closed .menu-title {
+    display: none;
+}
+
+
+
 #sidebar.sidebar-closed .sub-nav.open li,
 #sidebar.sidebar-closed .sub-sub-nav.open li {
     margin-top: 0px;
@@ -158,8 +172,9 @@ li {
 /* ------------------------ */
 
 .top-content {
-    height: 90%;
+    height: calc(100vh - 150px);
     cursor: pointer;
+    
 }
 
 #sidebar.sidebar-open .sub-nav,
@@ -244,5 +259,11 @@ li {
         background: #DB4648;
         border-radius: 0px;
         cursor: pointer;
+    }
+
+    #sidebar.sidebar-open .custom-ul {
+        margin-top: 1.45rem;
+        margin-left: 0rem;
+        margin-right: 0rem;
     }
 }
