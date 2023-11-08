@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import Sino from "../Notificacao/Sino";
 import TituloMenor from "../../assets/img/titulo-menor-2.svg";
 import LogoBank from "../../assets/img/logo-melhor.svg";
+import Logout from "../../assets/img/logout.svg";
 import '@popperjs/core';
 import './styles.css';
 
 const NavBar = ({ toggleSidebar }) => {
     const [logoVisible, setLogoVisible] = useState(true);
     const [buttonClicked, setButtonClicked] = useState(false);
+    const { logout } = useContext(AuthContext);
+
+    const handleLogout = () => {
+        logout();
+    }
 
     const handleToggleLogo = () => {
         setLogoVisible(!logoVisible);
@@ -30,13 +38,23 @@ const NavBar = ({ toggleSidebar }) => {
                     </div>
                 </div>
             )}
-            <div>
+
+            <div className='botoes-navbar'>
                 <button type="button" id="sidebarCollapse" className={`custom-botao ${buttonClicked ? 'move-button' : 'back-button-move'}`} onClick={() => { toggleSidebar(); handleToggleLogo(); }}>
                     <i className="fa fa-bars" />
                 </button>
-            </div>
 
-            <Sino />
+                <ul class="navbar-nav navbar-nav-right buttons-sin-logout">
+                    <Sino />
+                    <li class="nav-item logout-nav">
+                        <Link to="/login" onClick={handleLogout}>
+                            <i className="menu-icon">
+                                <img src={Logout} alt="" />
+                            </i>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
         </nav>
     );
 };

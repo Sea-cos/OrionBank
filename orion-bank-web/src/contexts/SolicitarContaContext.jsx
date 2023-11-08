@@ -10,7 +10,6 @@ export function SolicitarContaProvider({ children }) {
     const navigate = useNavigate();
 
     const solicitar = async (solicitacao) => {
-
         try 
         {
             const request = {

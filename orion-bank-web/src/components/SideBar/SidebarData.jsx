@@ -4,6 +4,7 @@ import NavTransf from "../../assets/img/navTransf.svg";
 import NavPix from "../../assets/img/navPix.svg";
 import NavUser from "../../assets/img/navUser.svg";
 import NavAdmin from "../../assets/img/navAdmin.svg";
+import Arrow from "../../assets/img/arrow-sidebar.svg";
 
 export const SidebarData = [
   {
@@ -16,19 +17,21 @@ export const SidebarData = [
   {
     title: 'Admin',
     icon: NavAdmin,
+    arrow: Arrow,
     iconClosed: NavAdmin,
     iconOpened: NavAdmin,
     subNav: [
       {
         title: 'Solicitações de Conta',
         cName: 'sub-nav',
-        path: ''
+        path: '/solicitacoesConta'
       }
     ]
   },
   {
     title: 'Extrato',
     icon: NavExtrato,
+    arrow: Arrow,
     iconClosed: NavExtrato,
     iconOpened: NavExtrato,
     subNav: [
@@ -42,6 +45,7 @@ export const SidebarData = [
   {
     title: 'Transferencias',
     icon: NavTransf,
+    arrow: Arrow,
     iconClosed: NavTransf,
     iconOpened: NavTransf,
     subNav: [
@@ -55,6 +59,7 @@ export const SidebarData = [
   {
     title: 'Area Pix',
     icon: NavPix,
+    arrow: Arrow,
     iconClosed: NavPix,
     iconOpened: NavPix,
     subNav: [
@@ -83,6 +88,7 @@ export const SidebarData = [
   {
     title: 'Conta',
     icon: NavUser,
+    arrow: Arrow,
     iconClosed: NavUser,
     iconOpened: NavUser,
     subNav: [

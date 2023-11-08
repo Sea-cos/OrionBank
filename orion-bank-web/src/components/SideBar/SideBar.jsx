@@ -1,19 +1,13 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from "../../contexts/AuthContext";
-import Logout from "../../assets/img/logout.svg";
+import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
+import Arrow from "../../assets/img/arrow-sidebar.svg";
 import '@popperjs/core';
 import './styles.css';
 import './bootstrap/style.css';
 
 const SideBar = ({ isOpen, sidebarData }) => {
-    const { logout } = useContext(AuthContext);
     const location = useLocation();
     const [activeItem, setActiveItem] = useState(null);
-
-    const handleLogout = () => {
-        logout();
-    }
 
     const toggleItem = (title) => {
         if (activeItem === title) {
@@ -37,12 +31,17 @@ const SideBar = ({ isOpen, sidebarData }) => {
                                 <i className="menu-icon">
                                     <img src={item.icon} alt="" />
                                 </i>
+
                                 <span className='menu-title'>{item.title}</span>
+
+                                <i className={`menu-arrow ${activeItem === item.title ? 'open' : ''}`}>
+                                    <img src={item.arrow} alt="" />
+                                </i>
                             </Link>
                             {item.subNav && (
                                 <ul className={`sub-nav ${activeItem === item.title ? 'open' : ''}`}>
                                     {item.subNav.map((subItem, subIndex) => (
-                                        <li key={subIndex}>
+                                        <li key={subIndex} className={location.pathname === subItem.path ? 'active' : ''}>
                                             <Link
                                                 to={subItem.path}
                                                 className={location.pathname === subItem.path ? 'active' : ''}
@@ -69,16 +68,6 @@ const SideBar = ({ isOpen, sidebarData }) => {
                             )}
                         </li>
                     ))}
-                </div>
-                <div className='bottom-content'>
-                    <li className="sidebar-item">
-                        <Link to="/login" onClick={handleLogout}>
-                            <i className="menu-icon">
-                                <img src={Logout} alt="" />
-                            </i>
-                            <span>Logout</span>
-                        </Link>
-                    </li>
                 </div>
             </ul>
         </nav>
