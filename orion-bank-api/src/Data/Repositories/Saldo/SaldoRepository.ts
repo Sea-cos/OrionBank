@@ -52,7 +52,7 @@ export class SaldoRepository implements ISaldoRepository {
                     FROM
                         saldo
                     WHERE
-                        Codigo = ?`
+                        CodigoConta = ?`
 
         const saldo = await (await connection).query(
             sql,
