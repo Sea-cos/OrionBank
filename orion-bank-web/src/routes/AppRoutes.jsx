@@ -10,6 +10,8 @@ import RecuperarSenha from '../pages/RecuperarSenha';
 import SucessoRecuperarSenha from '../pages/RecuperarSenha/SucessoRecuperar';
 import TermosPolitica from '../pages/TermosPolitica';
 
+import SolicitacoesConta from '../pages/SideBarPages/Admin/SolicitacoesConta';
+
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 
@@ -40,6 +42,7 @@ const AppRoutes = () => {
             <Route exact path="/termosPoliticas" element={<TermosPolitica />} />
             <Route path="/" element={<Layout/>}>
                 <Route exact index element={<Private><Home /></Private>} />
+                <Route exact path="solicitacoesConta" element={<Private><SolicitacoesConta /></Private>} />
             </Route>
         </Routes>
     );

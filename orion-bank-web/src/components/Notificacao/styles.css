@@ -1,6 +1,4 @@
 .sino {
-    position: fixed;
-    right: 40px;
     cursor: pointer;
 }
 
@@ -11,7 +9,6 @@
 
 @media (max-width: 768px) {
     .sino {
-        right: 80px;
         cursor: pointer;
     }
 }
