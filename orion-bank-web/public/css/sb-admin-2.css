@@ -4478,16 +4478,7 @@ input[type="button"].btn-block {
   border-radius: 9rem;
 }
 
-.card.card-light-danger {
-  display: flex;
-  align-items: center;
-  background: #ffffff;
-  color: #EB4E50;
-  margin-bottom: 15px;
-  box-shadow: 1px 1px 7px #d8dada;
-  border-radius: 9px;
-  
-}
+
 
 .card.card-tale {
   background: #EB4E50;
@@ -4531,7 +4522,6 @@ input[type="button"].btn-block {
 }
 
 .card-body {
-  line-height: 5;
   flex: 1 1 auto;
   min-height: 1px;
   padding: 1.25rem;
@@ -11316,9 +11306,7 @@ body.sidebar-toggled footer.sticky-footer {
 
 .grid-margin {
   margin-bottom: 2.5rem;
-  width: 30vw
- 
-}
+ }
 
 .fs-20{
   font-size: 20px;

@@ -29,7 +29,31 @@
     gap: 15px
 }
 
-.card-body img{
+.card-body1 img{
     width: 50px;
 
 }
+
+.card.card-light-danger {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    color: #EB4E50;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 7px #d8dada;
+    border-radius: 9px;
+    
+  }
+
+  .card-body2 {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+  }
+
+  .grid-margin2 {
+    margin-bottom: 2.5rem;
+    width: 30vw
+   
+  }
+  
