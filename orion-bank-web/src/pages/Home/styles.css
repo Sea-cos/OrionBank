@@ -11,13 +11,25 @@
     flex-grow: 1;
 }
 
-.row {
+.row2 {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
+    /* margin-right: -0.75rem;
+    margin-left: -0.75rem; */
+  }
+  
 
 .teste{
-    cursor: pointer;
+    width: 40%;
+    margin-right: 25px;
+}
+
+.spaceb{
+    display: flex;
+    gap: 15px
+}
+
+.card-body img{
+    width: 50px;
+
 }

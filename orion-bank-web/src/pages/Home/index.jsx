@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-
+import btnPix from "../../assets/img/logoPix.png"
+import btnExtrato from "../../assets/img/logoExtrato.png"
+import btnTransf from "../../assets/img/logoTransf.png"
+import btnConta from "../../assets/img/logoConta.png"
 import "./styles.css"
 import EyeOpen from "../../assets/img/EyeOpen.svg";
 import EyeClose from "../../assets/img/EyeClose.svg";
@@ -31,94 +34,132 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="row">
-                <div className="col-md-3 grid-margin transparent">
-                    <div className="row">
-                        <div className="col-md-9 mb-3">
-                            <div className="card card-tale">
-                                <div className="card-body1">
-                                    <p className="fs-20 mb-1">Saldo atual</p>
-                                    <div className="saldo">
-                                        <p className="fs-23 mb-0"> R$ 600,00</p>
-                                    </div>
+            <div className="rowTeste">
+                <div className="row2">
+                    <div className="mb-3 teste">
+                        <div className="card card-tale">
+                            <div className="card-body1">
+                                <p className="fs-20 mb-1">Saldo atual</p>
+                                <div className="saldo">
+                                    <p className="fs-23 mb-0"> R$ 600,00</p>
                                 </div>
+                            </div>
 
-                                <div>
+                            <div>
 
-                                    <a onClick={hideMoney}>
-                                        <i className="teste">
-                                            {hideEye && (
-                                                <img src={EyeOpen} alt="" />
-                                            )}
+                                <a onClick={hideMoney}>
+                                    <i className="teste">
+                                        {hideEye && (
+                                            <img src={EyeOpen} alt="" />
+                                        )}
 
-                                            {!hideEye && (
-                                                <img src={EyeClose} alt="" />
-                                            )}
-                                        </i>
-                                    </a>
+                                        {!hideEye && (
+                                            <img src={EyeClose} alt="" />
+                                        )}
+                                    </i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div className="row2">
+
+                        <div className="spaceb">
+                            <div className="card card-light-danger">
+                                <div className="card-body">
+                                    <a href="#"> <img src={btnPix} alt=""></img> </a>
                                 </div>
-
+                            </div>
+                            <div className="card card-light-danger">
+                                <div className="card-body">
+                                    <a href="#"> <img src={btnExtrato} alt=""></img> </a>
+                                </div>
+                            </div>
+                            <div className="card card-light-danger">
+                                <div className="card-body">
+                                    <a href="#"> <img src={btnTransf} alt=""></img> </a>
+                                </div>
+                            </div>
+                            <div className="card card-light-danger">
+                                <div className="card-body">
+                                    <a href="#"> <img src={btnConta} alt=""></img> </a>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card col-md-9 ">
-                            <div class="card-body">
-                                <p class="card-title mb-0">Movimentações recentes</p>
-                                <div class="table-responsive">
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th class="pl-0  pb-2 border-bottom">Tipo</th>
-                                                <th class="border-bottom pb-2">Valor</th>
-                                                <th class="border-bottom pb-2">Data</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="pl-0">Envio Pix</td>
-                                                <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 65</span></p></td>
-                                                <td class="text-muted">18/10/2023</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="pl-0">Envio Pix</td>
-                                                <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 54</span></p></td>
-                                                <td class="text-muted">17/10/2023</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="pl-0">TED</td>
-                                                <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 22</span></p></td>
-                                                <td class="text-muted">17/10/2023</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="pl-0">Transferencia</td>
-                                                <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 46</span></p></td>
-                                                <td class="text-muted">15/10/2023</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="pl-0">Transferencia</td>
-                                                <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 17</span></p></td>
-                                                <td class="text-muted">15/10/2023</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="pl-0">TED</td>
-                                                <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 52</span></p></td>
-                                                <td class="text-muted">13/10/2023</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="pl-0 pb-0">Envio Pix</td>
-                                                <td class="pb-0"><p class="mb-0"><span class="font-weight-bold mr-2">R$ 25</span></p></td>
-                                                <td class="pb-0">08/10/2023</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
 
                 </div>
+
+                <div className="row">
+                    <div class="card col-md-9 ">
+                        <div class="card-body">
+                            <p class="card-title mb-0">Movimentações recentes</p>
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th class="pl-0  pb-2 border-bottom">Tipo</th>
+                                            <th class="border-bottom pb-2">Valor</th>
+                                            <th class="border-bottom pb-2">Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="pl-0">Envio Pix</td>
+                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 65</span></p></td>
+                                            <td class="text-muted">18/10/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0">Envio Pix</td>
+                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 54</span></p></td>
+                                            <td class="text-muted">17/10/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0">TED</td>
+                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 22</span></p></td>
+                                            <td class="text-muted">17/10/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0">Transferencia</td>
+                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 46</span></p></td>
+                                            <td class="text-muted">15/10/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0">Transferencia</td>
+                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 17</span></p></td>
+                                            <td class="text-muted">15/10/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0">TED</td>
+                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 52</span></p></td>
+                                            <td class="text-muted">13/10/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0 pb-0">Envio Pix</td>
+                                            <td class="pb-0"><p class="mb-0"><span class="font-weight-bold mr-2">R$ 25</span></p></td>
+                                            <td class="pb-0">08/10/2023</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
+
+            <div>
+
+            </div>
+
+
         </div>
     );
 };
