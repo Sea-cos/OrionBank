@@ -1,14 +1,13 @@
 
 
 
-export interface MovimentoDto {
-    codigoContaOrigem: string;
-    codigoContaDestino: string;
-    valor: number;
-    chavePix: string;
-    EMV: string;
-    infoAdicional: string;
-    descMovimento: string;
-    tipoTransacao: number;
-    dtMovimento: Date;
+export interface MovimentoPixDto {
+    codigoContaOrigem: string
+    codigoContaDestino: string
+    valor: number
+    chavePix: string
+    descTransacao: string
+    infoAdicional: string
+    tipoTransacao: number
+    dtMovimento: Date
 }

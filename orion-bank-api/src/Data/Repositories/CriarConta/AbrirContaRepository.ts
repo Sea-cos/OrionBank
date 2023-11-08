@@ -38,7 +38,9 @@ export class AbrirContaRepository implements IAbrirContaRepository{
 
         const isExiste = await (await connection).query(
             sql,
-            documentoFederal
+            [
+                documentoFederal
+            ]
         ) as any
 
         return isExiste[0].length == 0 ? true : false
@@ -115,7 +117,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
                                         DocumentoFederal, NomeCompleto, Senha, Email, 
                                         DtNasc, TelefoneCelular, CEP, Logradouro, 
                                         NumeroResidencial, DtInclusao, Situacao, DtSituacao, TipoConta)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+                    VALUES (?, ?, ?, ?, ?, ?, ?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
         await (await connection).query(
             sql,

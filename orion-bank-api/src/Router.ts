@@ -5,6 +5,7 @@ import { AbrirContaController } from "./API/Controllers/AbrirContaController";
 import { ChavePixController } from "./API/Controllers/ChavePixController";
 import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController";
 import { SaldoController } from "./API/Controllers/SaldoController";
+import { MovimentoController } from "./API/Controllers/MovimentoController";
 
 const router = Router();
 const autenticacaoController = new AutenticacaoController();
@@ -12,6 +13,7 @@ const abrirContaController = new AbrirContaController();
 const chavePixController = new ChavePixController()
 const alterarSenhaController = new AlterarSenhaController()
 const saldoController = new SaldoController()
+const movimentoController = new MovimentoController()
 
 router.post("/autenticacao", 
     autenticacaoController.EfetuarAutenticacao
@@ -79,6 +81,15 @@ router.post("/chavePix/inativarChave",
 router.get("/saldo/:codigo",
     ValidacaoToken,
     saldoController.ObterSaldo
+)
+
+//#endregion
+
+//#region Saldo
+
+router.post("/movimento/transacaoPixViaChave",
+    ValidacaoToken,
+    movimentoController.RealizarTransacaoPixViaChave
 )
 
 //#endregion

@@ -17,8 +17,8 @@ export class MovimentoRepository implements IMovimentoRepository {
             movimento.Chave_Pix,
             movimento.InfoAdicional,
             movimento.DescMovimento,
-            TipoTransacao.Pix,
-            new Date()
+            movimento.TipoTransacao,
+            movimento.DtMovimento
         ]
 
         const sql = `INSERT INTO movimento
