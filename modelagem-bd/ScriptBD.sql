@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `OrionDB`.`Movimento` (
   `Chave_Pix` VARCHAR(100) NULL,
   `EMV` VARCHAR(8000) NULL,
   `InfoAdicional` VARCHAR(255) NULL,
-  `DescMovimento` VARCHAR(10) NULL,
+  `DescTransacao` VARCHAR(10) NULL,
   `TipoTransacao` INT NOT NULL,
   `DtMovimento` DATETIME NOT NULL,
   INDEX `fk_mov.Movimento_cad.Conta1_idx` (`CodigoContaOrigem` ASC),
