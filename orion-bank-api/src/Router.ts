@@ -85,11 +85,16 @@ router.get("/saldo/:codigo",
 
 //#endregion
 
-//#region Saldo
+//#region Movimento
 
 router.post("/movimento/transacaoPixViaChave",
     ValidacaoToken,
     movimentoController.RealizarTransacaoPixViaChave
+)
+
+router.get("/movimento/ultimasTransacoes/:codigoConta",
+    ValidacaoToken,
+    movimentoController.ObterUltimasTransacoes
 )
 
 //#endregion

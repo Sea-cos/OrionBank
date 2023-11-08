@@ -5,6 +5,7 @@ import { MovimentoRepository } from "../../../Data/Repositories/Movimento/Movime
 import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
 
+
 const movimentoRepository = new MovimentoRepository()
 const contaRepository = new AbrirContaRepository()
 const saldoRepository = new SaldoRepository()
@@ -22,6 +23,16 @@ export class MovimentoService implements IMovimentoService {
         if(teste < 0) {
             throw new Error("Saldo insulficiente para realizar a trasação.");
         }
+
+    }
+
+    async ObterUltimasTransacoes(codigoConta: string): Promise<Movimento> {
+        
+        if(codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
+            throw new Error("Erro interno.")
+        }
+
+        return await movimentoRepository.ObterUltimasTransacoes(codigoConta);
 
     }
 

@@ -1,9 +1,6 @@
 import { Movimento } from "../../../Domain/Entities/Movimento";
 import { IMovimentoRepository } from "../../../Domain/Interfaces/Movimento/IMovimentoRepository";
-import { TipoTransacao } from "../../../Enums/TipoTransacao";
 import { connection } from "../../context/ConnectionString";
-
-
 
 export class MovimentoRepository implements IMovimentoRepository {
 
@@ -34,4 +31,24 @@ export class MovimentoRepository implements IMovimentoRepository {
 
     }
 
+    async ObterUltimasTransacoes(codigoConta: string) : Promise<Movimento> {
+
+        const sql = `SELECT
+                        Valor,
+                        TipoTransacao,
+                        DtMovimento
+                    FROM
+                        movimento 
+                    WHERE
+                        CodigoContaOrigem = ?`;
+
+        const movimento = await (await connection).query(
+            sql,
+            [
+                codigoConta
+            ]
+        ) as any
+
+        return movimento[0][0] as Movimento
+    }
 }

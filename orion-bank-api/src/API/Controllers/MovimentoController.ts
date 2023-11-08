@@ -38,6 +38,35 @@ export class MovimentoController {
                 message: error.message
             })
         }
+    }
+
+    async ObterUltimasTransacoes(request: Request, response: Response) {
+
+        try {
+
+            const { codigoConta } = request.params
+
+            const movimento = await movimentoService.ObterUltimasTransacoes(codigoConta)
+
+            if(!movimento) {
+                return response.status(404).send({
+                    status: "Conta Sem Transações",
+                    message: "Não existe nenhuma transação nesta conta no momento."
+                })
+            }
+
+            return response.status(200).json({
+                valor: movimento.Valor,
+                tipoTransacao: movimento.TipoTransacao,
+                dtMovimento: movimento.DtMovimento
+            })
+
+        } catch(error: any) {
+            return response.status(400).send({
+                status: "Error",
+                message: error.message
+            })
+        }
 
     }
 
