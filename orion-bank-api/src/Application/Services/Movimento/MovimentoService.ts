@@ -3,9 +3,11 @@ import { MovimentoPixDto } from "../../DTOs/MovimentoDto";
 import { IMovimentoService } from "../../Interfaces/Movimento/IMovimentoService";
 import { MovimentoRepository } from "../../../Data/Repositories/Movimento/MovimentoRepository";
 import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
+import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
 
 const movimentoRepository = new MovimentoRepository()
 const contaRepository = new AbrirContaRepository()
+const saldoRepository = new SaldoRepository()
 
 export class MovimentoService implements IMovimentoService {
 
@@ -14,7 +16,12 @@ export class MovimentoService implements IMovimentoService {
         let th = this;
 
         await th.ValidarParametros(movimento)
-        th.DtoParaDomainPix(movimento)
+
+        const saldoOrigem = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem)
+        let teste = saldoOrigem.Saldo - movimento.valor
+        if(teste < 0) {
+            throw new Error("Saldo insulficiente para realizar a trasação.");
+        }
 
     }
 
@@ -52,12 +59,12 @@ export class MovimentoService implements IMovimentoService {
             throw new Error("Informação adicional inválida.")
         }
 
-        if(await contaRepository.BuscarContaPorCodigo(moviDto.codigoContaOrigem)) {
-            throw new Error("Erro inválido.")
+        if(!await contaRepository.BuscarContaPorCodigo(moviDto.codigoContaOrigem)) {
+            throw new Error("Erro interno.")
         }
 
-        if(await contaRepository.BuscarContaPorCodigo(moviDto.codigoContaDestino)) {
-            throw new Error("Erro inválido.")
+        if(!await contaRepository.BuscarContaPorCodigo(moviDto.codigoContaDestino)) {
+            throw new Error("Erro interno.")
         }
 
     }
