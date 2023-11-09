@@ -1,24 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { ContaContext } from "../../contexts/ContaContext";
 import btnPix from "../../assets/img/logoPix.png"
 import btnExtrato from "../../assets/img/logoExtrato.png"
 import btnTransf from "../../assets/img/logoTransf.png"
 import btnConta from "../../assets/img/logoConta.png"
-import "./styles.css"
 import EyeOpen from "../../assets/img/EyeOpen.svg";
 import EyeClose from "../../assets/img/EyeClose.svg";
-
-import { AuthContext } from "../../contexts/AuthContext";
+import "./styles.css"
 
 const Home = () => {
-
+    const { buscarSaldo, buscarNome } = useContext(ContaContext);
     const [hideEye, setHideEye] = useState(true);
+    const [saldo, setSaldo] = useState(0.00);
+    const [nome, setNome] = useState("");
 
     const hideMoney = () => {
-
-        setHideEye(!hideEye)
-
+        setHideEye(!hideEye);
     }
 
+    useEffect(() => {
+        const fetchSaldo = async () => {
+            const saldo = await buscarSaldo();
+            setSaldo(saldo);
+        };
+
+        const fetchNome = async () => {
+            const nome = await buscarNome();
+            setNome(nome);
+        };
+
+        fetchSaldo();
+        fetchNome();
+    });
 
     return (
         <div className="content-wrapper home-page">
@@ -27,7 +40,7 @@ const Home = () => {
                 <div className="col-md-12 grid-margin">
                     <div className="row">
                         <div className="col-12 col-x1-8 mb-4 mb-x1-0">
-                            <h3>Bem vindo, Marcos!</h3>
+                            <h3>Bem vindo, {nome}!</h3>
                             <h6 className="mb-0"> 3 notificações não lidas!</h6>
                         </div>
                     </div>
@@ -41,7 +54,7 @@ const Home = () => {
                             <div className="card-body1">
                                 <p className="fs-20 mb-1">Saldo atual</p>
                                 <div className="saldo">
-                                    <p className="fs-23 mb-0"> R$ 600,00</p>
+                                    <p className="fs-23 mb-0"> R$ {saldo}</p>
                                 </div>
                             </div>
 

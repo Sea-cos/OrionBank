@@ -1,11 +1,11 @@
 import React, { createContext, useState, useContext } from "react";
-import { solicitarConta } from "../services/solicitarContaApi";
+import { solicitarConta, buscarSolicitacoes } from "../services/solicitacoesContaApi";
 import { showErrorNotification } from '../shared/notificationUtils';
 import { useNavigate } from "react-router-dom";
 
-export const SolicitarContaContext = createContext();
+export const SolicitacoesContaContext = createContext();
 
-export function SolicitarContaProvider({ children }) {
+export function SolicitacoesContaProvider({ children }) {
     const [solicitacao, setSolicitacao] = useState(null);
     const navigate = useNavigate();
 
@@ -29,14 +29,23 @@ export function SolicitarContaProvider({ children }) {
             showErrorNotification(error.message);
         }
     };
+    
+    const buscarSolicitacoesConta = async () => {
+        try 
+        {
+            return buscarSolicitacoes();
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
 
     return (
-        <SolicitarContaContext.Provider value={{ solicitacao, setSolicitacao, solicitar }}>
+        <SolicitacoesContaContext.Provider value={{ solicitacao, setSolicitacao, solicitar, buscarSolicitacoesConta }}>
             {children}
-        </SolicitarContaContext.Provider>
+        </SolicitacoesContaContext.Provider>
     );
   }
 
-  export function useSolicitarConta() {
-    return useContext(SolicitarContaContext);
+  export function useSolicitacoesConta() {
+    return useContext(SolicitacoesContaContext);
   }

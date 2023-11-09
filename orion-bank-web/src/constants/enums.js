@@ -1,4 +1,4 @@
 export const TipoUsuarioEnum = {
-    USER: 'User',
-    ADMIN: 'Admin'
+    USER: 1,
+    ADMIN: 2
 };

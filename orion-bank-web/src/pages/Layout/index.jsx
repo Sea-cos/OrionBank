@@ -8,9 +8,9 @@ import NavBar from "../../components/NavBar/NavBar";
 import './styles.css'
 
 const Layout = () => {
-    const { logout, buscarTipoUsuario } = useContext(AuthContext);
+    const { logout, buscarTipoConta } = useContext(AuthContext);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const userType = buscarTipoUsuario();
+    const tipoConta = buscarTipoConta();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -26,13 +26,13 @@ const Layout = () => {
         }
     };
 
-    const filteredSidebarData = filterSidebarData(userType);
+    const filteredSidebarData = filterSidebarData(tipoConta);
 
     useEffect(() => {
-        if (userType !== TipoUsuarioEnum.ADMIN && userType !== TipoUsuarioEnum.USER) {
+        if (tipoConta !== TipoUsuarioEnum.ADMIN && tipoConta !== TipoUsuarioEnum.USER) {
             logout();
         }
-    }, [userType, logout]);
+    }, [tipoConta, logout]);
 
     return (
         <div className="elements">
