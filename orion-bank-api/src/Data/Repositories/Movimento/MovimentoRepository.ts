@@ -13,14 +13,14 @@ export class MovimentoRepository implements IMovimentoRepository {
             movimento.Valor,
             movimento.Chave_Pix,
             movimento.InfoAdicional,
-            movimento.DescMovimento,
+            movimento.DescTransacao,
             movimento.TipoTransacao,
             movimento.DtMovimento
         ]
 
         const sql = `INSERT INTO movimento
                         (Codigo, CodigoContaOrigem, CodigoContaDestino, Valor, Chave_Pix, 
-                            InfoAdicional, DescMovimento, TipoTransacao, DtMovimento)
+                            InfoAdicional, DescTransacao, TipoTransacao, DtMovimento)
                     VALUES 
                         (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
@@ -40,7 +40,8 @@ export class MovimentoRepository implements IMovimentoRepository {
                     FROM
                         movimento 
                     WHERE
-                        CodigoContaOrigem = ?`;
+                        CodigoContaOrigem = ?
+                    LIMIT 5`;
 
         const movimento = await (await connection).query(
             sql,

@@ -9,7 +9,7 @@ export interface Movimento {
     Chave_Pix: string;
     EMV: string;
     InfoAdicional: string;
-    DescMovimento: string;
+    DescTransacao: string;
     TipoTransacao: number;
     DtMovimento: Date;
 }
