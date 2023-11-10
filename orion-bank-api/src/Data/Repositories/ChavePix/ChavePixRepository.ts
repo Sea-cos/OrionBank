@@ -19,7 +19,7 @@ export class ChavePixRepository implements IChavePixRepository {
         ]
 
         const sql = `INSERT INTO chave_pix
-                        (Codigo, CodigoConta, ChavePix, TipoChave, Situacao, DtSituacao, DtInclusao)
+                        (Codigo, CodigoConta, Chave_Pix, TipoChave, Situacao, DtSituacao, DtInclusao)
                     VALUES
                         (?, ?, ?, ?, ?, ?, ?)`
 
@@ -36,7 +36,7 @@ export class ChavePixRepository implements IChavePixRepository {
                     FROM 
                         chave_pix
                     WHERE
-                        ChavePix = ?`
+                        Chave_Pix = ?`
 
         const chave = await (await connection).query(
                         sql,
