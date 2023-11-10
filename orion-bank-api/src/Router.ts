@@ -6,6 +6,7 @@ import { ChavePixController } from "./API/Controllers/ChavePixController";
 import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController";
 import { SaldoController } from "./API/Controllers/SaldoController";
 import { MovimentoController } from "./API/Controllers/MovimentoController";
+import { GerarPDF } from "./Application/PDF/GerarPDF";
 
 const router = Router();
 const autenticacaoController = new AutenticacaoController();
@@ -26,6 +27,10 @@ router.post("/autenticacao/alterarSenha",
 
 router.get("/autenticacao/recuperarSenha/:documentoFederal",
     autenticacaoController.RecuperarSenha
+)
+
+router.get("/testePDF",
+    GerarPDF
 )
 
 //#region Abrir Conta
