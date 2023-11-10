@@ -33,11 +33,11 @@ const RecuperarSenha = () => {
 
     const alterarSenha = async (e) => {
         e.preventDefault();
-
+        
         if (!validarCampos()){
             return;
         }
-
+        
         const request = {
             codigo: codigo,
             token: token,

@@ -15,6 +15,6 @@ export const buscarSaldoConta = async (codigoConta) => {
         const response = await api.get(`/saldo/${codigoConta}`);
         return response.data;
     } catch (error) {
-        throw error.response.data;
+        throw error;
     }
 }

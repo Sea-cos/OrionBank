@@ -1,46 +1,100 @@
 import React, { useState, useContext, useEffect } from "react";
 import { SolicitacoesContaContext } from "../../../../contexts/SolicitacoesContaContext";
+import { SituacaoEnum } from '../../../../constants/enums';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Table from 'react-bootstrap/Table';
 import "./styles.css"
 
 const SolicitacoesConta = () => {
-    const buscarSolicitacoes = useContext(SolicitacoesContaContext).buscarSolicitacoesConta;
+    const solicitacoesContaContext = useContext(SolicitacoesContaContext);
+    const aprovarSolicitacao = solicitacoesContaContext.aprovarSolicitacao;
+    const reprovarSolicitacao = solicitacoesContaContext.reprovarSolicitacao;
+    const buscarSolicitacoes = solicitacoesContaContext.buscarSolicitacoesConta;
     const [solicitacoes, setSolicitacoes] = useState([]);
-    const [modalIsOpen, setModalIsOpen] = useState(false); // Estado para controlar a visibilidade do modal
-    const [selectedMensagemConta, setSelectedMensagemConta] = useState(null);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedMensagemConta, setSelectedMensagemConta] = useState({});
 
     useEffect(() => {
-        const buscarSolicitacoesConta = async () => {
-            const solicitacoes = await buscarSolicitacoes();
-            setSolicitacoes(solicitacoes);
-        };
-
-        buscarSolicitacoesConta();
+        refresh();
     }, []);
 
     const openModal = (mensagemConta) => {
         setSelectedMensagemConta(mensagemConta);
         setModalIsOpen(true);
-
-        const modal = document.querySelector("dialog");
-        modal.showModal()
     };
 
     const closeModal = () => {
-        setSelectedMensagemConta(null);
+        setSelectedMensagemConta({});
         setModalIsOpen(false);
     };
 
+    function formatarData(data) {
+        const dataObj = new Date(data);
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+        const ano = dataObj.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    function formatarEnum(situacao) {
+        switch (situacao) {
+            case SituacaoEnum.ATIVA:
+                return 'Ativa';
+            case SituacaoEnum.INATIVA:
+                return 'Inativa';
+            case SituacaoEnum.RECUSADA:
+                return 'Recusada';
+            case SituacaoEnum.APROVADA:
+                return 'Aprovada';
+            default:
+                return 'Desconhecida';
+        }
+    }
+
+    const aprovarSolicitacaoConta = async (solicitacao) => {
+        await aprovarSolicitacao(solicitacao);
+        refresh();
+    };
+
+    const reprovarSolicitacaoConta = async (codigo) => {
+        await reprovarSolicitacao(codigo);
+        refresh();
+    };
+
+    const refresh = async () => {
+        const solicitacoes = await buscarSolicitacoes();
+        setSolicitacoes(solicitacoes);
+    };
     return (
         <div className="container-solicitar">
             <div className="title-solicitar">
                 <h5 className="titulo-h5">Solicitações de Contas</h5>
             </div>
+
             <div className="card-solicitar">
+                <Modal show={modalIsOpen}>
+                    <Modal.Header>
+                        <Modal.Title>Informações da Conta</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Nome Completo: {selectedMensagemConta.NomeCompleto}</p>
+                        <p>Documento Federal: {selectedMensagemConta.DocumentoFederal}</p>
+                        <p>Email: {selectedMensagemConta.Email}</p>
+                        <p>Data Nascimento: {selectedMensagemConta.DtNasc}</p>
+                        <p>Telefone Celular: {selectedMensagemConta.TelefoneCelular}</p>
+                        <p>CEP: {selectedMensagemConta.CEP}</p>
+                        <p>Logradouro: {selectedMensagemConta.Logradouro}</p>
+                        <p>Numero Residencial: {selectedMensagemConta.NumeroResidencial}</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={closeModal}>
+                            Fechar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
                 <div>
-                    <dialog  className="modal-solicitar">
-                        <p>aaaaaaaaa</p>
-                    </dialog>
-                    <table className="table">
+                    <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th className="hidden">Codigo</th>
@@ -54,18 +108,22 @@ const SolicitacoesConta = () => {
                             {solicitacoes.map((record, index) => (
                                 <tr key={index}>
                                     <td className="hidden">{record.Codigo}</td>
-                                    <td>{record.DtInclusao}</td>
-                                    <td>{record.DtSituacao}</td>
-                                    <td>{record.Situacao}</td>
+                                    <td>{formatarData(record.DtInclusao)}</td>
+                                    <td>{formatarData(record.DtSituacao)}</td>
+                                    <td>{formatarEnum(record.Situacao)}</td>
                                     <td>
-                                        <button onClick={() => openModal(record.conta)}>
-                                            Ver JSON
-                                        </button>
+                                        <Button variant="secondary" as="input" type="submit" value="Mensagem" onClick={() => openModal(record.conta)} />
+                                    </td>
+                                    <td>
+                                        <Button variant="success" as="input" type="submit" value="Aprovar" onClick={() => aprovarSolicitacaoConta(record)} />
+                                    </td>
+                                    <td>
+                                        <Button variant="danger" as="input" type="submit" value="Reprovar" onClick={() => reprovarSolicitacaoConta(record.Codigo)} />
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
             </div>
         </div>

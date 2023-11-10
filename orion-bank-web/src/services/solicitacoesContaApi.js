@@ -28,3 +28,31 @@ export const buscarSolicitacoes = async () => {
         throw error.response.data;
     }
 }
+
+export const aprovar = async (request) => {
+    try {
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`
+            }
+        };
+        await api.post("/abrirConta/aprovarSolicitacao", request, config);
+    } catch (error) {
+        throw error.response.data;
+    }
+}
+
+export const reprovar = async (codigo) => {
+    try {
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`
+            }
+        };
+        await api.post(`/abrirConta/reprovarSolicitadao/${codigo}`, '', config);
+    } catch (error) {
+        throw error.response.data;
+    }
+}

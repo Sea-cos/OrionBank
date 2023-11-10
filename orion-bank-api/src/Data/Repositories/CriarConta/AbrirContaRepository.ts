@@ -115,7 +115,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
                                         DocumentoFederal, NomeCompleto, Senha, Email, 
                                         DtNasc, TelefoneCelular, CEP, Logradouro, 
                                         NumeroResidencial, DtInclusao, Situacao, DtSituacao, TipoConta)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+                    VALUES (?, ?, ?, ?, ?, ?, ?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
         await (await connection).query(
             sql,

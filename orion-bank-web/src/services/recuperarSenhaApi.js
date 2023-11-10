@@ -6,7 +6,7 @@ export const api = axios.create({
 
 export const enviarEmail = async (documento) => {
     try {
-        const response = await api.post("/enviarEmail", documento);
+        const response = await api.get(`/autenticacao/recuperarSenha/${documento}`);
         return response.data;
     } catch (error) {
         throw error.response.data;
@@ -15,7 +15,12 @@ export const enviarEmail = async (documento) => {
 
 export const alterarSenha = async (request) => {
     try {
-        const response = await api.post("/alterarSenha", request);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${request.token}`
+            }
+        };
+        const response = await api.post("/autenticacao/alterarSenha", request, config);
         return response.data;
     } catch (error) {
         throw error.response.data;

@@ -107,53 +107,53 @@ const Home = () => {
                 </div>
 
                 <div className="row">
-                    <div class="card col-md-9 ">
-                        <div class="card-body">
-                            <p class="card-title mb-0">Movimentações recentes</p>
-                            <div class="table-responsive">
-                                <table class="table table-borderless">
+                    <div className="card col-md-9 ">
+                        <div className="card-body">
+                            <p className="card-title mb-0">Movimentações recentes</p>
+                            <div className="table-responsive">
+                                <table className="table table-borderless">
                                     <thead>
                                         <tr>
-                                            <th class="pl-0  pb-2 border-bottom">Tipo</th>
-                                            <th class="border-bottom pb-2">Valor</th>
-                                            <th class="border-bottom pb-2">Data</th>
+                                            <th className="pl-0  pb-2 border-bottom">Tipo</th>
+                                            <th className="border-bottom pb-2">Valor</th>
+                                            <th className="border-bottom pb-2">Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="pl-0">Envio Pix</td>
-                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 65</span></p></td>
-                                            <td class="text-muted">18/10/2023</td>
+                                            <td className="pl-0">Envio Pix</td>
+                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 65</span></p></td>
+                                            <td className="text-muted">18/10/2023</td>
                                         </tr>
                                         <tr>
-                                            <td class="pl-0">Envio Pix</td>
-                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 54</span></p></td>
-                                            <td class="text-muted">17/10/2023</td>
+                                            <td className="pl-0">Envio Pix</td>
+                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 54</span></p></td>
+                                            <td className="text-muted">17/10/2023</td>
                                         </tr>
                                         <tr>
-                                            <td class="pl-0">TED</td>
-                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 22</span></p></td>
-                                            <td class="text-muted">17/10/2023</td>
+                                            <td className="pl-0">TED</td>
+                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 22</span></p></td>
+                                            <td className="text-muted">17/10/2023</td>
                                         </tr>
                                         <tr>
-                                            <td class="pl-0">Transferencia</td>
-                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 46</span></p></td>
-                                            <td class="text-muted">15/10/2023</td>
+                                            <td className="pl-0">Transferencia</td>
+                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 46</span></p></td>
+                                            <td className="text-muted">15/10/2023</td>
                                         </tr>
                                         <tr>
-                                            <td class="pl-0">Transferencia</td>
-                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 17</span></p></td>
-                                            <td class="text-muted">15/10/2023</td>
+                                            <td className="pl-0">Transferencia</td>
+                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 17</span></p></td>
+                                            <td className="text-muted">15/10/2023</td>
                                         </tr>
                                         <tr>
-                                            <td class="pl-0">TED</td>
-                                            <td><p class="mb-0"><span class="font-weight-bold mr-2">R$ 52</span></p></td>
-                                            <td class="text-muted">13/10/2023</td>
+                                            <td className="pl-0">TED</td>
+                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 52</span></p></td>
+                                            <td className="text-muted">13/10/2023</td>
                                         </tr>
                                         <tr>
-                                            <td class="pl-0 pb-0">Envio Pix</td>
-                                            <td class="pb-0"><p class="mb-0"><span class="font-weight-bold mr-2">R$ 25</span></p></td>
-                                            <td class="pb-0">08/10/2023</td>
+                                            <td className="pl-0 pb-0">Envio Pix</td>
+                                            <td className="pb-0"><p className="mb-0"><span className="font-weight-bold mr-2">R$ 25</span></p></td>
+                                            <td className="pb-0">08/10/2023</td>
                                         </tr>
                                     </tbody>
                                 </table>

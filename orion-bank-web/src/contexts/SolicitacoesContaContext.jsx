@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
-import { solicitarConta, buscarSolicitacoes } from "../services/solicitacoesContaApi";
-import { showErrorNotification } from '../shared/notificationUtils';
+import { solicitarConta, buscarSolicitacoes, aprovar, reprovar } from "../services/solicitacoesContaApi";
+import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { useNavigate } from "react-router-dom";
 
 export const SolicitacoesContaContext = createContext();
@@ -39,8 +39,48 @@ export function SolicitacoesContaProvider({ children }) {
         }
     };
 
+    const aprovarSolicitacao = async (solicitacao) => {
+        try 
+        {
+            const request = {
+                codigoSolicitacao: solicitacao.Codigo,
+                documentoFederal: solicitacao.conta.DocumentoFederal,
+                nomeCompleto: solicitacao.conta.NomeCompleto,
+                email: solicitacao.conta.Email,
+                dtNasc: formatarDataBanco(solicitacao.conta.DtNasc),
+                telefoneCelular: solicitacao.conta.TelefoneCelular,
+                cep: solicitacao.conta.CEP,
+                logradouro: solicitacao.conta.Logradouro,
+                numeroResidencial: solicitacao.conta.NumeroResidencial
+            }
+            await aprovar(request);
+
+            showSuccessNotification("Solicitação aprovada!");
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
+    const reprovarSolicitacao = async (codigo) => {
+        try 
+        {
+            await reprovar(codigo);
+            showSuccessNotification("Solicitação reprovada!");
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
+    function formatarDataBanco(data) {
+        const dataObj = new Date(data);
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+        const ano = dataObj.getFullYear();
+        return `${ano}-${mes}-${dia}`;
+    }
+
     return (
-        <SolicitacoesContaContext.Provider value={{ solicitacao, setSolicitacao, solicitar, buscarSolicitacoesConta }}>
+        <SolicitacoesContaContext.Provider value={{ solicitacao, setSolicitacao, solicitar, buscarSolicitacoesConta, aprovarSolicitacao, reprovarSolicitacao }}>
             {children}
         </SolicitacoesContaContext.Provider>
     );
