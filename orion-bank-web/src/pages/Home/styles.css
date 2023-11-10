@@ -5,8 +5,7 @@
 
 .content-wrapper {
     background: #F5F7FF;
-    padding: 2.375rem 2.375rem;
-    width: 100%;
+    padding: 1.5rem 1.5rem;
     -webkit-flex-grow: 1;
     flex-grow: 1;
 }
@@ -18,6 +17,22 @@
     margin-left: -0.75rem; */
 }
 
+.row3{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row-cards{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.doiscard{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
 .teste {
     width: 40%;
     margin-right: 25px;
@@ -25,6 +40,7 @@
 
 .spaceb {
     display: flex;
+    flex-wrap: wrap;
     gap: 28px;
    
 }
@@ -79,6 +95,17 @@
 
 }
 
+.card-saldo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 314px;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
 
 .cartao{
     width: 50%;
@@ -183,4 +210,55 @@
     background-color: #DB4648;
     fill: #DB4648;
 }
+
+@media (max-width: 1220px) {
+    .teste{
+        width: 100%;
+        margin-right: 0;
+    }
+   .row-cards{
+    width: 100%;
+    justify-content: space-evenly;
+   }
+    
+}
+
+@media (max-width: 1158px) {
+    .row3{
+        flex-direction: column;
+    }
+    .tabelita{
+        width: 100%;
+    } 
+    .cartao{
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+}
+
+@media (max-width: 627px) {
+    .spaceb{
+        justify-content: space-evenly;
+        gap: 0;
+    }
+    .card.card-light-danger {
+        width: 49%;
+        height: 49%;
+    }
+    .btn-body img{
+        width: 100%;
+      
+    }
+}
+
+/* @media (max-width: 495px) {
+    .card.card-light-danger{
+        width: 46%;
+    }
+    .card.card-light-danger img{
+        width: 100%;
+    }
+ 
+} */
 

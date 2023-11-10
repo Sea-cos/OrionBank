@@ -63,29 +63,35 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className="row2">
+                    <div className="row-cards">
 
                         <div className="spaceb">
-                            <div className="card card-light-danger">
-                                <div className="btn-body">
-                                    <a href="#" title="Pix"> <img src={btnPix} alt=""></img> </a>
+
+                           
+                                <div className="card card-light-danger">
+                                    <div className="btn-body">
+                                        <a href="#" title="Pix"> <img src={btnPix} alt=""></img> </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="card card-light-danger">
-                                <div className="btn-body">
-                                    <a href="#" title="Extrato"> <img src={btnExtrato} alt=""></img> </a>
+                                <div className="card card-light-danger">
+                                    <div className="btn-body">
+                                        <a href="#" title="Extrato"> <img src={btnExtrato} alt=""></img> </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="card card-light-danger">
-                                <div className="btn-body">
-                                    <a href="#" title="Transferência"> <img src={btnTransf} alt=""></img> </a>
+                          
+
+                           
+                                <div className="card card-light-danger">
+                                    <div className="btn-body">
+                                        <a href="#" title="Transferência"> <img src={btnTransf} alt=""></img> </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="card card-light-danger">
-                                <div className="btn-body">
-                                    <a href="#" title="Conta"> <img src={btnConta} alt=""></img> </a>
+                                <div className="card card-light-danger">
+                                    <div className="btn-body">
+                                        <a href="#" title="Conta"> <img src={btnConta} alt=""></img> </a>
+                                    </div>
                                 </div>
-                            </div>
+                            
                         </div>
 
 
@@ -93,7 +99,7 @@ const Home = () => {
 
                 </div>
 
-                <div className="row2">
+                <div className="row3">
                     <div className="tabelita">
                         <div className="card-body">
                             <p className="card-title mb-0 titulo-tabela">Ultimas movimentações</p>
