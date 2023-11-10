@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { enviarEmail, alterarSenha } from "../services/recuperarSenhaApi";
-import { showErrorNotification } from '../shared/notificationUtils';
+import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { useNavigate } from "react-router-dom";
 
 export const RecuperarSenhaContext = createContext();

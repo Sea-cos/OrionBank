@@ -25,7 +25,6 @@ const Login = () => {
     };
 
     const validarPrenchimento = () => {
-        debugger
         if (autenticarRequest.login !== "" && autenticarRequest.senha !== ""){
             return true;
         } else {

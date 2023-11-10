@@ -6,15 +6,14 @@ import Avancar from "../../assets/img/avancar.svg";
 import Retroceder from "../../assets/img/retroceder.svg";
 import { showErrorNotification } from '../../shared/notificationUtils';
 import { Link } from "react-router-dom";
-import { SolicitarContaContext } from "../../contexts/SolicitarContaContext";
+import { SolicitacoesContaContext } from "../../contexts/SolicitacoesContaContext";
 import { BuscarCEPContext } from "../../contexts/BuscarCEPContext";
 import { parse, isValid } from 'date-fns';
 import "./styles.css";
 
 const SolicitarConta = () => {
     //#region Declarações
-    const solicitarContaContext = useContext(SolicitarContaContext);
-    const solicitar = solicitarContaContext.solicitar;
+    const solicitar = useContext(SolicitacoesContaContext).solicitar;
     const buscarCEPContext = useContext(BuscarCEPContext);
     const buscarCep = buscarCEPContext.buscarCep;
     const camposChecagem = [

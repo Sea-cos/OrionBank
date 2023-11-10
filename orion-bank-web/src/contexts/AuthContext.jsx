@@ -61,32 +61,28 @@ export const AuthProvider = ({ children }) => {
         navigate("/login");
     };
 
-    const buscarTipoUsuario = () => {
+    const buscarTipoConta = () => {
         const token = localStorage.getItem('token');
-        const tokenInfo = getTokenInfo(token);
-        return tokenInfo?.userType ?? "Admin";
+        const tokenInfo = getTokenInfo(JSON.parse(token));
+        return tokenInfo?.TipoConta ?? "Admin";
     };
 
     const validarRoles = (tokenInfo) => {
-        if (tokenInfo?.userType !== TipoUsuarioEnum.ADMIN && tokenInfo?.userType !== TipoUsuarioEnum.USER){
+        if (tokenInfo?.TipoConta !== TipoUsuarioEnum.ADMIN && tokenInfo?.TipoConta !== TipoUsuarioEnum.USER) {
             showErrorNotification('O Usuário não possui permissão para acessar o sistema.');
             return false;
         }
-        
+
         return true;
     };
 
     const getTokenInfo = (token) => {
-        try {
-            return jwt.decode(token);
-        } catch (error) {
-            showErrorNotification(`Erro ao decodificar o token: ${error.message}`);
-        }
+        return jwt.decode(token);
     };
 
     return (
         <AuthContext.Provider
-            value={{ authenticated: !!user, user, loading, login, logout, navigate, buscarTipoUsuario }}>
+            value={{ authenticated: !!user, user, loading, login, logout, navigate, buscarTipoConta, getTokenInfo }}>
             {children}
         </AuthContext.Provider>
     );

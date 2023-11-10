@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
-import Arrow from "../../assets/img/arrow-sidebar.svg";
 import '@popperjs/core';
 import './styles.css';
 import './bootstrap/style.css';

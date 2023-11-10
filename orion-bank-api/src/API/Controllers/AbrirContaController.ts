@@ -78,7 +78,6 @@ export class AbrirContaController {
                 codigoSolicitacao,
                 documentoFederal,
                 nomeCompleto,
-                senha,
                 email,
                 dtNasc,
                 telefoneCelular,
@@ -90,7 +89,6 @@ export class AbrirContaController {
             const contaDto = {
                 DocumentoFederal: documentoFederal,
                 NomeCompleto: nomeCompleto,
-                Senha: senha,
                 Email: email,
                 DtNasc: dtNasc,
                 TelefoneCelular: telefoneCelular,

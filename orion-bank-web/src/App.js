@@ -3,9 +3,10 @@ import AppRoutes from './routes/AppRoutes';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from "./contexts/AuthContext";
-import { SolicitarContaProvider } from "./contexts/SolicitarContaContext";
+import { SolicitacoesContaProvider } from "./contexts/SolicitacoesContaContext";
 import { BuscarCEPProvider } from "./contexts/BuscarCEPContext";
 import { RecuperarSenhaProvider } from "./contexts/RecuperarSenhaContext";
+import { ContaProvider } from "./contexts/ContaContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -16,14 +17,16 @@ function App() {
       <Router>
         <ErrorBoundary>
           <RecuperarSenhaProvider>
-            <SolicitarContaProvider>
+            <SolicitacoesContaProvider>
               <BuscarCEPProvider>
                 <AuthProvider>
-                  <AppRoutes />
-                  <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                  <ContaProvider>
+                    <AppRoutes />
+                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                  </ContaProvider>
                 </AuthProvider>
               </BuscarCEPProvider>
-            </SolicitarContaProvider>
+            </SolicitacoesContaProvider>
           </RecuperarSenhaProvider>
         </ErrorBoundary>
       </Router>
