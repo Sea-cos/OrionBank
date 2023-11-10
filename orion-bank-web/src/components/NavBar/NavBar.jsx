@@ -44,9 +44,9 @@ const NavBar = ({ toggleSidebar }) => {
                     <i className="fa fa-bars" />
                 </button>
 
-                <ul class="navbar-nav navbar-nav-right buttons-sin-logout">
+                <ul className="navbar-nav navbar-nav-right buttons-sin-logout">
                     <Sino />
-                    <li class="nav-item logout-nav">
+                    <li className="nav-item logout-nav">
                         <Link to="/login" onClick={handleLogout}>
                             <i className="menu-icon">
                                 <img src={Logout} alt="" />
