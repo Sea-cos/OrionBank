@@ -20,7 +20,7 @@ const Layout = () => {
         if (type === TipoUsuarioEnum.ADMIN) {
             return SidebarData;
         } else if (type === TipoUsuarioEnum.USER) {
-            return SidebarData.filter(item => item.title !== TipoUsuarioEnum.ADMIN);
+            return SidebarData.filter(item => item.title !== "Admin");
         } else {
             return [];
         }

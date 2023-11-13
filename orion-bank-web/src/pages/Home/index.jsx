@@ -15,10 +15,14 @@ const Home = () => {
     const [hideEye, setHideEye] = useState(true);
     const [saldo, setSaldo] = useState(0.00);
     const [nome, setNome] = useState("");
+    const [elementoVisivel, setElementoVisivel] = useState(true);
 
     const hideMoney = () => {
         setHideEye(!hideEye);
+        setElementoVisivel(!elementoVisivel);
     }
+
+
 
     useEffect(() => {
         const fetchSaldo = async () => {
@@ -56,13 +60,14 @@ const Home = () => {
                             <div className="card-body1">
                                 <p className="fs-20 mb-1">Saldo atual</p>
                                 <div className="saldo">
-                                    <p className="fs-23 mb-0"> R$ {saldo}</p>
+                                   {elementoVisivel && <p className="fs-23 mb-0"> R$ {saldo}</p>}
+                                   {!elementoVisivel && <p className="fs-23 mb-0"> R$ *****</p>}
                                 </div>
                             </div>
 
                             <div>
 
-                                <a onClick={hideMoney}>
+                                <a onClick={hideMoney} style={{cursor:'pointer'}}>
                                     <i className="teste">
                                         {hideEye && (
                                             <img src={EyeOpen} alt="" />
