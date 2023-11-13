@@ -4500,7 +4500,7 @@ input[type="button"].btn-block {
 }
 
 .card.card-tale:hover {
-  background: #96b2fb;
+  background: rgba(219, 70,72,0.7)
 }
 
 .card > hr {

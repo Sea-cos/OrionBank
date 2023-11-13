@@ -241,6 +241,7 @@
     .spaceb{
         justify-content: space-evenly;
         gap: 0;
+        margin-bottom: 30px;
     }
     .card.card-light-danger {
         width: 49%;
