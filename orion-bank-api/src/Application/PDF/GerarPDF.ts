@@ -1,13 +1,20 @@
 import puppeteer from "puppeteer"
+import { AbrirContaRepository } from "../../Data/Repositories/CriarConta/AbrirContaRepository";
+import { ExtratoRepository } from "../../Data/Repositories/Extrato/ExtratoRepository";
+import { ExtratoEnviadosRawQuery } from "../../Domain/RawQuery/ExtratoEnviadosRawQuery";
+import { ExtratoRecebidosRawQuery } from "../../Domain/RawQuery/ExtratoRecebidosRawQuery";
+
+const _extratoRepository = new ExtratoRepository()
+const _contaRepository = new AbrirContaRepository()
 
 export async function GerarPDF() {
 
-    const outputPath = `C:\\temp\\output.pdf`;
+    const outputPath = `C:\\Users\\gustavo_santo\\Documents\\SA\\output.pdf`;
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.setContent(PegarHTML());
+    await page.setContent(await PegarHTML());
 
     await page.pdf({ 
         path: outputPath, 
@@ -21,7 +28,7 @@ export async function GerarPDF() {
 
 }
 
-function PegarHTML() : string {
+async function PegarHTML() : Promise<string> {
     return `
     <html>
         <body>
@@ -29,7 +36,7 @@ function PegarHTML() : string {
             <br>
             <br>
             ${ObterHTMLCabecalhoValores()}
-            ${ObterHTMLValoresExtrato("")}
+            ${await ObterHTMLValoresExtrato("8eb20cc6-6ecd-11ee-a9fc-d09466b8849a")}
         </body>
     </html>
     `;
@@ -40,8 +47,8 @@ function ObterDataAtual(dataAtual: Date) : string {
 
     const ano = dataCompleta.getFullYear();
     const mes = dataCompleta.getMonth() + 1;
-    const dia = dataCompleta.getDate();
-
+    let dia: string = dataCompleta.getDate().toString();
+    dia = parseInt(dia) < 10 ? `0${dia}` : dia;
     return `${dia}/${mes}/${ano}`;
 }
 
@@ -196,9 +203,43 @@ function ObterHTMLCabecalhoValores() : string {
     `;
 }
 
-function ObterHTMLValoresExtrato(codigoConta: string) : string {
+async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
 
+    const enviados = await _extratoRepository.ObterMovimentacaoEnviados(codigoConta);
+    const recebidos = await _extratoRepository.ObterMovimentacaoRecebidos(codigoConta);
 
+    if(enviados.length == 0 && recebidos.length == 0)
+        throw new Error("Sem movimentações para está conta.");
+
+    let html: string = "";
+
+    if(enviados.length != 0) {
+
+        for (let cont = 0; cont < enviados.length; cont++) {
+            
+            const contaDestino = await _contaRepository.BuscarContaPorCodigo(enviados[cont].CodigoContaDestino);
+
+            if(contaDestino != null) {
+            
+                html += MontarHTMLValores(enviados[cont], contaDestino.NomeCompleto);
+                
+            }
+        }
+    }
+
+    if(recebidos.length != 0) {
+
+        for (let cont = 0; cont < recebidos.length; cont++) {
+            
+            const contaDestino = await _contaRepository.BuscarContaPorCodigo(recebidos[cont].CodigoContaOrigem);
+
+            if(contaDestino != null) {
+            
+                //html += MontarHTMLValores(recebidos[cont], contaDestino.NomeCompleto);
+                
+            }
+        }
+    }
 
     return `
         <div style="
@@ -210,8 +251,83 @@ function ObterHTMLValoresExtrato(codigoConta: string) : string {
             border: 1px solid rgb(94, 92, 92);
         ">
         
-
+            ${html}
 
         </div>
     `;
+}
+
+
+function MontarHTMLValores(movi: ExtratoEnviadosRawQuery, nome: string) : string {
+
+    return `
+        <div style="
+                width: 100%;
+                display: flex;
+                grid-template-columns: repete(5, 1fr); 
+            ">
+            
+            <div style="
+                width: 10%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                ${ObterDataAtual(movi.Data)}
+            </div>
+
+            <div style="
+                width: 20%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                ${movi.TipoTransacao}
+            </div>
+
+            <div style="
+                width: 20%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                ${nome}
+            </div>
+
+            <div style="
+                width: 15%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                ${movi.Descricao}
+            </div>
+
+            <div style="
+                width: 15%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                R$ ${movi.Valor}
+            </div>
+        </div>
+        
+    `;
+
 }
