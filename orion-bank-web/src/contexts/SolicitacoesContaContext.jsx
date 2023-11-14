@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext } from "react";
 import { solicitarConta, buscarSolicitacoes, aprovar, reprovar } from "../services/solicitacoesContaApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { useNavigate } from "react-router-dom";
+import { format, parse } from 'date-fns';
 
 export const SolicitacoesContaContext = createContext();
 
@@ -16,7 +17,7 @@ export function SolicitacoesContaProvider({ children }) {
                 documentoFederal: solicitacao.documentoFederal.replace(/\D/g, ''),
                 nomeCompleto: `${solicitacao.nome} ${solicitacao.sobrenome}`,
                 email: solicitacao.email,
-                dtNasc: solicitacao.dtNasc,
+                dtNasc: format(parse(solicitacao.dtNasc, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd'),
                 telefoneCelular: solicitacao.telefoneCelular.replace(/\D/g, ''),
                 cep: solicitacao.cep.replace(/\D/g, ''),
                 logradouro: solicitacao.logradouro,

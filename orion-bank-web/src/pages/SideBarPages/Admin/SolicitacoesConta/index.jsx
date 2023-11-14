@@ -69,11 +69,11 @@ const SolicitacoesConta = () => {
     return (
         <div className="container-solicitar">
             <div className="title-solicitar">
-                <h5 className="titulo-h5">Solicitações de Contas</h5>
+                <h3 className="titulo-h5"> {'->'} Solicitações de Contas</h3>
             </div>
 
             <div className="card-solicitar">
-                <Modal show={modalIsOpen}>
+                <Modal show={modalIsOpen} centered >
                     <Modal.Header>
                         <Modal.Title>Informações da Conta</Modal.Title>
                     </Modal.Header>
@@ -81,7 +81,7 @@ const SolicitacoesConta = () => {
                         <p>Nome Completo: {selectedMensagemConta.NomeCompleto}</p>
                         <p>Documento Federal: {selectedMensagemConta.DocumentoFederal}</p>
                         <p>Email: {selectedMensagemConta.Email}</p>
-                        <p>Data Nascimento: {selectedMensagemConta.DtNasc}</p>
+                        <p>Data Nascimento: {formatarData(selectedMensagemConta.DtNasc)}</p>
                         <p>Telefone Celular: {selectedMensagemConta.TelefoneCelular}</p>
                         <p>CEP: {selectedMensagemConta.CEP}</p>
                         <p>Logradouro: {selectedMensagemConta.Logradouro}</p>
@@ -93,8 +93,8 @@ const SolicitacoesConta = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <div>
-                    <Table striped bordered hover>
+                <div className="table-solicitar">
+                    <Table striped bordered hover responsive>
                         <thead>
                             <tr>
                                 <th className="hidden">Codigo</th>

@@ -65,7 +65,7 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Cadastrar Chave',
-        path: '',
+        path: 'cadastrarChave',
         cName: 'sub-nav'
       },
       {

@@ -1,0 +1,62 @@
+.container-cadastrar {
+    padding: 20px;
+    padding-bottom: 5%;
+    width: 100%;
+    height: 100%;
+}
+
+.card-cadastrar {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.219);
+    padding: 50px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title-solicitar {
+    display: flex;
+}
+
+.titulo-h5 {
+    color: #7a7a7a65;
+}
+
+.div-descricao {
+    width: 40%;
+}
+
+.btn.btn-secondary.button-add-chave {
+    background: #DB4648;
+    border-color: #DB4648;
+    margin-top: 3%;
+}
+
+#button-cadastrar:hover {
+    background: #e27577;
+    border-color: #e27577;
+}
+
+.table-consulta-chave {
+    margin-top: 2%;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+}
+
+.tipo-chave {
+    text-align: start;
+    cursor: pointer;
+}
+
+.valor-chave {
+    color: #7a7a7af8;
+    text-align: start;
+    cursor: pointer;
+}
+
+.table.table-cadastra-chave {
+    margin-bottom: 0px;
+}

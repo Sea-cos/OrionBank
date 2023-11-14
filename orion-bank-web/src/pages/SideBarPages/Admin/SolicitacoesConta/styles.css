@@ -1,6 +1,6 @@
 .container-solicitar {
     padding: 20px;
-    padding-bottom: 50px;
+    padding-bottom: 5%;
     width: 100%;
     height: 100%;
 }
@@ -10,6 +10,8 @@
     width: 100%;
     height: 100%;
     box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.219);
+    padding: 50px;
+    border-radius: 5px;
 }
 
 .title-solicitar {
@@ -44,4 +46,10 @@
 .custom-table {
     margin-bottom: 1rem;
     color: #000000;
+}
+
+.table-solicitar{
+    height: 100%;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
 }

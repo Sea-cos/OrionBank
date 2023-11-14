@@ -43,7 +43,7 @@ const SucessoRecuperarSenha = () => {
 
                                                 <div>
                                                     <div className="container-texto">
-                                                        <div className="text-center">
+                                                        <div className="text-center custom-center-success">
                                                             <label>
                                                                 Senha recuperada com sucesso!
                                                             </label>

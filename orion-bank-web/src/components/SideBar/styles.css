@@ -7,6 +7,7 @@ li {
     margin-top: 1.45rem;
     margin-left: 1rem;
     margin-right: 1rem;
+    z-index: 10;
 }
 
 #sidebar.sidebar-open .sub-nav>li>a {
@@ -100,7 +101,7 @@ li {
 
 #sidebar.sidebar-closed .custom-ul {
     margin-top: 1.45rem;
-    z-index: 10
+    z-index: 10;
 }
 
 #sidebar.sidebar-closed.custom ul li a {
