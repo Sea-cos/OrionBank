@@ -2,13 +2,12 @@ import puppeteer from "puppeteer"
 
 export async function GerarPDF() {
 
-    const htmlContent = PegarHTML();
     const outputPath = `C:\\temp\\output.pdf`;
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.setContent(htmlContent);
+    await page.setContent(PegarHTML());
 
     await page.pdf({ 
         path: outputPath, 
@@ -26,43 +25,18 @@ function PegarHTML() : string {
     return `
     <html>
         <body>
-            <div class="cabecalho" 
-                style="
-                        width: 100%;
-                        height: 15%;
-                        border: 2px solid rgb(94, 92, 92);
-                ">
-                <p style="
-                    margin-top: 30px;
-                ">
-                    ${PegarLogo()}
-                </p>
-                <p style="
-                        color: black;
-                        display: flex;
-                        justify-content: flex-end;
-                        margin-right: 10px;
-                        margin-top: -110px;
-                ">
-                    Emisão: ${PegarDataAtual()}
-                </p>
-                <p style="
-                        color: black;
-                        display: flex;
-                        justify-content: center;
-                        font-size: 25px;
-                        margin-top: 85px;
-                ">
-                    EXTRATO BANCÁRIO
-                </p>
-            </div>
+            ${ObterHTMLCabecaloExtrato()}
+            <br>
+            <br>
+            ${ObterHTMLCabecalhoValores()}
+            ${ObterHTMLValoresExtrato("")}
         </body>
     </html>
     `;
 }
 
-function PegarDataAtual() : string {
-    const dataCompleta = new Date();
+function ObterDataAtual(dataAtual: Date) : string {
+    const dataCompleta: Date = dataAtual.toString() === "" ? new Date() : dataAtual
 
     const ano = dataCompleta.getFullYear();
     const mes = dataCompleta.getMonth() + 1;
@@ -71,8 +45,7 @@ function PegarDataAtual() : string {
     return `${dia}/${mes}/${ano}`;
 }
 
-
-function PegarLogo() : string {
+function ObterLogo() : string {
     return `
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
         width="168" height="70" viewBox="0 0 598.000000 193.000000"
@@ -112,4 +85,133 @@ function PegarLogo() : string {
         </g>
         </svg>`
    ;
+}
+
+function ObterHTMLCabecaloExtrato() : string {
+    return `
+        <div style="
+            width: 100%;
+            height: 15%;
+            border: 2px solid rgb(94, 92, 92);
+        ">
+        <p style="
+            margin-top: 30px;
+        ">
+            ${ObterLogo()}
+        </p>
+        <p style="
+                color: black;
+                display: flex;
+                justify-content: flex-end;
+                margin-right: 10px;
+                margin-top: -110px;
+        ">
+            Emisão: ${ObterDataAtual(new Date())}
+        </p>
+        <p style="
+                color: black;
+                display: flex;
+                justify-content: center;
+                font-size: 25px;
+                margin-top: 85px;
+        ">
+            EXTRATO BANCÁRIO
+        </p>
+        </div>
+    `;
+}
+
+function ObterHTMLCabecalhoValores() : string {
+    return `
+        <div style="
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border: 1px solid rgb(94, 92, 92);
+        ">
+
+            <div style="
+                width: 10%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                DATA
+            </div>
+
+            <div style="
+                width: 20%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                TIPO TRANSAÇÃO
+            </div>
+
+            <div style="
+                width: 20%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                LANÇAMENTO
+            </div>
+
+            <div style="
+                width: 15%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                DESCRIÇÃO
+            </div>
+
+            <div style="
+                width: 15%;
+                padding: 5px;
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(94, 92, 92);
+            ">
+                VALOR
+            </div>
+        </div>
+    `;
+}
+
+function ObterHTMLValoresExtrato(codigoConta: string) : string {
+
+
+
+    return `
+        <div style="
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgb(94, 92, 92);
+        ">
+        
+
+
+        </div>
+    `;
 }
