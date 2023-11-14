@@ -9,3 +9,10 @@ export const SituacaoEnum = {
     RECUSADA: 3,
     APROVADA: 4
 };
+
+export const TipoChavePixEnum = {
+    CPF: 1,
+    EMAIL: 2,
+    TELEFONE: 3,
+    EVP: 4
+};

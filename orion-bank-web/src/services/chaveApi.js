@@ -17,3 +17,12 @@ export const criarChave = async (request) => {
         throw error;
     }
 }
+
+export const obterChavesPorConta = async (conta) => {
+    try {
+        const response = await api.get(`/chavePix/obterPorCodigoConta?codigoConta=${conta}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
