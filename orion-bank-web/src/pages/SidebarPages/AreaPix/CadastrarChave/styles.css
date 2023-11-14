@@ -27,6 +27,7 @@
 
 .div-descricao {
     width: 40%;
+    text-align: justify;
 }
 
 .btn.btn-secondary.button-add-chave {

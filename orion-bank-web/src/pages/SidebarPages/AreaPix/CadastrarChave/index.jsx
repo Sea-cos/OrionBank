@@ -1,10 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
+import { ChaveContext } from "../../../../contexts/ChaveContext";
+import Key from "../../../../assets/img/key.svg";
 import Trash from '../../../../assets/img/trash.svg'
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import "./styles.css"
 
 const CadastrarChave = () => {
+    const chaveContext = useContext(ChaveContext);
+    const criarChavePix = chaveContext.criarChavePix;
     const [chaves, setChaves] = useState([]);
 
     useEffect(() => {
@@ -14,11 +18,11 @@ const CadastrarChave = () => {
 
         setChaveFake();
     }, []);
-
+ 
     return (
         <div className="container-cadastrar">
             <div className="title-solicitar">
-                <h3 className="titulo-h5"> {'->'} Cadastrar Chave</h3>
+                <h3 className="titulo-h5"> <img src={Key}></img> Cadastrar Chave</h3>
             </div>
             <div className="card-cadastrar">
                 <div>

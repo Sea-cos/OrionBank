@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { SolicitacoesContaContext } from "../../../../contexts/SolicitacoesContaContext";
 import { SituacaoEnum } from '../../../../constants/enums';
+import PersonLock from "../../../../assets/img/person-lock.svg";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
@@ -69,7 +70,7 @@ const SolicitacoesConta = () => {
     return (
         <div className="container-solicitar">
             <div className="title-solicitar">
-                <h3 className="titulo-h5"> {'->'} Solicitações de Contas</h3>
+                <h3 className="titulo-h5"> <img src={PersonLock}></img> Solicitações de Contas</h3>
             </div>
 
             <div className="card-solicitar">

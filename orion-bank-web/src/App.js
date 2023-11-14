@@ -7,6 +7,7 @@ import { SolicitacoesContaProvider } from "./contexts/SolicitacoesContaContext";
 import { BuscarCEPProvider } from "./contexts/BuscarCEPContext";
 import { RecuperarSenhaProvider } from "./contexts/RecuperarSenhaContext";
 import { ContaProvider } from "./contexts/ContaContext";
+import { ChaveProvider } from "./contexts/ChaveContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -21,8 +22,10 @@ function App() {
               <BuscarCEPProvider>
                 <AuthProvider>
                   <ContaProvider>
-                    <AppRoutes />
-                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                    <ChaveProvider>
+                      <AppRoutes />
+                      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                    </ChaveProvider>
                   </ContaProvider>
                 </AuthProvider>
               </BuscarCEPProvider>
