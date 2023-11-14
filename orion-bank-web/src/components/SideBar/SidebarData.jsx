@@ -70,7 +70,7 @@ export const SidebarData = [
       },
       {
         title: 'Pix Por Chave',
-        path: '',
+        path: 'pixPorChave',
         cName: 'sub-nav'
       },
       {
