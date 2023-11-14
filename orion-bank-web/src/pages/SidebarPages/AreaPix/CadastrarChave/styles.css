@@ -21,6 +21,11 @@
     display: flex;
 }
 
+.modal-cadastro{
+    display: flex;
+    flex-direction: row;
+}
+
 .titulo-h5 {
     color: #7a7a7a65;
 }
@@ -60,4 +65,9 @@
 
 .table.table-cadastra-chave {
     margin-bottom: 0px;
+}
+
+.campo-cadastro{
+    width: 35%;
+    margin-right: 20px;
 }

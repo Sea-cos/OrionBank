@@ -1,10 +1,13 @@
 import React, { createContext, useContext } from "react";
 import { showErrorNotification } from '../shared/notificationUtils';
-import { criarChave } from "../services/chaveApi";
+import { criarChave, obterChavesPorConta } from "../services/chaveApi";
+import { AuthContext } from "./AuthContext";
+
 
 export const ChaveContext = createContext();
 
 export function ChaveProvider({ children }) {
+    const { user } = useContext(AuthContext);
 
     const criarChavePix = async (request) => {
         try {
@@ -14,8 +17,16 @@ export function ChaveProvider({ children }) {
         }
     };
 
+    const obterChavesPix = async () => {
+        try {
+           return await obterChavesPorConta(user.codigo);
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
     return (
-        <ChaveContext.Provider value={{ criarChavePix }}>
+        <ChaveContext.Provider value={{user, criarChavePix, obterChavesPix }}>
             {children}
         </ChaveContext.Provider>
     );
