@@ -1,15 +1,14 @@
 import puppeteer from "puppeteer"
 import { AbrirContaRepository } from "../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { ExtratoRepository } from "../../Data/Repositories/Extrato/ExtratoRepository";
-import { ExtratoEnviadosRawQuery } from "../../Domain/RawQuery/ExtratoEnviadosRawQuery";
-import { ExtratoRecebidosRawQuery } from "../../Domain/RawQuery/ExtratoRecebidosRawQuery";
+import { TipoTransacao } from "../../Enums/TipoTransacao";
 
 const _extratoRepository = new ExtratoRepository()
 const _contaRepository = new AbrirContaRepository()
 
 export async function GerarPDF() {
 
-    const outputPath = `C:\\Users\\gustavo_santo\\Documents\\SA\\output.pdf`;
+    const outputPath = `C:\\temp\\output.pdf`;
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -36,7 +35,7 @@ async function PegarHTML() : Promise<string> {
             <br>
             <br>
             ${ObterHTMLCabecalhoValores()}
-            ${await ObterHTMLValoresExtrato("8eb20cc6-6ecd-11ee-a9fc-d09466b8849a")}
+            ${await ObterHTMLValoresExtrato("f53f6fe4-79bd-11ee-87f0-d094669f0d10")}
         </body>
     </html>
     `;
@@ -221,7 +220,13 @@ async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
 
             if(contaDestino != null) {
             
-                html += MontarHTMLValores(enviados[cont], contaDestino.NomeCompleto);
+                html += MontarHTMLValores(
+                    enviados[cont].Data,
+                    enviados[cont].TipoTransacao,
+                    enviados[cont].Descricao,
+                    `-${enviados[cont].Valor}`,
+                    contaDestino.NomeCompleto
+                );
                 
             }
         }
@@ -235,7 +240,13 @@ async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
 
             if(contaDestino != null) {
             
-                //html += MontarHTMLValores(recebidos[cont], contaDestino.NomeCompleto);
+                html += MontarHTMLValores(
+                    recebidos[cont].Data,
+                    recebidos[cont].TipoTransacao,
+                    recebidos[cont].Descricao,
+                    `+${recebidos[cont].Valor}`,
+                    contaDestino.NomeCompleto
+                );
                 
             }
         }
@@ -250,84 +261,93 @@ async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
             justify-content: center;
             border: 1px solid rgb(94, 92, 92);
         ">
-        
-            ${html}
+            <div style="
+                width: 100%;
+                display: grid;            
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr; 
+            ">
+                ${html}
+            </div>
 
         </div>
     `;
 }
 
 
-function MontarHTMLValores(movi: ExtratoEnviadosRawQuery, nome: string) : string {
+function MontarHTMLValores(data: Date, tipoTransacao: string, descricao: string, valor: string, nome: string) : string {
 
-    return `
+    return `            
         <div style="
-                width: 100%;
-                display: flex;
-                grid-template-columns: repete(5, 1fr); 
-            ">
-            
-            <div style="
-                width: 10%;
-                padding: 5px;
-                margin: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid rgb(94, 92, 92);
-            ">
-                ${ObterDataAtual(movi.Data)}
-            </div>
-
-            <div style="
-                width: 20%;
-                padding: 5px;
-                margin: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid rgb(94, 92, 92);
-            ">
-                ${movi.TipoTransacao}
-            </div>
-
-            <div style="
-                width: 20%;
-                padding: 5px;
-                margin: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid rgb(94, 92, 92);
-            ">
-                ${nome}
-            </div>
-
-            <div style="
-                width: 15%;
-                padding: 5px;
-                margin: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid rgb(94, 92, 92);
-            ">
-                ${movi.Descricao}
-            </div>
-
-            <div style="
-                width: 15%;
-                padding: 5px;
-                margin: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid rgb(94, 92, 92);
-            ">
-                R$ ${movi.Valor}
-            </div>
+            width: 80px;
+            padding: 5px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            ${ObterDataAtual(data)}
         </div>
-        
+
+        <div style="
+            width: 25px;
+            padding: 5px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            ${ObterTipoTransacao(parseInt(tipoTransacao))}
+        </div>
+
+        <div style="
+            width: 140px;
+            padding: 5px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            ${nome}
+        </div>
+
+        <div style="
+            width: 140px;
+            padding: 5px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            ${descricao}
+        </div>
+
+        <div style="
+            width: 100px;
+            padding: 5px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            R$ ${valor}
+        </div>       
     `;
 
+}
+
+function ObterTipoTransacao(tipoTransacao: number) : string {
+    switch (tipoTransacao) {
+        
+        case TipoTransacao.Pix:
+            return "PIX"
+
+        case TipoTransacao.Ted:
+            return "TED"
+
+        case TipoTransacao.QrCode:
+            return "QRCODE"
+        
+        default:
+            return "Erro tipo transação."
+    }
 }

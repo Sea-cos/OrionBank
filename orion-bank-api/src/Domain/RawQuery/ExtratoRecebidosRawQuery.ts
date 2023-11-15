@@ -4,6 +4,6 @@ export interface ExtratoRecebidosRawQuery {
     Data: Date
     Descricao: string
     TipoTransacao: string
-    Valor: number
+    Valor: string
     CodigoContaOrigem: string 
 }

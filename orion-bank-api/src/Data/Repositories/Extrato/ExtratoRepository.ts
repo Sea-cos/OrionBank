@@ -10,7 +10,7 @@ export class ExtratoRepository implements IExtratoRepository {
         
         const sql = `SELECT
                         m.DtMovimento Data,
-                        m.DescTransacao Descricao,
+                        m.InfoAdicional Descricao,
                         m.TipoTransacao,
                         m.Valor,
                         m.CodigoContaDestino 
@@ -35,7 +35,7 @@ export class ExtratoRepository implements IExtratoRepository {
         
         const sql = `SELECT
                         m.DtMovimento Data,
-                        m.DescTransacao Descricao,
+                        m.InfoAdicional Descricao,
                         m.TipoTransacao,
                         m.Valor,
                         m.CodigoContaOrigem 
