@@ -50,18 +50,23 @@ export class ChavePixRepository implements IChavePixRepository {
 
     async ObterChavePixPorCodigoConta(codigoConta: string): Promise<Array<ChavePix>> {
 
+        const parametros = [
+            codigoConta,
+            Situacao.Ativa
+        ]
+
         const sql = `SELECT *
                     FROM 
                         chave_pix
                     WHERE
-                        CodigoConta = ?`
+                        CodigoConta = ? 
+                    AND
+                        Situacao = ?`
 
         const chavesPix = await (await connection).query(
-                            sql,
-                            [
-                                codigoConta
-                            ]
-                        ) as any
+            sql,
+            parametros
+        ) as any
 
         return chavesPix[0] as Array<ChavePix>
 

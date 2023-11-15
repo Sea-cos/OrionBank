@@ -6,28 +6,26 @@ import { TipoTransacao } from "../../Enums/TipoTransacao";
 const _extratoRepository = new ExtratoRepository()
 const _contaRepository = new AbrirContaRepository()
 
-export async function GerarPDF() {
+export async function GerarPDF(codigoConta: string) {
 
-    const outputPath = `C:\\temp\\output.pdf`;
+    const nomeArquivo = `${codigoConta}.pdf`;
+    const path = `./ImportarExtrato/${nomeArquivo}`;
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.setContent(await PegarHTML());
+    await page.setContent(await PegarHTML(codigoConta));
 
     await page.pdf({ 
-        path: outputPath, 
+        path: path, 
         format: 'A4',
         preferCSSPageSize: true  
     });
 
     await browser.close();
-
-    console.log(`PDF gerado com sucesso em: ${outputPath}`);
-
 }
 
-async function PegarHTML() : Promise<string> {
+async function PegarHTML(codigoConta: string) : Promise<string> {
     return `
     <html>
         <body>
@@ -35,7 +33,7 @@ async function PegarHTML() : Promise<string> {
             <br>
             <br>
             ${ObterHTMLCabecalhoValores()}
-            ${await ObterHTMLValoresExtrato("f53f6fe4-79bd-11ee-87f0-d094669f0d10")}
+            ${await ObterHTMLValoresExtrato(codigoConta)}
         </body>
     </html>
     `;
@@ -236,16 +234,16 @@ async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
 
         for (let cont = 0; cont < recebidos.length; cont++) {
             
-            const contaDestino = await _contaRepository.BuscarContaPorCodigo(recebidos[cont].CodigoContaOrigem);
+            const contaOrigem = await _contaRepository.BuscarContaPorCodigo(recebidos[cont].CodigoContaOrigem);
 
-            if(contaDestino != null) {
+            if(contaOrigem != null) {
             
                 html += MontarHTMLValores(
                     recebidos[cont].Data,
                     recebidos[cont].TipoTransacao,
                     recebidos[cont].Descricao,
                     `+${recebidos[cont].Valor}`,
-                    contaDestino.NomeCompleto
+                    contaOrigem.NomeCompleto
                 );
                 
             }
@@ -272,7 +270,6 @@ async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
         </div>
     `;
 }
-
 
 function MontarHTMLValores(data: Date, tipoTransacao: string, descricao: string, valor: string, nome: string) : string {
 
