@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ChaveContext } from "../../../../contexts/ChaveContext";
+import { TipoChavePixEnum } from '../../../../constants/enums';
+import NotFound from "../../../../assets/img/undraw_stars.svg";
 import Key from "../../../../assets/img/key.svg";
 import Trash from '../../../../assets/img/trash.svg'
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-import { TipoChavePixEnum } from '../../../../constants/enums';
 import Modal from 'react-bootstrap/Modal';
 import "./styles.css"
 
@@ -61,7 +62,6 @@ const CadastrarChave = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <div className="modal-cadastro">
-
                             <select id="tipoDeChave" name="tipoDeChave" className="form-control campo-cadastro">
                                 {Object.values(TipoChavePixEnum).map((tipo, index) => (
                                     <option key={index} value={tipo}>
@@ -79,7 +79,6 @@ const CadastrarChave = () => {
                                 maxLength={8}
                             />
                         </div>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="success" onClick={closeModal}>
@@ -91,7 +90,7 @@ const CadastrarChave = () => {
                     </Modal.Footer>
                 </Modal>
                 <div>
-                    <h2 style={{color: '#DB4648'}}>Minhas chaves Pix</h2>
+                    <h2 style={{ color: '#DB4648' }}>Minhas chaves Pix</h2>
                 </div>
                 <div className="div-descricao">
                     <h5 className="titulo-chaves">Com suas chaves, você pode receber Pix através de QR codes ou links e se identificar de forma rápida para receber transferências.</h5>
@@ -127,7 +126,10 @@ const CadastrarChave = () => {
                     </Table>
                 </div>
                 {chaves.length === 0 && (
-                    <h5 className="msg-sem-chaves">Você ainda não possui chaves =(</h5>
+                    <div>
+                        <img src={NotFound}></img>
+                        <h5 className="mt-3" style={{ color: "#3f3d56" }}>Você ainda não possui chaves cadastradas.</h5>
+                    </div>
                 )}
             </div>
         </div>

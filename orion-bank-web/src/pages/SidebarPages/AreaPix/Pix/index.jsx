@@ -1,5 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
+import { TipoChavePixEnum } from '../../../../constants/enums';
+import { showErrorNotification } from '../../../../shared/notificationUtils';
+import { ChaveContext } from "../../../../contexts/ChaveContext";
+import CurrencyInput from "../../../../components/MoneyInput";
 import Icon from "../../../../assets/img/pix-icon.svg";
+import NotFound from "../../../../assets/img/undraw_no_data.svg";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
@@ -8,12 +13,19 @@ import "./styles.css"
 const Pix = () => {
     const [modalPixChaveIsOpen, setOpenModalPixChave] = useState(false);
     const [modalPixCopiaColaIsOpen, setOpenModalPixCopiaCola] = useState(false);
+    const [chavesFavoritas, setChavesFavoritas] = useState([{ TipoChave: 1, Chave_Pix: '08175537973', Nome: 'Nicolas Porto' }]);
+    const [chavePix, setChavePix] = useState('');
+    const [valor, setValor] = useState('R$ 0,00');
+    const [responseConsulta, setResponseConsulta] = useState({ Nome: 'Nicolas Porto' });
 
     const openModalPixChave = () => {
         setOpenModalPixChave(true);
     };
 
     const closeModalPixChave = () => {
+        setChavePix('');
+        setValor('R$ 0,00');
+        setEtapa(1);
         setOpenModalPixChave(false);
     };
 
@@ -25,8 +37,69 @@ const Pix = () => {
         setOpenModalPixCopiaCola(false);
     };
 
+    const [etapa, setEtapa] = useState(1);
+
+    const avancarEtapa = () => {
+        const isValid = validarAvancoEtapa();
+        if (isValid) {
+            setEtapa(etapa + 1);
+        }
+    };
+
+    const retrocederEtapa = () => {
+        setEtapa(etapa - 1);
+    }
+
+    const validarAvancoEtapa = () => {
+        switch (etapa) {
+            case 1:
+                if (chavePix === "") {
+                    showErrorNotification("Informe a chave pix.");
+                    return false;
+                }
+                break;
+
+            case 2:
+                if (formatValueForDisplay(valor) === 0) {
+                    showErrorNotification("Informe o valor a pagar.");
+                    return false;
+                }
+        }
+
+        return true;
+    };
+
     useEffect(() => {
     }, []);
+
+    function formatarEnum(situacao) {
+        switch (situacao) {
+            case TipoChavePixEnum.CPF:
+                return 'CPF';
+            case TipoChavePixEnum.EMAIL:
+                return 'Email';
+            case TipoChavePixEnum.TELEFONE:
+                return 'Telefone';
+            case TipoChavePixEnum.EVP:
+                return 'EVP';
+            default:
+                return 'Desconhecida';
+        }
+    }
+
+    const formatValueForDisplay = (value) => {
+
+        if (value === ""){
+            return 0;
+        }
+
+        const formattedValue = parseFloat(value.replace('R$ ', '').replace('.', '').replace(',', '.'));
+        return formattedValue;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    };
 
     return (
         <div className="container-pix">
@@ -38,24 +111,98 @@ const Pix = () => {
                     <h2 style={{ color: '#DB4648' }}>Escolha o tipo desejado:</h2>
                 </div>
 
-                <div className="card-pix-por-chave">
+                <div className="card-pix-buttons">
                     <button type="submit" className="botao-um button-pix" onClick={openModalPixChave}> Pix Por Chave </button>
                     <button type="submit" className="botao-um button-pix" onClick={openModalPixCopiaCola}> Pix Copia e Cola </button>
                     <button type="submit" className="botao-um button-pix"> Ler QRCode </button>
                 </div>
 
                 <Modal show={modalPixChaveIsOpen} centered >
-                    <Modal.Header>
-                        <Modal.Title>Pix Por Chave</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        aaa
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={closeModalPixChave}>
-                            Fechar
-                        </Button>
-                    </Modal.Footer>
+                    <form onSubmit={handleSubmit}>
+                        <Modal.Header>
+                            <Modal.Title style={{ color: '#DB4648' }}>Pix Por Chave</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="container-pix-por-chave">
+                                {etapa === 1 && (
+                                    <>
+                                        <div>
+                                            <label className="mt-4" style={{ color: "#3f3d56" }}>Chave</label>
+                                            <input
+                                                type="text"
+                                                className="form-control chave-pix"
+                                                id="chavePix"
+                                                placeholder="CPF, celular, e-mail ou aleatória"
+                                                name="nome"
+                                                maxLength={8}
+                                                value={chavePix}
+                                                onChange={(e) => setChavePix(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="table-chave-favorita">
+                                            <label className="mt-5" style={{ color: "#3f3d56" }}>Chaves Favoritas</label>
+                                            {chavesFavoritas.length > 0 && (
+                                                <Table hover responsive className="table-favorita-chave table-rounded">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="hidden">Codigo</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {chavesFavoritas.map((record, index) => (
+                                                            <tr key={index} >
+                                                                <td className="hidden">{record.Codigo}</td>
+                                                                <td>
+                                                                    <div className="tipo-chave">
+                                                                        <span><strong>{formatarEnum(record.TipoChave)} - {record.Nome}</strong></span>
+                                                                    </div>
+                                                                    <div className="valor-chave">
+                                                                        <span>{record.Chave_Pix}</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </Table>
+                                            )}
+                                            {chavesFavoritas.length === 0 && (
+                                                <div className="not-found-favoritas mt-2">
+                                                    <img src={NotFound}></img>
+                                                    <label className="mt-3" style={{ color: "#3f3d56", fontSize: "11px" }}>Você ainda não possui chaves favoritas.</label>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+
+                                {etapa === 2 && (
+                                    <>
+                                        <div className="body-pagar">
+                                            <label className="mt-4" style={{ color: "#3f3d56", fontSize: '20px' }}>Valor a pagar</label>
+                                            <CurrencyInput className="valor-pix" style={{ fontSize: '5rem' }} value={valor} onValueChange={setValor} />
+                                            <label className="mt-4 mb-0" style={{ color: "#3f3d56", fontSize: '13px' }}>Pagar para</label>
+                                            <label style={{ color: "#DB4648", fontSize: '15px' }}>{responseConsulta.Nome}</label>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            {etapa === 3 && (
+                                <Button variant="success" onClick={handleSubmit}>
+                                    Confirmar
+                                </Button>
+                            )}
+                            {etapa !== 3 && (
+                                <Button variant="primary" onClick={avancarEtapa}>
+                                    Continuar
+                                </Button>
+                            )}
+                            <Button variant="danger" onClick={closeModalPixChave}>
+                                Cancelar
+                            </Button>
+                        </Modal.Footer>
+                    </form>
                 </Modal>
 
                 <Modal show={modalPixCopiaColaIsOpen} centered >
@@ -71,7 +218,6 @@ const Pix = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
             </div>
         </div>
     );

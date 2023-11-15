@@ -40,3 +40,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `npm install jsonwebtoken`
 
 ### `npm i react-toastify@9.0.3`
+### `npm install react-number-format`
