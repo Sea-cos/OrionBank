@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ContaContext } from "../../contexts/ContaContext";
-import btnPix from "../../assets/img/logoPix.png"
-import btnExtrato from "../../assets/img/logoExtrato.png"
-import btnTransf from "../../assets/img/logoTransf.png"
-import btnConta from "../../assets/img/logoConta.png"
+import btnPix from "../../assets/img/logoPix.svg"
+import btnExtrato from "../../assets/img/logoExtrato.svg"
+import btnTransf from "../../assets/img/logoTransf.svg"
+import btnConta from "../../assets/img/logoConta.svg"
 import imgCard from "../../assets/img/cartao2img.svg"
 import EyeOpen from "../../assets/img/EyeOpen.svg";
 import EyeClose from "../../assets/img/EyeClose.svg";
@@ -21,8 +21,6 @@ const Home = () => {
         setHideEye(!hideEye);
         setElementoVisivel(!elementoVisivel);
     }
-
-
 
     useEffect(() => {
         const fetchSaldo = async () => {
@@ -60,14 +58,13 @@ const Home = () => {
                             <div className="card-body1">
                                 <p className="fs-20 mb-1">Saldo atual</p>
                                 <div className="saldo">
-                                   {elementoVisivel && <p className="fs-23 mb-0"> R$ {saldo}</p>}
-                                   {!elementoVisivel && <p className="fs-23 mb-0"> R$ *****</p>}
+                                    {elementoVisivel && <p className="fs-23 mb-0"> R$ {saldo}</p>}
+                                    {!elementoVisivel && <p className="fs-23 mb-0"> R$ *****</p>}
                                 </div>
                             </div>
 
                             <div>
-
-                                <a onClick={hideMoney} style={{cursor:'pointer'}}>
+                                <Link onClick={hideMoney} style={{ cursor: 'pointer' }}>
                                     <i className="teste">
                                         {hideEye && (
                                             <img src={EyeOpen} alt="" />
@@ -77,46 +74,37 @@ const Home = () => {
                                             <img src={EyeClose} alt="" />
                                         )}
                                     </i>
-                                </a>
+                                </Link>
                             </div>
-
                         </div>
                     </div>
 
                     <div className="row-cards">
-
                         <div className="spaceb">
+                            <div className="card card-light-danger">
+                                <div className="btn-body">
+                                    <Link to="/pix" title="Pix"> <img src={btnPix} alt=""></img> </Link>
+                                </div>
+                            </div>
+                            <div className="card card-light-danger">
+                                <div className="btn-body">
+                                    <Link to="/" title="Extrato"> <img src={btnExtrato} alt=""></img> </Link>
+                                </div>
+                            </div>
 
-                           
-                                <div className="card card-light-danger">
-                                    <div className="btn-body">
-                                        <a href="#" title="Pix"> <img src={btnPix} alt=""></img> </a>
-                                    </div>
+                            <div className="card card-light-danger">
+                                <div className="btn-body">
+                                    <Link to="/" title="Transferência"> <img src={btnTransf} alt=""></img> </Link>
                                 </div>
-                                <div className="card card-light-danger">
-                                    <div className="btn-body">
-                                        <a href="#" title="Extrato"> <img src={btnExtrato} alt=""></img> </a>
-                                    </div>
+                            </div>
+                            <div className="card card-light-danger">
+                                <div className="btn-body">
+                                    <Link to="/" title="Conta"> <img src={btnConta} alt=""></img> </Link>
                                 </div>
-                          
+                            </div>
 
-                           
-                                <div className="card card-light-danger">
-                                    <div className="btn-body">
-                                        <a href="#" title="Transferência"> <img src={btnTransf} alt=""></img> </a>
-                                    </div>
-                                </div>
-                                <div className="card card-light-danger">
-                                    <div className="btn-body">
-                                        <a href="#" title="Conta"> <img src={btnConta} alt=""></img> </a>
-                                    </div>
-                                </div>
-                            
                         </div>
-
-
                     </div>
-
                 </div>
 
                 <div className="row3">
@@ -190,7 +178,6 @@ const Home = () => {
 
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

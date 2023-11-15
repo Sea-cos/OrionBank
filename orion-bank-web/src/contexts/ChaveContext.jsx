@@ -13,7 +13,7 @@ export function ChaveProvider({ children }) {
         try {
             await criarChave(request);
         } catch (error) {
-            showErrorNotification(error.message);
+            showErrorNotification(error.response.data);
         }
     };
 
@@ -21,7 +21,7 @@ export function ChaveProvider({ children }) {
         try {
            return await obterChavesPorConta(user.codigo);
         } catch (error) {
-            showErrorNotification(error.message);
+            showErrorNotification(error.response.data);
         }
     };
 

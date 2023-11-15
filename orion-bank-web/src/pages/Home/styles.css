@@ -13,21 +13,19 @@
 .row2 {
     display: flex;
     flex-wrap: wrap;
-    /* margin-right: -0.75rem;
-    margin-left: -0.75rem; */
 }
 
-.row3{
+.row3 {
     display: flex;
     flex-wrap: wrap;
 }
 
-.row-cards{
+.row-cards {
     display: flex;
     flex-wrap: wrap;
 }
 
-.doiscard{
+.doiscard {
     display: flex;
     flex-wrap: wrap;
     gap: 28px;
@@ -42,7 +40,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 28px;
-   
+
 }
 
 .btn-body {
@@ -51,6 +49,7 @@
     padding: 1.25rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .btn-body img {
@@ -82,14 +81,14 @@
     width: 30vw
 }
 
-.titulo-tabela{
+.titulo-tabela {
     font-size: 18px;
     color: #EB4E50;
 }
 
-.card-cartao{
+.card-cartao {
     position: relative;
-    background-color: rgba(219, 70,72,0.7);
+    background-color: rgba(219, 70, 72, 0.7);
     border-radius: 9px;
     padding: 5px;
 
@@ -107,7 +106,7 @@
     border-radius: 0.25rem;
 }
 
-.cartao{
+.cartao {
     width: 50%;
 }
 
@@ -125,12 +124,12 @@
     background-color: #fff;
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 9px; 
+    border-radius: 9px;
     width: 40%;
     margin-right: 27px;
 }
 
-.texto-card{
+.texto-card {
     color: white;
     text-align: center;
     margin-bottom: 10px;
@@ -152,13 +151,13 @@
     transition: .5s ease;
     backface-visibility: hidden;
     padding-right: 5px;
-  }
+}
 
 .card-cartao:hover .middle {
     opacity: 1;
 }
 
-.card-cartao:hover .cartao-img{
+.card-cartao:hover .cartao-img {
     opacity: 0.3;
 }
 
@@ -212,44 +211,49 @@
 }
 
 @media (max-width: 1220px) {
-    .teste{
+    .teste {
         width: 100%;
         margin-right: 0;
     }
-   .row-cards{
-    width: 100%;
-    justify-content: space-evenly;
-   }
-    
+
+    .row-cards {
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
 }
 
 @media (max-width: 1158px) {
-    .row3{
+    .row3 {
         flex-direction: column;
     }
-    .tabelita{
+
+    .tabelita {
         width: 100%;
-    } 
-    .cartao{
+    }
+
+    .cartao {
         width: 100%;
         margin-top: 15px;
     }
-    
+
 }
 
 @media (max-width: 627px) {
-    .spaceb{
+    .spaceb {
         justify-content: space-evenly;
         gap: 0;
         margin-bottom: 30px;
     }
+
     .card.card-light-danger {
         width: 49%;
         height: 49%;
     }
-    .btn-body img{
+
+    .btn-body img {
         width: 100%;
-      
+
     }
 }
 
@@ -262,4 +266,3 @@
     }
  
 } */
-

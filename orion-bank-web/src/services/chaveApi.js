@@ -14,7 +14,7 @@ export const criarChave = async (request) => {
     try {
         await api.post("/chavePix/criar", request);
     } catch (error) {
-        throw error;
+        throw error.response.data;
     }
 }
 

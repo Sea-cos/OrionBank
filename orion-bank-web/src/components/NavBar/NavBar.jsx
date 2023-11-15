@@ -45,7 +45,7 @@ const NavBar = ({ toggleSidebar }) => {
                 </button>
 
                 <ul className="navbar-nav navbar-nav-right buttons-sin-logout">
-                    <Sino />
+                    <Sino notificacao={"Bem-vindo!"} message={"Estamos a sua disposição."} count={1}/>
                     <li className="nav-item logout-nav">
                         <Link to="/login" onClick={handleLogout}>
                             <i className="menu-icon">

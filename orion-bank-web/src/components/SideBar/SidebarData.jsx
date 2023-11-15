@@ -69,13 +69,8 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Pix Por Chave',
-        path: 'pixPorChave',
-        cName: 'sub-nav'
-      },
-      {
-        title: 'Pix Copia e Cola',
-        path: '',
+        title: 'Pix',
+        path: 'pix',
         cName: 'sub-nav'
       },
       {

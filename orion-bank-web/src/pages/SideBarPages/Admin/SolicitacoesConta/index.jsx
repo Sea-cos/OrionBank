@@ -67,6 +67,7 @@ const SolicitacoesConta = () => {
         const solicitacoes = await buscarSolicitacoes();
         setSolicitacoes(solicitacoes);
     };
+    
     return (
         <div className="container-solicitar">
             <div className="title-solicitar">

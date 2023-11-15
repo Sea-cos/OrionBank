@@ -12,7 +12,7 @@ import TermosPolitica from '../pages/TermosPolitica';
 
 import SolicitacoesConta from '../pages/SidebarPages/Admin/SolicitacoesConta';
 import CadastrarChave from '../pages/SidebarPages/AreaPix/CadastrarChave';
-import PixPorChave from '../pages/SidebarPages/AreaPix/PixPorChave';
+import Pix from '../pages/SidebarPages/AreaPix/Pix';
 
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
@@ -26,9 +26,9 @@ const AppRoutes = () => {
             return <div className="loading"> Carregando...</div>
         }
 
-        // if (!authenticated) {
-        //     return <Navigate to="/login" />
-        // }
+        if (!authenticated) {
+            return <Navigate to="/login" />
+        }
 
         return children;
     }
@@ -46,7 +46,7 @@ const AppRoutes = () => {
                 <Route exact index element={<Private><Home /></Private>} />
                 <Route exact path="solicitacoesConta" element={<Private><SolicitacoesConta /></Private>} />
                 <Route exact path="cadastrarChave" element={<Private><CadastrarChave /></Private>} />
-                <Route exact path="pixPorChave" element={<Private><PixPorChave /></Private>} />
+                <Route exact path="pix" element={<Private><Pix /></Private>} />
             </Route>
         </Routes>
     );

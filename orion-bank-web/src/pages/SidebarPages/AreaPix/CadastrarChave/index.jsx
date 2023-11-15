@@ -18,8 +18,10 @@ const CadastrarChave = () => {
     useEffect(() => {
         const buscarChaves = async () => {
             const response = await obterChavesPix();
+            if (response !== undefined) {
+                setChaves(response);
+            }
             console.log(response);
-            setChaves(response);
         }
         buscarChaves();
     }, []);
@@ -89,10 +91,10 @@ const CadastrarChave = () => {
                     </Modal.Footer>
                 </Modal>
                 <div>
-                    <h2>Minhas chaves Pix</h2>
+                    <h2 style={{color: '#DB4648'}}>Minhas chaves Pix</h2>
                 </div>
                 <div className="div-descricao">
-                    <h5 className="titulo-h5">Com suas chaves, você pode receber Pix através de QR codes ou links e se identificar de forma rápida para receber transferências.</h5>
+                    <h5 className="titulo-chaves">Com suas chaves, você pode receber Pix através de QR codes ou links e se identificar de forma rápida para receber transferências.</h5>
                 </div>
 
                 <Button onClick={openModal} id="button-cadastrar" variant="secondary" className="button-add-chave" as="input" type="submit" value="+ Cadastrar chave" />
@@ -124,6 +126,9 @@ const CadastrarChave = () => {
                         </tbody>
                     </Table>
                 </div>
+                {chaves.length === 0 && (
+                    <h5 className="msg-sem-chaves">Você ainda não possui chaves =(</h5>
+                )}
             </div>
         </div>
     );
