@@ -6,6 +6,8 @@ import { ChavePixController } from "./API/Controllers/ChavePixController";
 import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController";
 import { SaldoController } from "./API/Controllers/SaldoController";
 import { MovimentoController } from "./API/Controllers/MovimentoController";
+import { GerarPDF } from "./Application/PDF/GerarPDF";
+import { ExtratoController } from "./API/Controllers/ExtratoController";
 
 const router = Router();
 const autenticacaoController = new AutenticacaoController();
@@ -14,6 +16,7 @@ const chavePixController = new ChavePixController()
 const alterarSenhaController = new AlterarSenhaController()
 const saldoController = new SaldoController()
 const movimentoController = new MovimentoController()
+const extratoController = new ExtratoController()
 
 router.post("/autenticacao", 
     autenticacaoController.EfetuarAutenticacao
@@ -26,6 +29,11 @@ router.post("/autenticacao/alterarSenha",
 
 router.get("/autenticacao/recuperarSenha/:documentoFederal",
     autenticacaoController.RecuperarSenha
+)
+
+router.get("/extrato/importar/:codigoConta",
+    ValidacaoToken,
+    extratoController.ImportarExtrato
 )
 
 //#region Abrir Conta
@@ -74,7 +82,6 @@ router.post("/chavePix/inativarChave",
 )
 
 //#endregion
-
 
 //#region Saldo
 
