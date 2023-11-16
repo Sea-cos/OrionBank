@@ -6,7 +6,6 @@ import { ChavePixController } from "./API/Controllers/ChavePixController";
 import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController";
 import { SaldoController } from "./API/Controllers/SaldoController";
 import { MovimentoController } from "./API/Controllers/MovimentoController";
-import { GerarPDF } from "./Application/PDF/GerarPDF";
 import { ExtratoController } from "./API/Controllers/ExtratoController";
 
 const router = Router();
