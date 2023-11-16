@@ -1,4 +1,5 @@
 import { ChavePix } from "../../../Domain/Entities/ChavePix";
+import { Conta } from "../../../Domain/Entities/Conta";
 import { IChavePixRepository } from "../../../Domain/Interfaces/ChavePix/IChavePixRepository";
 import { Situacao } from "../../../Enums/Situacao";
 import { connection } from "../../context/ConnectionString";
@@ -108,6 +109,36 @@ export class ChavePixRepository implements IChavePixRepository {
             sql,
             parametros
         )
+
+    }
+
+    async BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta> {
+        
+        const parametros = [
+            chavePix,
+            chavePix,
+            chavePix,
+            codigo
+        ]
+
+        const sql = `SELECT 
+                        * 
+                    FROM 
+                        conta 
+                    WHERE (
+                            DocumentoFederal = ?
+                        OR
+                            Email = ?
+                        OR
+                            TelefoneCelular = ?
+                    )`
+
+        const conta = await (await connection).query(
+                    sql,
+                    parametros
+                ) as any
+
+        return conta[0][0] as Conta
 
     }
 

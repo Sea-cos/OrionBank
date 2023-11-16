@@ -200,36 +200,6 @@ export class AbrirContaRepository implements IAbrirContaRepository{
         return conta[0][0]
     }
 
-    async BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta> {
-        
-        const parametros = [
-            chavePix,
-            chavePix,
-            chavePix,
-            codigo
-        ]
-
-        const sql = `SELECT 
-                        * 
-                    FROM 
-                        conta 
-                    WHERE (
-                            DocumentoFederal = ?
-                        OR
-                            Email = ?
-                        OR
-                            TelefoneCelular = ?
-                    ) AND Codigo != ?`
-
-        const conta = await (await connection).query(
-                    sql,
-                    parametros
-                ) as any
-
-        return conta[0][0] as Conta
-
-    }
-
     async BuscarContaPorEmail(email: string) : Promise<boolean> {
 
         const sql = `SELECT *
