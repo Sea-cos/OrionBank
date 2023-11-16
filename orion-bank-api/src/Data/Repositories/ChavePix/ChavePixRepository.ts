@@ -112,13 +112,12 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
-    async BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta> {
+    async BuscarContaPorChavePix(chavePix: string) : Promise<Conta> {
         
         const parametros = [
             chavePix,
             chavePix,
-            chavePix,
-            codigo
+            chavePix
         ]
 
         const sql = `SELECT 
