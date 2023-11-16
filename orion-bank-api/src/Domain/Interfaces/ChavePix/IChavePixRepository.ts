@@ -1,4 +1,5 @@
 import { ChavePix } from "../../Entities/ChavePix";
+import { Conta } from "../../Entities/Conta";
 
 
 export interface IChavePixRepository {
@@ -6,5 +7,6 @@ export interface IChavePixRepository {
     ObterChavePixPorChave(chavePix: string) : Promise<ChavePix>
     ObterChavepixPorCodigo(codigo: string) : Promise<ChavePix>
     ObterChavePixPorCodigoConta(codigoConta: string): Promise<Array<ChavePix>>
+    BuscarContaPorChavePix(chavePix: string, codigo: string) : Promise<Conta>
     InativarChavePix(codigo: string) : Promise<void>
 }

@@ -1,19 +1,20 @@
 import { ChavePixRepository } from "../../../Data/Repositories/ChavePix/ChavePixRepository";
-import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { ChavePix } from "../../../Domain/Entities/ChavePix";
 import { TipoChavePix } from "../../../Enums/TipoChavePix";
 import { ChavePixDto } from "../../DTOs/ChavePixDto";
 import { IChavePixService } from "../../Interfaces/ChavePix/IChavePixService";
 import { v4 as uuidv4 } from "uuid";
+import { Conta } from "../../../Domain/Entities/Conta";
+
+const chavePixRepository = new ChavePixRepository()
 
 export class ChavePixService implements IChavePixService {
 
     async CriarChavePix(chavePix: ChavePixDto): Promise<void> {
         
         let th = this;
-        await th.ValidarParametros(chavePix)
+        th.ValidarParametros(chavePix)
 
-        const chavePixRepository = new ChavePixRepository()
         const chave = await chavePixRepository.ObterChavePixPorChave(chavePix.Chave_Pix)
         if(chave) {
             throw new Error("Chave pix já existente.")
@@ -28,7 +29,6 @@ export class ChavePixService implements IChavePixService {
             throw new Error("Erro interno.")
         }
 
-        const chavePixRepository = new ChavePixRepository()
         const chavesPix = await chavePixRepository.ObterChavePixPorCodigoConta(codigoConta)
 
         if(chavesPix.length === 0) {
@@ -43,7 +43,6 @@ export class ChavePixService implements IChavePixService {
             throw new Error("Erro interno.")
         }
 
-        const chavePixRepository = new ChavePixRepository()
         if(!await chavePixRepository.ObterChavepixPorCodigo(codigo)) {
             throw new Error("Chave Pix inválida.")
         }
@@ -51,7 +50,21 @@ export class ChavePixService implements IChavePixService {
         await chavePixRepository.InativarChavePix(codigo)
     }
 
-    private async ValidarParametros(chavePix: ChavePixDto) : Promise<void> {
+    async BuscarContaPorChavePix(chavePix: string, codigo: string): Promise<Conta> {
+        
+        if(chavePix === null || chavePix.trim() === "") {
+            throw new Error("A chave pix é obrigatória.")
+        }
+
+        if(codigo === null || codigo.trim() === "") {
+            throw new Error("Conta inválida.")
+        }
+        
+        const conta = await chavePixRepository.BuscarContaPorChavePix(chavePix, codigo);
+        return conta;
+    }
+
+    private ValidarParametros(chavePix: ChavePixDto) : void {
 
         const tipoChave = TipoChavePix[chavePix.TipoChave === 1 ? "DocumentoFederal" 
                             : chavePix.TipoChave === 2 ? "Email" 
@@ -68,11 +81,6 @@ export class ChavePixService implements IChavePixService {
 
         if(chavePix.CodigoConta === null || chavePix.CodigoConta.trim() === "") {
             throw new Error("Conta inválida.")
-        }
-
-        const contaRepository = new AbrirContaRepository()      
-        if(await contaRepository.BuscarContaPorChavePix(chavePix.Chave_Pix, chavePix.CodigoConta)) {
-            throw new Error("Chave pix já existente.")
         }
     }
 
