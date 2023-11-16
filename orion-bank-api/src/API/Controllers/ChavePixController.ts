@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { ChavePixService } from "../../Application/Services/ChavePix/ChavePixService";
 import { ChavePixDto } from '../../Application/DTOs/ChavePixDto'
 
+const chavePixService = new ChavePixService()
+
 export class ChavePixController {
 
     async CriarChave(request: Request, response: Response) {
@@ -20,8 +22,7 @@ export class ChavePixController {
                 TipoChave: parseInt(tipoChave),
             } as ChavePixDto
 
-            const criarChaveService = new ChavePixService()
-            await criarChaveService.CriarChavePix(chavePixDto)
+            await chavePixService.CriarChavePix(chavePixDto)
 
             return response.status(200).send()
 
@@ -41,8 +42,7 @@ export class ChavePixController {
                 codigoConta
             } = request.query
 
-            const criarChaveService = new ChavePixService()
-            const chavesPix = await criarChaveService.ObterChavePixPorCodigoConta(codigoConta === undefined ? "" : codigoConta.toString())
+            const chavesPix = await chavePixService.ObterChavePixPorCodigoConta(codigoConta === undefined ? "" : codigoConta.toString())
 
             return response.status(200).send(chavesPix)
 
@@ -63,8 +63,7 @@ export class ChavePixController {
                 codigoChave
             } = request.query
 
-            const criarChaveService = new ChavePixService()
-            await criarChaveService.InativarChavePix(codigoChave === undefined ? "" : codigoChave.toString())
+            await chavePixService.InativarChavePix(codigoChave === undefined ? "" : codigoChave.toString())
 
             return response.status(200).send()
 
@@ -75,5 +74,36 @@ export class ChavePixController {
             })
         }
 
+    }
+
+    async BuscarContaPorChavePrix(request: Request, response: Response) {
+
+        try {
+
+            const {
+                codigoConta,
+                chavePix
+            } = request.query
+
+            const conta = await chavePixService.BuscarContaPorChavePix(
+                chavePix === undefined ? "" : chavePix.toString(), 
+                codigoConta === undefined ? "" : codigoConta.toString()
+            )
+
+            if (!conta) {
+                return response.status(404).json({
+                    status: "Error",
+                    message: "Chave pix não localizada."
+                })
+            }
+
+            return response.status(200).send(conta)
+
+        } catch(error: any) {
+            return response.status(400).send({
+                status: "Error",
+                message: error.message
+            })
+        }
     }
 }
