@@ -50,13 +50,17 @@ export class ChavePixService implements IChavePixService {
         await chavePixRepository.InativarChavePix(codigo)
     }
 
-    async BuscarContaPorChavePix(chavePix: string): Promise<Conta> {
+    async BuscarContaPorChavePix(chavePix: string, codigoConta: string): Promise<Conta> {
         
         if(chavePix === null || chavePix.trim() === "") {
             throw new Error("A chave pix é obrigatória.")
         }
 
-        const conta = await chavePixRepository.BuscarContaPorChavePix(chavePix);
+        if(codigoConta === null || codigoConta.trim() === "") {
+            throw new Error("Erro interno.")
+        }
+
+        const conta = await chavePixRepository.BuscarContaPorChavePix(chavePix, codigoConta);
         return conta;
     }
 

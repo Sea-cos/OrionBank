@@ -112,12 +112,13 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
-    async BuscarContaPorChavePix(chavePix: string) : Promise<Conta> {
+    async BuscarContaPorChavePix(chavePix: string, codigoConta: string) : Promise<Conta> {
         
         const parametros = [
             chavePix,
             chavePix,
-            chavePix
+            chavePix,
+            codigoConta
         ]
 
         const sql = `SELECT 
@@ -130,7 +131,7 @@ export class ChavePixRepository implements IChavePixRepository {
                             Email = ?
                         OR
                             TelefoneCelular = ?
-                    )`
+                    ) AND Codigo != ?`
 
         const conta = await (await connection).query(
                     sql,
