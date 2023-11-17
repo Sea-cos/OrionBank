@@ -40,9 +40,9 @@
 }
 
 .container-pix-por-chave {
-    height: 400px;
+    height: 440px;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     flex-direction: column;
     align-content: center;
     padding: 20px;
@@ -58,7 +58,7 @@
 }
 
 .chave-pix {
-    width: 350px;
+    width: 100%;
 }
 
 .table-chave-favorita {
@@ -90,7 +90,10 @@
 .revisao-recebedor {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 85%;
+    border-radius: 5px;
+    padding: 30px;
+    border: 1px solid #5f5f5f56;
 }
 
 .dados-space {
@@ -110,6 +113,13 @@
     text-align: center;
 }
 
+.quem-receber {
+    display: flex;
+    align-items: start;
+    text-align: start;
+
+}
+
 .valor-pix {
     display: block;
     border: none;
@@ -127,6 +137,21 @@
     border-bottom: 4px solid #DB4648;
     border-radius: 0.35rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.add-mensagem {
+    cursor: pointer;
+    color: #DB4648;
+    font-size: '14px';
+}
+
+.add-mensagem:hover {
+    cursor: pointer;
+    color: #d86c6e;
+}
+
+.infoAdicional {
+    font-size: 13px;
 }
 
 @media (max-width: 992px) {

@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { TipoChavePixEnum } from '../../../../constants/enums';
 import { showErrorNotification } from '../../../../shared/notificationUtils';
 import { ChaveContext } from "../../../../contexts/ChaveContext";
+import { MovimentoContext } from "../../../../contexts/MovimentoContext";
 import CurrencyInput from "../../../../components/MoneyInput";
 import Icon from "../../../../assets/img/pix-icon.svg";
 import NotFound from "../../../../assets/img/undraw_no_data.svg";
@@ -12,11 +13,14 @@ import "./styles.css"
 
 const Pix = () => {
     const consultarChavePix = useContext(ChaveContext).consultarChavePix;
+    const enviarPixViaChave = useContext(MovimentoContext).enviarPixViaChave;
     const [modalPixChaveIsOpen, setOpenModalPixChave] = useState(false);
     const [modalPixCopiaColaIsOpen, setOpenModalPixCopiaCola] = useState(false);
-    const [chavesFavoritas, setChavesFavoritas] = useState([{ TipoChave: 1, Chave_Pix: '08175537973', Nome: 'Nicolas Porto' }]);
+    const [chavesFavoritas, setChavesFavoritas] = useState([]);
     const [chavePix, setChavePix] = useState('');
     const [valor, setValor] = useState('R$ 0,00');
+    const [infoIsOn, setInfoIsOn] = useState(false);
+    const [infoAdicional, setInfoAdicional] = useState('');
     const [responseConsulta, setResponseConsulta] = useState({});
 
     const openModalPixChave = () => {
@@ -26,6 +30,9 @@ const Pix = () => {
     const closeModalPixChave = () => {
         setChavePix('');
         setValor('R$ 0,00');
+        setInfoAdicional('');
+        setResponseConsulta({});
+        setChavesFavoritas([]);
         setEtapa(1);
         setOpenModalPixChave(false);
     };
@@ -67,7 +74,7 @@ const Pix = () => {
                 break;
 
             case 2:
-                if (formatValueForDisplay(valor) === 0) {
+                if (formatarValor(valor) === 0) {
                     showErrorNotification("Informe o valor a pagar.");
                     return false;
                 }
@@ -75,9 +82,6 @@ const Pix = () => {
 
         return true;
     };
-
-    useEffect(() => {
-    }, []);
 
     function formatarEnum(situacao) {
         switch (situacao) {
@@ -106,18 +110,25 @@ const Pix = () => {
         }
     };
 
-    const formatValueForDisplay = (value) => {
-
-        if (value === "") {
+    const formatarValor = (value) => {
+        if (value === "")
             return 0;
-        }
 
         const formattedValue = parseFloat(value.replace('R$ ', '').replace('.', '').replace(',', '.'));
         return formattedValue;
     };
 
-    const handleSubmit = async (e) => {
+    const enviarPixPorChave = async (e) => {
         e.preventDefault();
+        const request = {
+            codigoContaDestino: responseConsulta.Codigo,
+            codigoContaOrigem: '',
+            valor: formatarValor(valor),
+            chavePix: chavePix,
+            infoAdicional: infoAdicional
+        }
+        await enviarPixViaChave(request);
+        closeModalPixChave();
     };
 
     return (
@@ -129,7 +140,6 @@ const Pix = () => {
                 <div className="titulo-transacao">
                     <h2 style={{ color: '#DB4648' }}>Escolha o tipo desejado:</h2>
                 </div>
-
                 <div className="card-pix-buttons">
                     <button type="submit" className="botao-um button-pix" onClick={openModalPixChave}> Pix Por Chave </button>
                     <button type="submit" className="botao-um button-pix" onClick={openModalPixCopiaCola}> Pix Copia e Cola </button>
@@ -137,81 +147,81 @@ const Pix = () => {
                 </div>
 
                 <Modal show={modalPixChaveIsOpen} centered >
-                    <form onSubmit={handleSubmit}>
-                        <Modal.Header>
-                            <Modal.Title style={{ color: '#DB4648' }}>Pix Por Chave</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div className="container-pix-por-chave">
-                                {etapa === 1 && (
-                                    <>
-                                        <div>
-                                            <label className="mt-4" style={{ color: "#3f3d56" }}>Chave</label>
-                                            <input
-                                                type="text"
-                                                className="form-control chave-pix"
-                                                id="chavePix"
-                                                placeholder="CPF, celular, e-mail ou aleatória"
-                                                name="nome"
-                                                value={chavePix}
-                                                onChange={(e) => setChavePix(e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="table-chave-favorita">
-                                            <label className="mt-5" style={{ color: "#3f3d56" }}>Chaves Favoritas</label>
-                                            {chavesFavoritas.length > 0 && (
-                                                <Table hover responsive className="table-favorita-chave table-rounded">
-                                                    <thead>
-                                                        <tr>
-                                                            <th className="hidden">Codigo</th>
+                    <Modal.Header>
+                        <Modal.Title style={{ color: '#DB4648' }}>Pix Por Chave</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="container-pix-por-chave">
+                            {etapa === 1 && (
+                                <>
+                                    <div>
+                                        <label className="mt-4" style={{ color: "#3f3d56" }}>Chave</label>
+                                        <input
+                                            type="text"
+                                            className="form-control chave-pix"
+                                            id="chavePix"
+                                            placeholder="CPF, celular, e-mail ou aleatória"
+                                            name="nome"
+                                            value={chavePix}
+                                            onChange={(e) => setChavePix(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="table-chave-favorita">
+                                        <label className="mt-5" style={{ color: "#3f3d56" }}>Chaves Favoritas</label>
+                                        {chavesFavoritas.length > 0 && (
+                                            <Table hover responsive className="table-favorita-chave table-rounded">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="hidden">Codigo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {chavesFavoritas.map((record, index) => (
+                                                        <tr key={index} >
+                                                            <td className="hidden">{record.Codigo}</td>
+                                                            <td>
+                                                                <div className="tipo-chave">
+                                                                    <span><strong>{formatarEnum(record.TipoChave)} - {record.Nome}</strong></span>
+                                                                </div>
+                                                                <div className="valor-chave">
+                                                                    <span>{record.Chave_Pix}</span>
+                                                                </div>
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {chavesFavoritas.map((record, index) => (
-                                                            <tr key={index} >
-                                                                <td className="hidden">{record.Codigo}</td>
-                                                                <td>
-                                                                    <div className="tipo-chave">
-                                                                        <span><strong>{formatarEnum(record.TipoChave)} - {record.Nome}</strong></span>
-                                                                    </div>
-                                                                    <div className="valor-chave">
-                                                                        <span>{record.Chave_Pix}</span>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </Table>
-                                            )}
-                                            {chavesFavoritas.length === 0 && (
-                                                <div className="not-found-favoritas mt-2">
-                                                    <img src={NotFound}></img>
-                                                    <label className="mt-3" style={{ color: "#3f3d56", fontSize: "11px" }}>Você ainda não possui chaves favoritas.</label>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </>
-                                )}
+                                                    ))}
+                                                </tbody>
+                                            </Table>
+                                        )}
+                                        {chavesFavoritas.length === 0 && (
+                                            <div className="not-found-favoritas mt-2">
+                                                <img src={NotFound}></img>
+                                                <label className="mt-3" style={{ color: "#3f3d56", fontSize: "11px" }}>Você ainda não possui chaves favoritas.</label>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
 
-                                {etapa === 2 && (
-                                    <>
-                                        <div className="body-pagar">
-                                            <label className="mt-4" style={{ color: "#3f3d56", fontSize: '20px' }}>Valor a pagar</label>
-                                            <CurrencyInput className="valor-pix" style={{ fontSize: '5rem' }} value={valor} onValueChange={setValor} />
-                                            <label className="mt-4 mb-0" style={{ color: "#3f3d56", fontSize: '13px' }}>Pagar para</label>
-                                            <label style={{ color: "#DB4648", fontSize: '15px' }}>{responseConsulta.NomeCompleto}</label>
-                                        </div>
-                                    </>
-                                )}
+                            {etapa === 2 && (
+                                <>
+                                    <div className="body-pagar">
+                                        <label className="mt-4" style={{ color: "#3f3d56", fontSize: '20px' }}>Valor a pagar</label>
+                                        <CurrencyInput className="valor-pix" style={{ fontSize: '5rem' }} value={valor} onValueChange={setValor} />
+                                        <label className="mt-4 mb-0" style={{ color: "#3f3d56", fontSize: '13px' }}>Pagar para</label>
+                                        <label style={{ color: "#DB4648", fontSize: '15px' }}>{responseConsulta.NomeCompleto}</label>
+                                    </div>
+                                </>
+                            )}
 
-                                {etapa === 3 && (
-                                    <>
-                                        <div className="body-pagar">
-                                            <label className="mt-4" style={{ color: "#3f3d56", fontSize: '20px' }}>Revisão</label>
-                                        </div>
+                            {etapa === 3 && (
+                                <>
+                                    <div className="body-pagar">
+                                        <label style={{ color: "#3f3d56", fontSize: '20px' }}>Revisão</label>
 
                                         <div className="revisao-recebedor mt-4">
-                                            <label style={{ color: "#3f3d56", fontSize: '17px' }}>Quem vai receber?</label>
+                                            <div className="quem-receber">
+                                                <label style={{ color: "#3f3d56", fontSize: '17px' }}>Quem vai receber?</label>
+                                            </div>
                                             <div className="dados-recebedor">
                                                 <div className="dados-space">
                                                     <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
@@ -230,32 +240,47 @@ const Pix = () => {
                                                     <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Chave_Pix}</label>
                                                 </div>
                                             </div>
+                                            <div className="mt-3">
+                                                <label className="add-mensagem" onClick={() => setInfoIsOn(!infoIsOn)}>Adicionar mensagem</label>
+                                                {infoIsOn && (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control infoAdicional"
+                                                        id="infoAdicional"
+                                                        placeholder="Mensagem"
+                                                        name="infoAdicional"
+                                                        maxLength={255}
+                                                        value={infoAdicional}
+                                                        onChange={(e) => setInfoAdicional(e.target.value)}
+                                                    />
+                                                )}
+                                            </div>
                                         </div>
-                                    </>
-                                )}
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="danger" onClick={closeModalPixChave}>
-                                Cancelar
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={closeModalPixChave}>
+                            Cancelar
+                        </Button>
+                        {etapa === 3 && (
+                            <Button variant="success" onClick={enviarPixPorChave}>
+                                Confirmar
                             </Button>
-                            {etapa === 3 && (
-                                <Button variant="success" onClick={handleSubmit}>
-                                    Confirmar
-                                </Button>
-                            )}
-                            {etapa !== 3 && (
-                                <Button variant="primary" onClick={avancarEtapa}>
-                                    Continuar
-                                </Button>
-                            )}
-                            {etapa > 1 && (
-                                <Button variant="primary" onClick={retrocederEtapa}>
-                                    Voltar
-                                </Button>
-                            )}
-                        </Modal.Footer>
-                    </form>
+                        )}
+                        {etapa !== 3 && (
+                            <Button variant="primary" onClick={avancarEtapa}>
+                                Continuar
+                            </Button>
+                        )}
+                        {etapa > 1 && (
+                            <Button variant="primary" onClick={retrocederEtapa}>
+                                Voltar
+                            </Button>
+                        )}
+                    </Modal.Footer>
                 </Modal>
 
                 <Modal show={modalPixCopiaColaIsOpen} centered >

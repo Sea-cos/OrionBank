@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ChaveContext } from "../../../../contexts/ChaveContext";
 import { TipoChavePixEnum } from '../../../../constants/enums';
-import NotFound from "../../../../assets/img/undraw_stars.svg";
 import { showErrorNotification } from '../../../../shared/notificationUtils';
+import NotFound from "../../../../assets/img/undraw_stars.svg";
 import Key from "../../../../assets/img/key.svg";
 import Trash from '../../../../assets/img/trash.svg'
 import Button from 'react-bootstrap/Button';
@@ -185,36 +185,37 @@ const CadastrarChave = () => {
                 </div>
 
                 <Button onClick={openModal} id="button-cadastrar" variant="secondary" className="button-add-chave" as="input" type="submit" value="+ Cadastrar chave" />
-
-                <div className="table-consulta-chave">
-                    <Table hover responsive className="table-cadastra-chave">
-                        <thead>
-                            <tr>
-                                <th className="hidden">Codigo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {chaves.map((record, index) => (
-                                <tr key={index} >
-                                    <td className="hidden">{record.Codigo}</td>
-                                    <td>
-                                        <div className="tipo-chave">
-                                            <span><strong>{formatarEnum(record.TipoChave)}</strong></span>
-                                        </div>
-                                        <div className="valor-chave">
-                                            <span>{record.Chave_Pix}</span>
-                                        </div>
-                                    </td>
-                                    <td className="trash-pix">
-                                        <img className="img-excluir-chave" onClick={() => excluirChave(record.Codigo)} src={Trash}></img>
-                                    </td>
+                {chaves.length > 0 && (
+                    <div className="table-consulta-chave">
+                        <Table hover responsive className="table-cadastra-chave">
+                            <thead>
+                                <tr>
+                                    <th className="hidden">Codigo</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {chaves.map((record, index) => (
+                                    <tr key={index} >
+                                        <td className="hidden">{record.Codigo}</td>
+                                        <td>
+                                            <div className="tipo-chave">
+                                                <span><strong>{formatarEnum(record.TipoChave)}</strong></span>
+                                            </div>
+                                            <div className="valor-chave">
+                                                <span>{record.Chave_Pix}</span>
+                                            </div>
+                                        </td>
+                                        <td className="trash-pix">
+                                            <img className="img-excluir-chave" onClick={() => excluirChave(record.Codigo)} src={Trash}></img>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                )}
                 {chaves.length === 0 && (
-                    <div>
+                    <div className="mt-3">
                         <img src={NotFound}></img>
                         <h5 className="mt-3" style={{ color: "#3f3d56" }}>Você ainda não possui chaves cadastradas.</h5>
                     </div>
