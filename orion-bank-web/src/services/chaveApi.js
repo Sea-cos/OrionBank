@@ -26,3 +26,11 @@ export const obterChavesPorConta = async (conta) => {
         throw error;
     }
 }
+
+export const inativarChave = async (codigoChave) => {
+    try {
+        await api.post(`/chavePix/inativarChave?codigoChave=${codigoChave}`);
+    } catch (error) {
+        throw error.response.data;
+    }
+}
