@@ -52,4 +52,30 @@ export class MovimentoRepository implements IMovimentoRepository {
 
         return movimento[0][0] as Movimento
     }
+
+    async RealizarTransacaoPorDadosBancarios(movimento: Movimento): Promise<void> {
+        
+        const parametros = [
+            movimento.CodigoContaOrigem,
+            movimento.CodigoContaDestino,
+            movimento.InfoAdicional,
+            movimento.TipoTransacao,
+            movimento.DtMovimento,
+            movimento.Valor,
+            movimento.DescTransacao
+        ]
+
+        const sql = `
+            INSERT INTO movimento
+                (CodigoContaOrigem, CodigoContaDestino, InfoAdicional, TipoTransacao, 
+                    DtMovimento, Valor, DescTransacao)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        await (await connection).query(
+            sql,
+            parametros
+        )
+
+    }
 }
