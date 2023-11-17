@@ -22,7 +22,6 @@ const CadastrarChave = () => {
             if (response !== undefined) {
                 setChaves(response);
             }
-            console.log(response);
         }
         buscarChaves();
     }, []);
