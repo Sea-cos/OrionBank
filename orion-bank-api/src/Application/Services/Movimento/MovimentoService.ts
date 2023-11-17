@@ -7,6 +7,7 @@ import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepositor
 import { ChavePixRepository } from "../../../Data/Repositories/ChavePix/ChavePixRepository";
 import { TipoTransacao } from "../../../Enums/TipoTransacao";
 import { v4 as uuidv4 } from 'uuid';
+import { MovimentoDadosBancariosDto } from "../../DTOs/MovimentoDadosBancariosDto";
 
 const movimentoRepository = new MovimentoRepository()
 const contaRepository = new AbrirContaRepository()
@@ -45,6 +46,13 @@ export class MovimentoService implements IMovimentoService {
         }
 
         return await movimentoRepository.ObterUltimasTransacoes(codigoConta);
+
+    }
+    
+    async RealizarTransacaoPorDadosBancarios(movimento: MovimentoDadosBancariosDto): Promise<void> {
+
+        let th = this;
+        await th.RealizarTransacaoPorDadosBancarios(movimento);
 
     }
 
@@ -91,6 +99,32 @@ export class MovimentoService implements IMovimentoService {
         }
 
     }
+
+    private async ValidarParametrosDadosBancarios(movi: MovimentoDadosBancariosDto) : Promise<void> {
+
+        if (movi.Agencia === undefined ||
+            movi.Agencia === null ||
+            movi.Agencia.trim() === ""
+        ) {
+            throw new Error("Agência é obrigatória.");
+        }
+
+        if (movi.Agencia.trim().length != 4) {
+            throw new Error("A agência tem que conter 4 dígitos.");
+        }
+
+        if (movi.Conta === undefined ||
+            movi.Conta === null ||
+            movi.Conta.trim() === ""            
+        ) {
+            throw new Error("Conta é obrigatória.");
+        }
+
+        if (movi.Conta.trim().length != 8) {
+            throw new Error("A conta tem que conter 8 dígitos.");
+        }
+
+    } 
 
     private DtoParaDomainPix(moviDto: MovimentoPixDto) : Movimento {
         return {

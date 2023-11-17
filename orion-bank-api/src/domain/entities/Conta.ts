@@ -9,7 +9,7 @@ export interface Conta {
     NomeCompleto: string;
     Senha: string;
     Email: string;
-    DtNasc: Date
+    DtNasc: Date;
     TelefoneCelular: string;
     CEP: string;
     Logradouro: string;
