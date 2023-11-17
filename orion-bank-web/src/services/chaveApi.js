@@ -35,3 +35,11 @@ export const consultarChave = async (chave, codigo) => {
         throw error.response.data;
     }
 }
+
+export const inativarChave = async (codigoChave) => {
+    try {
+        await api.post(`/chavePix/inativarChave?codigoChave=${codigoChave}`);
+    } catch (error) {
+        throw error.response.data;
+    }
+}
