@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from "react";
+import { criarChave, obterChavesPorConta, consultarChave } from "../services/chaveApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { criarChave, obterChavesPorConta, inativarChave } from "../services/chaveApi";
 import { AuthContext } from "./AuthContext";
@@ -16,7 +17,6 @@ export function ChaveProvider({ children }) {
             await criarChave(request);
             showSuccessNotification("Chave cadastrada com sucesso!")
         } catch (error) {
-
             showErrorNotification(error.message);
         }
     };
@@ -33,12 +33,20 @@ export function ChaveProvider({ children }) {
         try {
             await inativarChave(codigoChave);
         } catch (error) {
-            showErrorNotification(error.response.data);
+            showErrorNotification(error.message);
+        }
+    };
+
+    const consultarChavePix = async (chave) => {
+        try {
+           return await consultarChave(chave, user.codigo);
+        } catch (error) {
+            showErrorNotification(error.message);
         }
     };
 
     return (
-        <ChaveContext.Provider value={{ user, criarChavePix, obterChavesPix, inativarChavePix }}>
+        <ChaveContext.Provider value={{user, criarChavePix, obterChavesPix, consultarChavePix, inativarChavePix }}>
             {children}
         </ChaveContext.Provider>
     );

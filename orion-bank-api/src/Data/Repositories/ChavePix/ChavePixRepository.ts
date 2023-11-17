@@ -8,7 +8,7 @@ import { connection } from "../../context/ConnectionString";
 export class ChavePixRepository implements IChavePixRepository {
 
     async CriarChavePix(chavePix: ChavePix): Promise<void> {
-        
+
         const parametros = [
             chavePix.Codigo,
             chavePix.CodigoConta,
@@ -31,7 +31,7 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
-    async ObterChavePixPorChave(chavePix: string) : Promise<ChavePix> {
+    async ObterChavePixPorChave(chavePix: string): Promise<ChavePix> {
 
         const sql = `SELECT *
                     FROM 
@@ -40,11 +40,11 @@ export class ChavePixRepository implements IChavePixRepository {
                         Chave_Pix = ?`
 
         const chave = await (await connection).query(
-                        sql,
-                        [
-                            chavePix
-                        ]
-                    ) as any
+            sql,
+            [
+                chavePix
+            ]
+        ) as any
 
         return chave[0][0] as ChavePix
     }
@@ -73,7 +73,7 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
-    async ObterChavepixPorCodigo(codigo: string) : Promise<ChavePix> {
+    async ObterChavepixPorCodigo(codigo: string): Promise<ChavePix> {
 
         const sql = `SELECT *
                     FROM
@@ -82,17 +82,17 @@ export class ChavePixRepository implements IChavePixRepository {
                         Codigo = ?`
 
         const chavePix = await (await connection).query(
-                            sql,
-                            [
-                                codigo
-                            ]
-                        ) as any
+            sql,
+            [
+                codigo
+            ]
+        ) as any
 
         return chavePix[0][0] as ChavePix
 
     }
 
-    async InativarChavePix(codigo: string) : Promise<void> {
+    async InativarChavePix(codigo: string): Promise<void> {
 
         const parametros = [
             Situacao.Inativa,
@@ -112,8 +112,8 @@ export class ChavePixRepository implements IChavePixRepository {
 
     }
 
-    async BuscarContaPorChavePix(chavePix: string, codigoConta: string) : Promise<Conta> {
-        
+    async BuscarContaPorChavePix(chavePix: string, codigoConta: string): Promise<Conta> {
+
         const parametros = [
             chavePix,
             chavePix,
@@ -124,19 +124,16 @@ export class ChavePixRepository implements IChavePixRepository {
         const sql = `SELECT 
                         * 
                     FROM 
-                        conta 
-                    WHERE (
-                            DocumentoFederal = ?
-                        OR
-                            Email = ?
-                        OR
-                            TelefoneCelular = ?
-                    ) AND Codigo != ?`
+                        chave_pix AS CP
+                    INNER JOIN conta AS C
+                        ON C.Codigo = CP.CodigoConta
+                        WHERE CP.Chave_Pix = ?
+                        AND CP.CodigoConta != ?`
 
         const conta = await (await connection).query(
-                    sql,
-                    parametros
-                ) as any
+            sql,
+            parametros
+        ) as any
 
         return conta[0][0] as Conta
 

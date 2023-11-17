@@ -103,7 +103,7 @@ const SolicitacoesConta = () => {
                                 <th>DtInclusao</th>
                                 <th>DtSituacao</th>
                                 <th>Situacao</th>
-                                <th>Mensagem Conta</th>
+                                <th>Analisar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,7 +114,7 @@ const SolicitacoesConta = () => {
                                     <td>{formatarData(record.DtSituacao)}</td>
                                     <td>{formatarEnum(record.Situacao)}</td>
                                     <td>
-                                        <Button variant="secondary" as="input" type="submit" value="Mensagem" onClick={() => openModal(record.conta)} />
+                                        <Button variant="secondary" as="input" type="submit" value="Analisar" onClick={() => openModal(record.conta)} />
                                     </td>
                                     <td>
                                         <Button variant="success" as="input" type="submit" value="Aprovar" onClick={() => aprovarSolicitacaoConta(record)} />

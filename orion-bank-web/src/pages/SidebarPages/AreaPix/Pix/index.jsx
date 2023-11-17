@@ -11,12 +11,13 @@ import Table from 'react-bootstrap/Table';
 import "./styles.css"
 
 const Pix = () => {
+    const consultarChavePix = useContext(ChaveContext).consultarChavePix;
     const [modalPixChaveIsOpen, setOpenModalPixChave] = useState(false);
     const [modalPixCopiaColaIsOpen, setOpenModalPixCopiaCola] = useState(false);
     const [chavesFavoritas, setChavesFavoritas] = useState([{ TipoChave: 1, Chave_Pix: '08175537973', Nome: 'Nicolas Porto' }]);
     const [chavePix, setChavePix] = useState('');
     const [valor, setValor] = useState('R$ 0,00');
-    const [responseConsulta, setResponseConsulta] = useState({ Nome: 'Nicolas Porto' });
+    const [responseConsulta, setResponseConsulta] = useState({});
 
     const openModalPixChave = () => {
         setOpenModalPixChave(true);
@@ -39,8 +40,8 @@ const Pix = () => {
 
     const [etapa, setEtapa] = useState(1);
 
-    const avancarEtapa = () => {
-        const isValid = validarAvancoEtapa();
+    const avancarEtapa = async () => {
+        const isValid = await validarAvancoEtapa();
         if (isValid) {
             setEtapa(etapa + 1);
         }
@@ -50,13 +51,19 @@ const Pix = () => {
         setEtapa(etapa - 1);
     }
 
-    const validarAvancoEtapa = () => {
+    const validarAvancoEtapa = async () => {
         switch (etapa) {
             case 1:
                 if (chavePix === "") {
                     showErrorNotification("Informe a chave pix.");
                     return false;
                 }
+
+                const response = await consultarChavePix(chavePix);
+                if (response === undefined) {
+                    return false;
+                }
+                setResponseConsulta(response);
                 break;
 
             case 2:
@@ -87,9 +94,23 @@ const Pix = () => {
         }
     }
 
+    const formatarCPF = (cpf) => {
+        if (cpf !== undefined) {
+            return (
+                cpf.substring(0, 3) +
+                "." +
+                cpf.substring(3, 6) +
+                "." +
+                cpf.substring(6, 9) +
+                "-" +
+                cpf.substring(9)
+            );
+        }
+    };
+
     const formatValueForDisplay = (value) => {
 
-        if (value === ""){
+        if (value === "") {
             return 0;
         }
 
@@ -134,7 +155,6 @@ const Pix = () => {
                                                 id="chavePix"
                                                 placeholder="CPF, celular, e-mail ou aleatória"
                                                 name="nome"
-                                                maxLength={8}
                                                 value={chavePix}
                                                 onChange={(e) => setChavePix(e.target.value)}
                                             />
@@ -181,13 +201,46 @@ const Pix = () => {
                                             <label className="mt-4" style={{ color: "#3f3d56", fontSize: '20px' }}>Valor a pagar</label>
                                             <CurrencyInput className="valor-pix" style={{ fontSize: '5rem' }} value={valor} onValueChange={setValor} />
                                             <label className="mt-4 mb-0" style={{ color: "#3f3d56", fontSize: '13px' }}>Pagar para</label>
-                                            <label style={{ color: "#DB4648", fontSize: '15px' }}>{responseConsulta.Nome}</label>
+                                            <label style={{ color: "#DB4648", fontSize: '15px' }}>{responseConsulta.NomeCompleto}</label>
+                                        </div>
+                                    </>
+                                )}
+
+                                {etapa === 3 && (
+                                    <>
+                                        <div className="body-pagar">
+                                            <label className="mt-4" style={{ color: "#3f3d56", fontSize: '20px' }}>Revisão</label>
+                                        </div>
+
+                                        <div className="revisao-recebedor mt-4">
+                                            <label style={{ color: "#3f3d56", fontSize: '17px' }}>Quem vai receber?</label>
+                                            <div className="dados-recebedor">
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.NomeCompleto}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>CPF:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Instituição:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Orion Bank S.A.</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Chave_Pix}</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </>
                                 )}
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
+                            <Button variant="danger" onClick={closeModalPixChave}>
+                                Cancelar
+                            </Button>
                             {etapa === 3 && (
                                 <Button variant="success" onClick={handleSubmit}>
                                     Confirmar
@@ -198,9 +251,11 @@ const Pix = () => {
                                     Continuar
                                 </Button>
                             )}
-                            <Button variant="danger" onClick={closeModalPixChave}>
-                                Cancelar
-                            </Button>
+                            {etapa > 1 && (
+                                <Button variant="primary" onClick={retrocederEtapa}>
+                                    Voltar
+                                </Button>
+                            )}
                         </Modal.Footer>
                     </form>
                 </Modal>

@@ -23,7 +23,16 @@ export const obterChavesPorConta = async (conta) => {
         const response = await api.get(`/chavePix/obterPorCodigoConta?codigoConta=${conta}`);
         return response.data;
     } catch (error) {
-        throw error;
+        throw error.response.data;
+    }
+}
+
+export const consultarChave = async (chave, codigo) => {
+    try {
+        const response = await api.get(`/chavePix/buscarConta?chavePix=${chave}&codigoConta=${codigo}`);
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
     }
 }
 
