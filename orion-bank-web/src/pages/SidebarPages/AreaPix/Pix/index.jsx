@@ -87,8 +87,6 @@ const Pix = () => {
                 return 'Email';
             case TipoChavePixEnum.TELEFONE:
                 return 'Telefone';
-            case TipoChavePixEnum.EVP:
-                return 'EVP';
             default:
                 return 'Desconhecida';
         }

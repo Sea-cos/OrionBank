@@ -24,6 +24,11 @@
 .modal-cadastro {
     display: flex;
     flex-direction: row;
+    padding: 30px;
+}
+
+.modal-pix {
+    padding: 30px;
 }
 
 .titulo-chaves {
@@ -65,13 +70,33 @@
 
 .table.table-cadastra-chave {
     margin-bottom: 0px;
+    width: 300px;
 }
 
 .campo-cadastro {
-    width: 35%;
+    width: 45%;
+    margin-right: 20px;
+}
+
+.campo-chave {
+    width: 500px;
     margin-right: 20px;
 }
 
 .msg-sem-chaves {
     color: #0000009c;
+}
+
+.trash-pix {
+    width: 30px;
+}
+
+.img-excluir-chave {
+    cursor: pointer
+}
+
+.img-excluir-chave:hover {
+    transform: scale(1.2);
+    transition: 0.2s;
+    fill: #DB4648;
 }

@@ -18,18 +18,23 @@ const CadastrarChave = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [chaves, setChaves] = useState([]);
     const [tamanho, setTamanho] = useState(11);
-
     const [cadastrarChavePix, setCadastrarChavePix] = useState({ codigoConta: "", chavePix: "", tipoChave: 1 });
 
-    const handleSubmit = (e) => {
+    const cadastrarChave = async (e) => {
         e.preventDefault();
         const isValid = validarChavePix();
 
         if (isValid) {
-            criarChavePix(cadastrarChavePix);
+            await criarChavePix(cadastrarChavePix);
+            await buscarChaves();
             limparCampos();
             closeModal();
         }
+    };
+
+    const excluirChave = async (codigoChave) => {
+        await inativarChavePix(codigoChave);
+        await buscarChaves();
     };
 
     function validarEmail(email) {
@@ -38,9 +43,8 @@ const CadastrarChave = () => {
     }
 
     function validarChavePix() {
-
         if (cadastrarChavePix.chavePix === "") {
-            showErrorNotification(`Informe uma Chave Pix`);
+            showErrorNotification('Informe uma Chave Pix.');
             return false;
         }
 
@@ -50,14 +54,11 @@ const CadastrarChave = () => {
                 break;
             case TipoChavePixEnum.EMAIL:
                 if (!validarEmail(cadastrarChavePix.chavePix)) {
-                    showErrorNotification(`Informe um e-mail válido.`);
+                    showErrorNotification('Informe um e-mail válido.');
                     return false;
                 }
                 break;
             case TipoChavePixEnum.TELEFONE:
-
-                break;
-            case TipoChavePixEnum.EVP:
 
                 break;
 
@@ -68,8 +69,35 @@ const CadastrarChave = () => {
         return true;
     }
 
-    function mudarTamanho(tipoChave) {
+    useEffect(() => {
+        buscarChaves();
+    }, []);
 
+    const buscarChaves = async () => {
+        const response = await obterChavesPix();
+        if (response !== undefined) {
+            setChaves(response);
+        }
+    }
+
+    function formatarEnum(situacao) {
+        switch (situacao) {
+            case TipoChavePixEnum.CPF:
+                return 'CPF';
+            case TipoChavePixEnum.EMAIL:
+                return 'Email';
+            case TipoChavePixEnum.TELEFONE:
+                return 'Telefone';
+            default:
+                return 'Desconhecida';
+        }
+    }
+
+    function limparCampos() {
+        cadastrarChavePix.chavePix = "";
+    }
+
+    function mudarTamanho(tipoChave) {
         switch (tipoChave) {
             case TipoChavePixEnum.CPF:
             case TipoChavePixEnum.TELEFONE:
@@ -83,35 +111,6 @@ const CadastrarChave = () => {
         limparCampos();
     }
 
-    function limparCampos() {
-        cadastrarChavePix.chavePix = "";
-    }
-    const buscarChaves = async () => {
-        const response = await obterChavesPix();
-        if (response !== undefined) {
-            setChaves(response);
-        }
-    }
-
-    useEffect(() => {
-        buscarChaves();
-    }, []);
-
-    function formatarEnum(situacao) {
-        switch (situacao) {
-            case TipoChavePixEnum.CPF:
-                return 'CPF';
-            case TipoChavePixEnum.EMAIL:
-                return 'Email';
-            case TipoChavePixEnum.TELEFONE:
-                return 'Telefone';
-            case TipoChavePixEnum.EVP:
-                return 'EVP';
-            default:
-                return 'Desconhecida';
-        }
-    }
-
     const openModal = () => {
         setModalIsOpen(true);
     };
@@ -120,21 +119,15 @@ const CadastrarChave = () => {
         setModalIsOpen(false);
     };
 
-    const excluirChave = (codigoChave) => {
-      inativarChavePix(codigoChave);
-      buscarChaves();
-    };
-
     return (
         <div className="container-cadastrar">
             <div className="title-solicitar">
                 <h3 className="titulo-h5"> <img src={Key}></img> Cadastrar Chave</h3>
             </div>
             <div className="card-cadastrar">
-
-                <Modal show={modalIsOpen} centered >
+                <Modal show={modalIsOpen} centered className="modal-pix">
                     <Modal.Header>
-                        <Modal.Title>Cadastrar nova chave</Modal.Title>
+                        <Modal.Title style={{ color: '#DB4648' }}>Cadastrar nova chave</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="modal-cadastro">
@@ -164,7 +157,7 @@ const CadastrarChave = () => {
 
                             <input
                                 type="text"
-                                className="chavePix form-control"
+                                className="form-control campo-chave"
                                 id="chavePix"
                                 placeholder="Chave"
                                 name="nome"
@@ -175,11 +168,11 @@ const CadastrarChave = () => {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type="submit" onClick={handleSubmit} variant="success">
-                            Criar
-                        </Button>
                         <Button variant="danger" onClick={closeModal}>
                             Cancelar
+                        </Button>
+                        <Button type="submit" onClick={cadastrarChave} variant="success">
+                            Criar
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -212,10 +205,8 @@ const CadastrarChave = () => {
                                             <span>{record.Chave_Pix}</span>
                                         </div>
                                     </td>
-                                    <td>
-
-                                        <img style={{cursor: 'pointer'}} onClick={() => excluirChave(record.Codigo)} src={Trash}></img>
-
+                                    <td className="trash-pix">
+                                        <img className="img-excluir-chave" onClick={() => excluirChave(record.Codigo)} src={Trash}></img>
                                     </td>
                                 </tr>
                             ))}

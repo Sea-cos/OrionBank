@@ -22,15 +22,16 @@ export function ChaveProvider({ children }) {
 
     const obterChavesPix = async () => {
         try {
-            return await obterChavesPorConta(user.codigo); 
-        } catch (   error) {
-            showErrorNotification(error.response.data);
+            return await obterChavesPorConta(user.codigo);
+        } catch (error) {
+            return;
         }
     };
 
     const inativarChavePix = async (codigoChave) => {
         try {
             await inativarChave(codigoChave);
+            showSuccessNotification("Chave excluída com sucesso!")
         } catch (error) {
             showErrorNotification(error.message);
         }
@@ -38,14 +39,14 @@ export function ChaveProvider({ children }) {
 
     const consultarChavePix = async (chave) => {
         try {
-           return await consultarChave(chave, user.codigo);
+            return await consultarChave(chave, user.codigo);
         } catch (error) {
             showErrorNotification(error.message);
         }
     };
 
     return (
-        <ChaveContext.Provider value={{user, criarChavePix, obterChavesPix, consultarChavePix, inativarChavePix }}>
+        <ChaveContext.Provider value={{ user, criarChavePix, obterChavesPix, consultarChavePix, inativarChavePix }}>
             {children}
         </ChaveContext.Provider>
     );
