@@ -1,7 +1,6 @@
 import React, { createContext, useContext } from "react";
-import { criarChave, obterChavesPorConta, consultarChave } from "../services/chaveApi";
+import { criarChave, obterChavesPorConta, consultarChave, inativarChave } from "../services/chaveApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
-import { criarChave, obterChavesPorConta, inativarChave } from "../services/chaveApi";
 import { AuthContext } from "./AuthContext";
 
 
