@@ -78,6 +78,10 @@ const Pix = () => {
                     showErrorNotification("Informe o valor a pagar.");
                     return false;
                 }
+                break;
+                
+            default:
+                return false;
         }
 
         return true;
@@ -194,7 +198,7 @@ const Pix = () => {
                                         )}
                                         {chavesFavoritas.length === 0 && (
                                             <div className="not-found-favoritas mt-2">
-                                                <img src={NotFound}></img>
+                                                <img alt="" src={NotFound}></img>
                                                 <label className="mt-3" style={{ color: "#3f3d56", fontSize: "11px" }}>Você ainda não possui chaves favoritas.</label>
                                             </div>
                                         )}

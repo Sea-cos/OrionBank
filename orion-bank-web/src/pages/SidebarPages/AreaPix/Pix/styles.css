@@ -115,9 +115,7 @@
 
 .quem-receber {
     display: flex;
-    align-items: start;
     text-align: start;
-
 }
 
 .valor-pix {

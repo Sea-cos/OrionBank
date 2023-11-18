@@ -71,7 +71,7 @@ const SolicitacoesConta = () => {
     return (
         <div className="container-solicitar">
             <div className="title-solicitar">
-                <h3 className="titulo-h5"> <img src={PersonLock}></img> Solicitações de Contas</h3>
+                <h3 className="titulo-h5"> <img alt="" src={PersonLock}></img> Solicitações de Contas</h3>
             </div>
 
             <div className="card-solicitar">

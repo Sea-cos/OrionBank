@@ -122,7 +122,7 @@ const CadastrarChave = () => {
     return (
         <div className="container-cadastrar">
             <div className="title-solicitar">
-                <h3 className="titulo-h5"> <img src={Key}></img> Cadastrar Chave</h3>
+                <h3 className="titulo-h5"> <img alt="" src={Key}></img> Cadastrar Chave</h3>
             </div>
             <div className="card-cadastrar">
                 <Modal show={modalIsOpen} centered className="modal-pix">
@@ -171,7 +171,7 @@ const CadastrarChave = () => {
                         <Button variant="danger" onClick={closeModal}>
                             Cancelar
                         </Button>
-                        <Button type="submit" onClick={cadastrarChave} variant="success">
+                        <Button className="button-criar" type="submit" onClick={cadastrarChave} variant="success">
                             Criar
                         </Button>
                     </Modal.Footer>
@@ -183,8 +183,10 @@ const CadastrarChave = () => {
                 <div className="div-descricao">
                     <h5 className="titulo-chaves">Com suas chaves, você pode receber Pix através de QR codes ou links e se identificar de forma rápida para receber transferências.</h5>
                 </div>
-
-                <Button onClick={openModal} id="button-cadastrar" variant="secondary" className="button-add-chave" as="input" type="submit" value="+ Cadastrar chave" />
+                <div className="mt-5">
+                    <button onClick={openModal} id="button-cadastrar" type="submit" className="botao-um button-cadastrar-chave">+ Cadastrar chave</button>
+                </div>
+                {/* <Button onClick={openModal} id="button-cadastrar" variant="secondary" className="botao-um button-add-chave" as="input" type="submit" value="+ Cadastrar chave" /> */}
                 {chaves.length > 0 && (
                     <div className="table-consulta-chave">
                         <Table hover responsive className="table-cadastra-chave">
@@ -206,7 +208,7 @@ const CadastrarChave = () => {
                                             </div>
                                         </td>
                                         <td className="trash-pix">
-                                            <img className="img-excluir-chave" onClick={() => excluirChave(record.Codigo)} src={Trash}></img>
+                                            <img alt="" className="img-excluir-chave" onClick={() => excluirChave(record.Codigo)} src={Trash}></img>
                                         </td>
                                     </tr>
                                 ))}
@@ -216,7 +218,7 @@ const CadastrarChave = () => {
                 )}
                 {chaves.length === 0 && (
                     <div className="mt-3">
-                        <img src={NotFound}></img>
+                        <img alt="" src={NotFound}></img>
                         <h5 className="mt-3" style={{ color: "#3f3d56" }}>Você ainda não possui chaves cadastradas.</h5>
                     </div>
                 )}
