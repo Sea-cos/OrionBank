@@ -21,6 +21,10 @@
     display: flex;
 }
 
+.modal-content {
+    width: 110%;
+}
+
 .modal-cadastro {
     display: flex;
     flex-direction: row;
@@ -75,7 +79,7 @@
 }
 
 .campo-chave {
-    width: 500px;
+    width: 520px;
     margin-right: 20px;
 }
 

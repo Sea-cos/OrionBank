@@ -15,6 +15,7 @@ const CadastrarChave = () => {
     const criarChavePix = chaveContext.criarChavePix;
     const obterChavesPix = chaveContext.obterChavesPix;
     const inativarChavePix = chaveContext.inativarChavePix;
+    const user = chaveContext.user;
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [chaves, setChaves] = useState([]);
     const [tamanho, setTamanho] = useState(11);
@@ -42,6 +43,15 @@ const CadastrarChave = () => {
         return regex.test(email);
     }
 
+    function validarTelefone(telefone) {
+        const numeroLimpo = telefone.replace(/\D/g, '');
+
+        if (numeroLimpo.length === 10 || numeroLimpo.length === 11)
+            return true;
+
+        return false;
+    };
+
     function validarChavePix() {
         if (cadastrarChavePix.chavePix === "") {
             showErrorNotification('Informe uma Chave Pix.');
@@ -49,9 +59,6 @@ const CadastrarChave = () => {
         }
 
         switch (cadastrarChavePix.tipoChave) {
-            case TipoChavePixEnum.CPF:
-
-                break;
             case TipoChavePixEnum.EMAIL:
                 if (!validarEmail(cadastrarChavePix.chavePix)) {
                     showErrorNotification('Informe um e-mail válido.');
@@ -59,7 +66,10 @@ const CadastrarChave = () => {
                 }
                 break;
             case TipoChavePixEnum.TELEFONE:
-
+                if (!validarTelefone(cadastrarChavePix.chavePix)) {
+                    showErrorNotification('Informe um telefone válido.');
+                    return false;
+                }
                 break;
 
             default:
@@ -70,6 +80,12 @@ const CadastrarChave = () => {
     }
 
     useEffect(() => {
+        function setarChaveDocumentoFederal() {
+            if (cadastrarChavePix.tipoChave === TipoChavePixEnum.CPF)
+                setCadastrarChavePix({ ...cadastrarChavePix, chavePix: user.user, tipoChave: TipoChavePixEnum.CPF });
+        }
+
+        setarChaveDocumentoFederal();
         buscarChaves();
     }, []);
 
@@ -94,21 +110,24 @@ const CadastrarChave = () => {
     }
 
     function limparCampos() {
-        cadastrarChavePix.chavePix = "";
+        setCadastrarChavePix({ ...cadastrarChavePix, chavePix: user.user });
     }
 
     function mudarTamanho(tipoChave) {
         switch (tipoChave) {
             case TipoChavePixEnum.CPF:
+                setCadastrarChavePix({ ...cadastrarChavePix, chavePix: user.user, tipoChave: TipoChavePixEnum.CPF });
+                break;
             case TipoChavePixEnum.TELEFONE:
+                setCadastrarChavePix({ ...cadastrarChavePix, chavePix: '', tipoChave: tipoChave });
                 setTamanho(11);
                 break;
 
             default:
+                setCadastrarChavePix({ ...cadastrarChavePix, chavePix: '', tipoChave: tipoChave });
                 setTamanho(200);
                 break;
         }
-        limparCampos();
     }
 
     const openModal = () => {
@@ -146,9 +165,6 @@ const CadastrarChave = () => {
                                     <option
                                         key={index}
                                         value={tipo}
-                                        onChange={(e) => {
-
-                                        }}
                                     >
                                         {formatarEnum(tipo)}
                                     </option>
@@ -163,6 +179,7 @@ const CadastrarChave = () => {
                                 name="nome"
                                 maxLength={tamanho}
                                 value={cadastrarChavePix.chavePix}
+                                disabled={cadastrarChavePix.tipoChave === TipoChavePixEnum.CPF}
                                 onChange={(e) => setCadastrarChavePix({ ...cadastrarChavePix, chavePix: e.target.value })}
                             />
                         </div>
@@ -186,7 +203,6 @@ const CadastrarChave = () => {
                 <div className="mt-5">
                     <button onClick={openModal} id="button-cadastrar" type="submit" className="botao-um button-cadastrar-chave">+ Cadastrar chave</button>
                 </div>
-                {/* <Button onClick={openModal} id="button-cadastrar" variant="secondary" className="botao-um button-add-chave" as="input" type="submit" value="+ Cadastrar chave" /> */}
                 {chaves.length > 0 && (
                     <div className="table-consulta-chave">
                         <Table hover responsive className="table-cadastra-chave">

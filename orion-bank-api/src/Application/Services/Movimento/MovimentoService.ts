@@ -35,7 +35,6 @@ export class MovimentoService implements IMovimentoService {
         movimento.tipoTransacao = TipoTransacao.Pix;
 
         await movimentoRepository.RealizarTransacaoPixViaChave(th.DtoParaDomainPix(movimento))
-
     }
 
     async ObterUltimasTransacoes(codigoConta: string): Promise<Movimento> {
@@ -45,7 +44,6 @@ export class MovimentoService implements IMovimentoService {
         }
 
         return await movimentoRepository.ObterUltimasTransacoes(codigoConta);
-
     }
 
     private async ValidarParametros(moviDto: MovimentoPixDto): Promise<void> {
@@ -83,6 +81,9 @@ export class MovimentoService implements IMovimentoService {
             throw new Error("Erro interno.")
         }
 
+        if (moviDto.codigoContaOrigem === moviDto.codigoContaDestino) {
+            throw new Error("Não é possível realizar uma transação para duas contas iguais.")
+        }
     }
 
     private DtoParaDomainPix(moviDto: MovimentoPixDto): Movimento {
