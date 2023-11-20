@@ -76,7 +76,7 @@ export class ChavePixController {
 
     }
 
-    async BuscarContaPorChavePrix(request: Request, response: Response) {
+    async BuscarContaPorChavePix(request: Request, response: Response) {
 
         try {
 

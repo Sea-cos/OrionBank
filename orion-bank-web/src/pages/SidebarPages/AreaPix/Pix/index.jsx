@@ -18,6 +18,7 @@ const Pix = () => {
     const [modalPixCopiaColaIsOpen, setOpenModalPixCopiaCola] = useState(false);
     const [chavesFavoritas, setChavesFavoritas] = useState([]);
     const [chavePix, setChavePix] = useState('');
+    const [EMV, setEMV] = useState('');
     const [valor, setValor] = useState('R$ 0,00');
     const [infoIsOn, setInfoIsOn] = useState(false);
     const [infoAdicional, setInfoAdicional] = useState('');
@@ -59,30 +60,46 @@ const Pix = () => {
     }
 
     const validarAvancoEtapa = async () => {
-        switch (etapa) {
-            case 1:
-                if (chavePix === "") {
-                    showErrorNotification("Informe a chave pix.");
-                    return false;
-                }
+        if (modalPixChaveIsOpen) {
+            switch (etapa) {
+                case 1:
+                    if (chavePix === "") {
+                        showErrorNotification("Informe a chave pix.");
+                        return false;
+                    }
 
-                const response = await consultarChavePix(chavePix);
-                if (response === undefined) {
-                    return false;
-                }
-                setResponseConsulta(response);
-                break;
+                    const response = await consultarChavePix(chavePix);
+                    if (response === undefined) {
+                        return false;
+                    }
+                    setResponseConsulta(response);
+                    break;
 
-            case 2:
-                if (formatarValor(valor) === 0) {
-                    showErrorNotification("Informe o valor a pagar.");
+                case 2:
+                    if (formatarValor(valor) === 0) {
+                        showErrorNotification("Informe o valor a pagar.");
+                        return false;
+                    }
+                    break;
+
+                default:
                     return false;
-                }
-                break;
-                
-            default:
-                return false;
+            }
         }
+
+        if (modalPixCopiaColaIsOpen) {
+            if (EMV === "") {
+                showErrorNotification("Informe o código EMV.");
+                return false;
+            }
+
+            const response = undefined;//CONSULTAR-EMV
+            if (response === undefined) {
+                return false;
+            }
+            setResponseConsulta(response);
+        }
+
 
         return true;
     };
@@ -289,15 +306,98 @@ const Pix = () => {
 
                 <Modal show={modalPixCopiaColaIsOpen} centered >
                     <Modal.Header>
-                        <Modal.Title>Pix Copia e Cola</Modal.Title>
+                        <Modal.Title style={{ color: '#DB4648' }}>Pix Copia e Cola</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        aaa
+                        <div className="container-pix-por-chave">
+                            {etapa === 1 && (
+                                <>
+                                    <div>
+                                        <label className="mt-4" style={{ color: "#3f3d56" }}>EMV</label>
+                                        <input
+                                            type="text"
+                                            className="form-control emv"
+                                            id="chavePix"
+                                            placeholder="Código EMV"
+                                            name="nome"
+                                            value={EMV}
+                                            onChange={(e) => setEMV(e.target.value)}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            {etapa === 2 && (
+                                <>
+                                    <div className="body-pagar">
+                                        <label style={{ color: "#3f3d56", fontSize: '20px' }}>Revisão</label>
+
+                                        <div className="revisao-recebedor mt-4">
+                                            <div className="quem-receber">
+                                                <label style={{ color: "#3f3d56", fontSize: '17px' }}>Quem vai receber?</label>
+                                            </div>
+                                            <div className="dados-recebedor">
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.NomeCompleto}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>CPF:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Instituição:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Orion Bank S.A.</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Chave_Pix}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Valor a Pagar:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Valor}</label>
+                                                </div>
+                                            </div>
+                                            <div className="mt-3">
+                                                <label className="add-mensagem" onClick={() => setInfoIsOn(!infoIsOn)}>Adicionar mensagem</label>
+                                                {infoIsOn && (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control infoAdicional"
+                                                        id="infoAdicional"
+                                                        placeholder="Mensagem"
+                                                        name="infoAdicional"
+                                                        maxLength={255}
+                                                        value={infoAdicional}
+                                                        onChange={(e) => setInfoAdicional(e.target.value)}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={closeModalPixCopiaCola}>
-                            Fechar
+                        <Button variant="danger" onClick={closeModalPixCopiaCola}>
+                            Cancelar
                         </Button>
+                        {etapa === 2 && (
+                            <Button variant="success" onClick={enviarPixPorChave}>
+                                Confirmar
+                            </Button>
+                        )}
+                        {etapa === 1 && (
+                            <Button variant="primary" onClick={avancarEtapa}>
+                                Continuar
+                            </Button>
+                        )}
+                        {etapa > 1 && (
+                            <Button variant="primary" onClick={retrocederEtapa}>
+                                Voltar
+                            </Button>
+                        )}
                     </Modal.Footer>
                 </Modal>
             </div>
