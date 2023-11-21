@@ -108,6 +108,11 @@ router.get("/movimento/ultimasTransacoes/:codigoConta",
     movimentoController.ObterUltimasTransacoes
 )
 
+router.post("/movimento/transacaoDadosBancarios",
+    ValidacaoToken,
+    movimentoController.TransacaoViaDadosBancarios
+)
+
 //#endregion
 
 export {

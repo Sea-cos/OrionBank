@@ -1,11 +1,10 @@
 
 
 export interface MovimentoDadosBancariosDto{
-    Agencia: string;
-    Conta: string;
-    ContaDigito: string;
-    ContaPgto: string;
-    DocumentoFederal: string;
-    CodigoContaOrigem: string;
-    CodigoContaDestino: string;
+    agencia: string;
+    conta: string;
+    contaDigito: string;
+    contaPgto: string;
+    codigoContaOrigem: string;
+    codigoContaDestino: string;
 }

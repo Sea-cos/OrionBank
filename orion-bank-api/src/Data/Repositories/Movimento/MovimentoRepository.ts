@@ -31,7 +31,7 @@ export class MovimentoRepository implements IMovimentoRepository {
 
     }
 
-    async ObterUltimasTransacoes(codigoConta: string) : Promise<Movimento> {
+    async ObterUltimasTransacoes(codigoConta: string) : Promise<Array<Movimento>> {
 
         const sql = `SELECT
                         Valor,
@@ -50,7 +50,7 @@ export class MovimentoRepository implements IMovimentoRepository {
             ]
         ) as any
 
-        return movimento[0][0] as Movimento
+        return movimento as Array<Movimento>
     }
 
     async RealizarTransacaoPorDadosBancarios(movimento: Movimento): Promise<void> {

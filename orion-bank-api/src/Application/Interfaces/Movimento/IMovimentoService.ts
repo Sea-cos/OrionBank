@@ -4,6 +4,6 @@ import { MovimentoDadosBancariosDto } from "../../DTOs/MovimentoDadosBancariosDt
 
 export interface IMovimentoService {
     RealizarTransacaoPixViaChave(movimento: MovimentoPixDto) : Promise<void>
-    ObterUltimasTransacoes(codigoConta: string) : Promise<Movimento>
+    ObterUltimasTransacoes(codigoConta: string) : Promise<Array<Movimento>>
     RealizarTransacaoPorDadosBancarios(movimento: MovimentoDadosBancariosDto): Promise<void>
 }
