@@ -40,10 +40,6 @@ export class MovimentoService implements IMovimentoService {
 
 
     async ObterUltimasTransacoes(codigoConta: string): Promise<Array<Movimento>> {
-        
-        if(codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
-
-    async ObterUltimasTransacoes(codigoConta: string): Promise<Movimento> {
 
         if (codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
             throw new Error("Erro interno.")
