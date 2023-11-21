@@ -31,12 +31,10 @@ export class MovimentoRepository implements IMovimentoRepository {
 
     }
 
-    async ObterUltimasTransacoes(codigoConta: string) : Promise<Movimento> {
+    async ObterUltimasTransacoes(codigoConta: string) : Promise<Array<Movimento>> {
 
         const sql = `SELECT
-                        Valor,
-                        TipoTransacao,
-                        DtMovimento
+                        *
                     FROM
                         movimento 
                     WHERE
@@ -50,6 +48,32 @@ export class MovimentoRepository implements IMovimentoRepository {
             ]
         ) as any
 
-        return movimento[0][0] as Movimento
+        return movimento[0] as Array<Movimento>
+    }
+
+    async RealizarTransacaoPorDadosBancarios(movimento: Movimento): Promise<void> {
+        
+        const parametros = [
+            movimento.CodigoContaOrigem,
+            movimento.CodigoContaDestino,
+            movimento.InfoAdicional,
+            movimento.TipoTransacao,
+            movimento.DtMovimento,
+            movimento.Valor,
+            movimento.DescTransacao
+        ]
+
+        const sql = `
+            INSERT INTO movimento
+                (CodigoContaOrigem, CodigoContaDestino, InfoAdicional, TipoTransacao, 
+                    DtMovimento, Valor, DescTransacao)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        await (await connection).query(
+            sql,
+            parametros
+        )
+
     }
 }

@@ -7,6 +7,7 @@ import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepositor
 import { ChavePixRepository } from "../../../Data/Repositories/ChavePix/ChavePixRepository";
 import { TipoTransacao } from "../../../Enums/TipoTransacao";
 import { v4 as uuidv4 } from 'uuid';
+import { MovimentoDadosBancariosDto } from "../../DTOs/MovimentoDadosBancariosDto";
 
 const movimentoRepository = new MovimentoRepository()
 const contaRepository = new AbrirContaRepository()
@@ -37,6 +38,11 @@ export class MovimentoService implements IMovimentoService {
         await movimentoRepository.RealizarTransacaoPixViaChave(th.DtoParaDomainPix(movimento))
     }
 
+
+    async ObterUltimasTransacoes(codigoConta: string): Promise<Array<Movimento>> {
+        
+        if(codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
+
     async ObterUltimasTransacoes(codigoConta: string): Promise<Movimento> {
 
         if (codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
@@ -44,6 +50,13 @@ export class MovimentoService implements IMovimentoService {
         }
 
         return await movimentoRepository.ObterUltimasTransacoes(codigoConta);
+    }
+    
+    async RealizarTransacaoPorDadosBancarios(movimento: MovimentoDadosBancariosDto): Promise<void> {
+
+        let th = this;
+        await th.ValidarParametrosDadosBancarios(movimento);
+
     }
 
     private async ValidarParametros(moviDto: MovimentoPixDto): Promise<void> {
@@ -86,7 +99,37 @@ export class MovimentoService implements IMovimentoService {
         }
     }
 
+    private async ValidarParametrosDadosBancarios(movi: MovimentoDadosBancariosDto) : Promise<void> {
+
+        if (movi.agencia === undefined ||
+            movi.agencia === null ||
+            movi.agencia.trim() === ""
+        ) {
+            throw new Error("Agência é obrigatória.");
+        }
+
+        if (movi.agencia.trim() != "0001") {
+            throw new Error("Agência inexistente.");
+        }
+
+        if (movi.conta === undefined ||
+            movi.conta === null ||
+            movi.conta.trim() === ""            
+        ) {
+            throw new Error("Conta é obrigatória.");
+        }
+
+        if (movi.conta.trim().length != 8 || parseInt(movi.conta).toString() === "NaN") {
+            throw new Error("A conta tem que conter 8 dígitos.");
+        }
+
+        if (movi.contaDigito != "8") {
+            throw new Error("O dígito da conta não pode ser diferente de '8'")
+        }
+    } 
+
     private DtoParaDomainPix(moviDto: MovimentoPixDto): Movimento {
+
         return {
             Codigo: uuidv4(),
             CodigoContaOrigem: moviDto.codigoContaOrigem,
@@ -100,39 +143,4 @@ export class MovimentoService implements IMovimentoService {
             DtMovimento: new Date()
         } as Movimento
     }
-
-    private ValidarCPF(cpf: string) {
-        cpf = cpf.replace(/[\s.-]*/igm, '')
-        if (
-            !cpf ||
-            cpf.length != 11 ||
-            cpf == "00000000000" ||
-            cpf == "11111111111" ||
-            cpf == "22222222222" ||
-            cpf == "33333333333" ||
-            cpf == "44444444444" ||
-            cpf == "55555555555" ||
-            cpf == "66666666666" ||
-            cpf == "77777777777" ||
-            cpf == "88888888888" ||
-            cpf == "99999999999"
-        ) {
-            return false
-        }
-        var soma = 0
-        var resto
-        for (var i = 1; i <= 9; i++)
-            soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i)
-        resto = (soma * 10) % 11
-        if ((resto == 10) || (resto == 11)) resto = 0
-        if (resto != parseInt(cpf.substring(9, 10))) return false
-        soma = 0
-        for (var i = 1; i <= 10; i++)
-            soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i)
-        resto = (soma * 10) % 11
-        if ((resto == 10) || (resto == 11)) resto = 0
-        if (resto != parseInt(cpf.substring(10, 11))) return false
-        return true
-    }
-
 }

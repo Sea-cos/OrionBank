@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { MovimentoDadosBancariosDto } from "../../Application/DTOs/MovimentoDadosBancariosDto";
 import { MovimentoPixDto } from "../../Application/DTOs/MovimentoDto";
 import { MovimentoService } from "../../Application/Services/Movimento/MovimentoService";
 
@@ -52,11 +53,25 @@ export class MovimentoController {
                 })
             }
 
-            return response.status(200).json({
-                valor: movimento.Valor,
-                tipoTransacao: movimento.TipoTransacao,
-                dtMovimento: movimento.DtMovimento
+            return response.status(200).json(movimento)
+
+        } catch(error: any) {
+            return response.status(400).send({
+                status: "Error",
+                message: error.message
             })
+        }
+    }
+
+    async TransacaoViaDadosBancarios(request: Request, response: Response) {
+
+        try {
+
+            const movimento = request.body as MovimentoDadosBancariosDto
+
+            await movimentoService.RealizarTransacaoPorDadosBancarios(movimento)
+
+            return response.status(200).send();
 
         } catch(error: any) {
             return response.status(400).send({
