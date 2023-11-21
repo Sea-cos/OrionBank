@@ -12,15 +12,12 @@ export class MovimentoController {
         try {
 
             const {
+                codigoContaDestino,
+                codigoContaOrigem,
                 valor,
                 chavePix,
                 infoAdicional
             } = request.body
-
-            const {
-                codigoContaDestino,
-                codigoContaOrigem
-            } = request.query
 
             const movimento = {
                 codigoContaOrigem: codigoContaOrigem,

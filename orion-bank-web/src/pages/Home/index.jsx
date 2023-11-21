@@ -25,7 +25,8 @@ const Home = () => {
     useEffect(() => {
         const fetchSaldo = async () => {
             const saldo = await buscarSaldo();
-            setSaldo(saldo);
+            const saldoFormatado = parseFloat(saldo).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            setSaldo(saldoFormatado);
         };
 
         const fetchNome = async () => {
@@ -45,7 +46,7 @@ const Home = () => {
                     <div className="row">
                         <div className="col-12 col-x1-8 mb-4 mb-x1-0">
                             <h3>Bem vindo, {nome}!</h3>
-                            <h6 className="mb-0"> 3 notificações não lidas!</h6>
+                            <h6 className="mb-0"> <span  style={{ color: '#EB4E50' }}>1</span> notificação não lida!</h6>
                         </div>
                     </div>
                 </div>
@@ -58,7 +59,7 @@ const Home = () => {
                             <div className="card-body1">
                                 <p className="fs-20 mb-1">Saldo atual</p>
                                 <div className="saldo">
-                                    {elementoVisivel && <p className="fs-23 mb-0"> R$ {saldo}</p>}
+                                    {elementoVisivel && <p className="fs-23 mb-0">{saldo}</p>}
                                     {!elementoVisivel && <p className="fs-23 mb-0"> R$ *****</p>}
                                 </div>
                             </div>

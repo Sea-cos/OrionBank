@@ -13,6 +13,5 @@ export const SituacaoEnum = {
 export const TipoChavePixEnum = {
     CPF: 1,
     EMAIL: 2,
-    TELEFONE: 3,
-    EVP: 4
+    TELEFONE: 3
 };

@@ -76,16 +76,18 @@ export class ChavePixController {
 
     }
 
-    async BuscarContaPorChavePrix(request: Request, response: Response) {
+    async BuscarContaPorChavePix(request: Request, response: Response) {
 
         try {
 
             const {
-                chavePix
+                chavePix,
+                codigoConta
             } = request.query
 
             const conta = await chavePixService.BuscarContaPorChavePix(
-                chavePix === undefined ? "" : chavePix.toString()
+                chavePix === undefined ? "" : chavePix.toString(),
+                codigoConta === undefined ? "" : codigoConta.toString()
             )
 
             if (!conta) {

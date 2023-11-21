@@ -82,7 +82,7 @@ router.post("/chavePix/inativarChave",
 
 router.get("/chavePix/buscarConta",
     ValidacaoToken,
-    chavePixController.BuscarContaPorChavePrix
+    chavePixController.BuscarContaPorChavePix
 )
 
 //#endregion
