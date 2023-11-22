@@ -1,7 +1,5 @@
-import { ExtratoEnviadosRawQuery } from "../../RawQuery/ExtratoEnviadosRawQuery";
-import { ExtratoRecebidosRawQuery } from "../../RawQuery/ExtratoRecebidosRawQuery";
+import { ExtratoMovimentoRawQuery } from "../../RawQuery/ExtratoMovimentoRawQuery";
 
 export interface IExtratoRepository {
-    ObterMovimentacaoEnviados(codigoConta: string) : Promise<Array<ExtratoEnviadosRawQuery>>
-    ObterMovimentacaoRecebidos(codigoConta: string) : Promise<Array<ExtratoRecebidosRawQuery>>
+    ObterMovimentacao(codigoConta: string, dataInicio: Date, dataFim: Date) : Promise<Array<ExtratoMovimentoRawQuery>>
 }

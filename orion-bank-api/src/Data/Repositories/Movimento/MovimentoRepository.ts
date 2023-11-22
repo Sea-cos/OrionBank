@@ -33,19 +33,27 @@ export class MovimentoRepository implements IMovimentoRepository {
 
     async ObterUltimasTransacoes(codigoConta: string) : Promise<Array<Movimento>> {
 
+        const parametros = [
+            codigoConta, 
+            codigoConta
+        ]
+
         const sql = `SELECT
                         *
                     FROM
                         movimento 
                     WHERE
-                        CodigoContaOrigem = ?
-                    LIMIT 5`;
+                        CodigoContaOrigem = ? 
+                    OR 
+                        CodigoContaDestino = ?
+                    ORDER BY 
+                        DtMovimento DESC
+                    LIMIT
+                        5`;
 
         const movimento = await (await connection).query(
             sql,
-            [
-                codigoConta
-            ]
+            parametros
         ) as any
 
         return movimento[0] as Array<Movimento>

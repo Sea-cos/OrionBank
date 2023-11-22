@@ -15,3 +15,10 @@ export const TipoChavePixEnum = {
     EMAIL: 2,
     TELEFONE: 3
 };
+
+
+export const TipoTransacaoEnum = {
+    PIX: 1,
+    TED: 2,
+    QrCode: 3
+}
