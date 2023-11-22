@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ContaContext } from "../../contexts/ContaContext";
+import { MovimentoContext } from "../../contexts/MovimentoContext";
+import { TipoTransacaoEnum } from '../../constants/enums';
 import btnPix from "../../assets/img/logoPix.svg"
 import btnExtrato from "../../assets/img/logoExtrato.svg"
 import btnTransf from "../../assets/img/logoTransf.svg"
@@ -12,14 +14,45 @@ import "./styles.css"
 
 const Home = () => {
     const { buscarSaldo, buscarNome } = useContext(ContaContext);
+    const { obterMovimentacao, user } = useContext(MovimentoContext);
     const [hideEye, setHideEye] = useState(true);
     const [saldo, setSaldo] = useState(0.00);
     const [nome, setNome] = useState("");
     const [elementoVisivel, setElementoVisivel] = useState(true);
+    const [movimentos, setMovimentos] = useState([]);
 
     const hideMoney = () => {
         setHideEye(!hideEye);
         setElementoVisivel(!elementoVisivel);
+    }
+
+    const refresh = async () => {
+        const movimentos = await obterMovimentacao();
+        setMovimentos(movimentos);
+        console.log(movimentos);
+    };
+
+    function formatarData(data) {
+        const dataObj = new Date(data);
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+        const ano = dataObj.getFullYear();
+        const hora = dataObj.getHours();
+        const minuto = dataObj.getMinutes();
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
+    }
+
+    function formatarEnum(situacao) {
+        switch (situacao) {
+            case TipoTransacaoEnum.PIX:
+                return 'Pix';
+            case TipoTransacaoEnum.TED:
+                return 'Ted';
+            case TipoTransacaoEnum.QrCode:
+                return 'QrCode';
+            default:
+                return 'Desconhecida';
+        }
     }
 
     useEffect(() => {
@@ -34,9 +67,10 @@ const Home = () => {
             setNome(nome);
         };
 
+        refresh();
         fetchSaldo();
         fetchNome();
-    });
+    }, []);
 
     return (
         <div className="content-wrapper home-page">
@@ -46,7 +80,7 @@ const Home = () => {
                     <div className="row">
                         <div className="col-12 col-x1-8 mb-4 mb-x1-0">
                             <h3>Bem vindo, {nome}!</h3>
-                            <h6 className="mb-0"> <span  style={{ color: '#EB4E50' }}>1</span> notificação não lida!</h6>
+                            <h6 className="mb-0"> <span style={{ color: '#EB4E50' }}>1</span> notificação não lida!</h6>
                         </div>
                     </div>
                 </div>
@@ -127,42 +161,18 @@ const Home = () => {
                                             <th className="border-bottom pb-2">Data</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
-                                        <tr>
-                                            <td className="pl-0">Envio Pix</td>
-                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 65</span></p></td>
-                                            <td className="text-muted">18/10/2023</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="pl-0">Envio Pix</td>
-                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 54</span></p></td>
-                                            <td className="text-muted">17/10/2023</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="pl-0">TED</td>
-                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 22</span></p></td>
-                                            <td className="text-muted">17/10/2023</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="pl-0">Transferencia</td>
-                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 46</span></p></td>
-                                            <td className="text-muted">15/10/2023</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="pl-0">Transferencia</td>
-                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 17</span></p></td>
-                                            <td className="text-muted">15/10/2023</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="pl-0">TED</td>
-                                            <td><p className="mb-0"><span className="font-weight-bold mr-2">R$ 52</span></p></td>
-                                            <td className="text-muted">13/10/2023</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="pl-0 pb-0">Envio Pix</td>
-                                            <td className="pb-0"><p className="mb-0"><span className="font-weight-bold mr-2">R$ 25</span></p></td>
-                                            <td className="pb-0">08/10/2023</td>
-                                        </tr>
+                                        {movimentos.map((record, index) => (
+                                            <tr key={index}>
+                                
+                                                <td>{formatarEnum(record.TipoTransacao)}</td>
+                                                <td>{record.CodigoContaOrigem === user.codigo ? <span style={{"color": "red"}}>-{record.Valor}</span> : <span style={{"color": "green"}}>+{record.Valor}</span> }</td>
+                                                <td>{formatarData(record.DtMovimento)}</td>
+
+                                            </tr>
+                                        ))}
+
                                     </tbody>
                                 </table>
                             </div>

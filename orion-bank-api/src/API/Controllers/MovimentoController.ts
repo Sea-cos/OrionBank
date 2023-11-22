@@ -45,7 +45,7 @@ export class MovimentoController {
             const { codigoConta } = request.params
 
             const movimento = await movimentoService.ObterUltimasTransacoes(codigoConta)
-
+            
             if(!movimento) {
                 return response.status(404).send({
                     status: "Conta Sem Transações",

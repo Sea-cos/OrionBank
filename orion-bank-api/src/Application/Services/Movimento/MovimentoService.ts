@@ -24,7 +24,7 @@ export class MovimentoService implements IMovimentoService {
         const saldoOrigem = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem)
         let saldoFinal = saldoOrigem.Saldo - movimento.valor
         if (saldoFinal < 0) {
-            throw new Error("Saldo insulficiente para realizar a trasação.");
+            throw new Error("Saldo insulficiente para realizar a transação.");
         }
 
         const chave = await chavePixRepository.ObterChavePixPorChave(movimento.chavePix);

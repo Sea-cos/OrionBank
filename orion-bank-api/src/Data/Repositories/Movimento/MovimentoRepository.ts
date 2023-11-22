@@ -38,12 +38,14 @@ export class MovimentoRepository implements IMovimentoRepository {
                     FROM
                         movimento 
                     WHERE
-                        CodigoContaOrigem = ?
+                        CodigoContaOrigem = ? OR CodigoContaDestino = ?
+                    ORDER BY DtMovimento DESC
                     LIMIT 5`;
 
         const movimento = await (await connection).query(
             sql,
             [
+                codigoConta, 
                 codigoConta
             ]
         ) as any
