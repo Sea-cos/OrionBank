@@ -1,59 +1,43 @@
 import { IExtratoRepository } from "../../../Domain/Interfaces/Extrato/IExtratoRepository";
-import { ExtratoEnviadosRawQuery } from "../../../Domain/RawQuery/ExtratoEnviadosRawQuery";
-import { ExtratoRecebidosRawQuery } from "../../../Domain/RawQuery/ExtratoRecebidosRawQuery";
+import { ExtratoMovimentoRawQuery } from "../../../Domain/RawQuery/ExtratoMovimentoRawQuery";
 import { connection } from "../../context/ConnectionString";
 
 
 export class ExtratoRepository implements IExtratoRepository {
 
-    async ObterMovimentacaoEnviados(codigoConta: string): Promise<Array<ExtratoEnviadosRawQuery>> {
+    async ObterMovimentacao(codigoConta: string, dataInicio: Date, dataFim: Date): Promise<Array<ExtratoMovimentoRawQuery>> {
         
+        const parametros = [
+            codigoConta,
+            codigoConta,
+            dataInicio,
+            dataFim
+        ]
+
         const sql = `SELECT
-                        m.DtMovimento Data,
-                        m.InfoAdicional Descricao,
-                        m.TipoTransacao,
-                        m.Valor,
-                        m.CodigoContaDestino 
+                        DtMovimento Data,
+                        InfoAdicional Descricao,
+                        TipoTransacao,
+                        FORMAT(Valor, 2) AS Valor,
+                        CodigoContaDestino,
+                        CodigoContaOrigem
                     FROM
-                        movimento m
-                    INNER JOIN conta c
-                    ON m.CodigoContaOrigem = c.Codigo
-                    WHERE c.Codigo = ?`
+                        movimento
+                    WHERE (
+                        CodigoContaOrigem = ?
+                    OR 
+                        CodigoContaDestino = ? )
+                    AND 
+                        DtMovimento BETWEEN ? AND ?
+                    ORDER BY
+                        DtMovimento DESC`
 
         const movimento = await (await connection).query(
             sql,
-            [
-                codigoConta
-            ]
+            parametros
         ) as any
 
-        return movimento[0] as Array<ExtratoEnviadosRawQuery>
+        return movimento[0] as Array<ExtratoMovimentoRawQuery>
 
-    }
-
-    async ObterMovimentacaoRecebidos(codigoConta: string): Promise<Array<ExtratoRecebidosRawQuery>> {
-        
-        const sql = `SELECT
-                        m.DtMovimento Data,
-                        m.InfoAdicional Descricao,
-                        m.TipoTransacao,
-                        m.Valor,
-                        m.CodigoContaOrigem 
-                    FROM
-                        movimento m
-                    INNER JOIN conta c
-                    ON m.CodigoContaDestino = c.Codigo
-                    WHERE c.Codigo = ?`
-
-        const movimento = await (await connection).query(
-            sql,
-            [
-                codigoConta
-            ]
-        ) as any
-
-        return movimento[0] as Array<ExtratoRecebidosRawQuery>
-
-    }
-    
+    }    
 }

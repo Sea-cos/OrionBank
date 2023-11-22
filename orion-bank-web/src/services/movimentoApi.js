@@ -18,3 +18,14 @@ export const enviarPixPorChave = async (request) => {
         throw error.response.data;
     }
 }
+
+export const obterUltimaMovimentacao = async (codigoConta) => {
+    try {
+        const response = await api.get(`/movimento/ultimasTransacoes/${codigoConta}`);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        debugger
+        throw error.response.data;
+    }
+}

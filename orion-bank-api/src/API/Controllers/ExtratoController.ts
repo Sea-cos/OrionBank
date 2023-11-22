@@ -8,9 +8,13 @@ export class ExtratoController {
 
         try {
 
-            const { codigoConta } = request.params
+            const { 
+                codigoConta,
+                dataInicio,
+                dataFim
+            } = request.body
 
-            await GerarPDF(codigoConta);
+            await GerarPDF(codigoConta, dataInicio, dataFim);
             const nomeArquivo = `${codigoConta}.pdf`
             const dir = __dirname
 

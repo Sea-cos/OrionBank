@@ -6,7 +6,7 @@ import { TipoTransacao } from "../../Enums/TipoTransacao";
 const _extratoRepository = new ExtratoRepository()
 const _contaRepository = new AbrirContaRepository()
 
-export async function GerarPDF(codigoConta: string) {
+export async function GerarPDF(codigoConta: string, dataInicio: Date, dataFim: Date) {
 
     const nomeArquivo = `${codigoConta}.pdf`;
     const path = `./ImportarExtrato/${nomeArquivo}`;
@@ -14,7 +14,7 @@ export async function GerarPDF(codigoConta: string) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.setContent(await PegarHTML(codigoConta));
+    await page.setContent(await PegarHTML(codigoConta, dataInicio, dataFim));
 
     await page.pdf({ 
         path: path, 
@@ -25,7 +25,7 @@ export async function GerarPDF(codigoConta: string) {
     await browser.close();
 }
 
-async function PegarHTML(codigoConta: string) : Promise<string> {
+async function PegarHTML(codigoConta: string, dataInicio: Date, dataFim: Date) : Promise<string> {
     return `
     <html>
         <body>
@@ -33,7 +33,7 @@ async function PegarHTML(codigoConta: string) : Promise<string> {
             <br>
             <br>
             ${ObterHTMLCabecalhoValores()}
-            ${await ObterHTMLValoresExtrato(codigoConta)}
+            ${await ObterHTMLValoresExtrato(codigoConta, dataInicio, dataFim)}
         </body>
     </html>
     `;
@@ -200,55 +200,45 @@ function ObterHTMLCabecalhoValores() : string {
     `;
 }
 
-async function ObterHTMLValoresExtrato(codigoConta: string) : Promise<string> {
+async function ObterHTMLValoresExtrato(codigoConta: string, dataInicio: Date, dataFim: Date) : Promise<string> {
 
-    const enviados = await _extratoRepository.ObterMovimentacaoEnviados(codigoConta);
-    const recebidos = await _extratoRepository.ObterMovimentacaoRecebidos(codigoConta);
+    const movimentos = await _extratoRepository.ObterMovimentacao(codigoConta, dataInicio, dataFim);
 
-    if(enviados.length == 0 && recebidos.length == 0)
+    if(movimentos.length == 0)
         throw new Error("Sem movimentações para está conta.");
 
     let html: string = "";
 
-    if(enviados.length != 0) {
+    for (let cont = 0; cont < movimentos.length; cont++) {
 
-        for (let cont = 0; cont < enviados.length; cont++) {
-            
-            const contaDestino = await _contaRepository.BuscarContaPorCodigo(enviados[cont].CodigoContaDestino);
+        if(movimentos[cont].CodigoContaOrigem === codigoConta) {
 
-            if(contaDestino != null) {
-            
-                html += MontarHTMLValores(
-                    enviados[cont].Data,
-                    enviados[cont].TipoTransacao,
-                    enviados[cont].Descricao,
-                    `-${enviados[cont].Valor}`,
-                    contaDestino.NomeCompleto
-                );
-                
-            }
+            const conta = await _contaRepository.BuscarContaPorCodigo(movimentos[cont].CodigoContaDestino);
+
+            html += MontarHTMLValores(
+                movimentos[cont].Data,
+                movimentos[cont].TipoTransacao,
+                movimentos[cont].Descricao,
+                `-${movimentos[cont].Valor.replace(".", ",")}`,
+                conta.NomeCompleto
+            )
+
+        } else {
+
+            const conta = await _contaRepository.BuscarContaPorCodigo(movimentos[cont].CodigoContaOrigem);
+
+            html += MontarHTMLValores(
+                movimentos[cont].Data,
+                movimentos[cont].TipoTransacao,
+                movimentos[cont].Descricao,
+                `+${movimentos[cont].Valor.replace(",", "").replace(".", ",")}`,
+                conta.NomeCompleto
+            )
+
         }
+
     }
-
-    if(recebidos.length != 0) {
-
-        for (let cont = 0; cont < recebidos.length; cont++) {
-            
-            const contaOrigem = await _contaRepository.BuscarContaPorCodigo(recebidos[cont].CodigoContaOrigem);
-
-            if(contaOrigem != null) {
-            
-                html += MontarHTMLValores(
-                    recebidos[cont].Data,
-                    recebidos[cont].TipoTransacao,
-                    recebidos[cont].Descricao,
-                    `+${recebidos[cont].Valor}`,
-                    contaOrigem.NomeCompleto
-                );
-                
-            }
-        }
-    }
+ 
 
     return `
         <div style="
