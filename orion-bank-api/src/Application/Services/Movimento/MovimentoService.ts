@@ -38,7 +38,6 @@ export class MovimentoService implements IMovimentoService {
         await movimentoRepository.RealizarTransacaoPixViaChave(th.DtoParaDomainPix(movimento))
     }
 
-
     async ObterUltimasTransacoes(codigoConta: string): Promise<Array<Movimento>> {
 
         if (codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
@@ -121,6 +120,25 @@ export class MovimentoService implements IMovimentoService {
 
         if (movi.contaDigito != "8") {
             throw new Error("O dígito da conta não pode ser diferente de '8'")
+        }
+
+        const contaPagamento = await contaRepository.BuscarContaPorDadosContaPagamento(movi.contaPgto);
+        if (!contaPagamento) {
+            throw new Error("Conta pagamento inválida.");
+        }
+
+        if (movi.codigoContaOrigem === undefined || movi.codigoContaDestino === undefined) {
+            throw new Error("Erro interno.");
+        }
+
+        const contaOrigem = await contaRepository.BuscarContaPorCodigo(movi.codigoContaOrigem);
+        if (!contaOrigem) {
+            throw new Error("Erro interno.");
+        }
+
+        const contaDestino = await contaRepository.BuscarContaPorCodigo(movi.codigoContaDestino);
+        if (!contaDestino) {
+            throw new Error("Error interno.");
         }
     } 
 
