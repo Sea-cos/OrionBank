@@ -1,10 +1,8 @@
 import puppeteer from "puppeteer"
-import { AbrirContaRepository } from "../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { ExtratoRepository } from "../../Data/Repositories/Extrato/ExtratoRepository";
 import { TipoTransacao } from "../../Enums/TipoTransacao";
 
 const _extratoRepository = new ExtratoRepository()
-const _contaRepository = new AbrirContaRepository()
 
 export async function GerarPDF(codigoConta: string, dataInicio: Date, dataFim: Date) {
 
@@ -213,26 +211,22 @@ async function ObterHTMLValoresExtrato(codigoConta: string, dataInicio: Date, da
 
         if(movimentos[cont].CodigoContaOrigem === codigoConta) {
 
-            const conta = await _contaRepository.BuscarContaPorCodigo(movimentos[cont].CodigoContaDestino);
-
             html += MontarHTMLValores(
                 movimentos[cont].Data,
                 movimentos[cont].TipoTransacao,
                 movimentos[cont].Descricao,
                 `-${movimentos[cont].Valor.replace(".", ",")}`,
-                conta.NomeCompleto
+                movimentos[cont].NomeDestino
             )
 
         } else {
-
-            const conta = await _contaRepository.BuscarContaPorCodigo(movimentos[cont].CodigoContaOrigem);
 
             html += MontarHTMLValores(
                 movimentos[cont].Data,
                 movimentos[cont].TipoTransacao,
                 movimentos[cont].Descricao,
                 `+${movimentos[cont].Valor.replace(",", "").replace(".", ",")}`,
-                conta.NomeCompleto
+                movimentos[cont].NomeOrigem
             )
 
         }
