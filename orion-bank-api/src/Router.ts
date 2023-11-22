@@ -30,7 +30,7 @@ router.get("/autenticacao/recuperarSenha/:documentoFederal",
     autenticacaoController.RecuperarSenha
 )
 
-router.get("/extrato/importar/:codigoConta",
+router.get("/extrato/importar",
     ValidacaoToken,
     extratoController.ImportarExtrato
 )
