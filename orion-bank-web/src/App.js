@@ -8,7 +8,7 @@ import { BuscarCEPProvider } from "./contexts/BuscarCEPContext";
 import { RecuperarSenhaProvider } from "./contexts/RecuperarSenhaContext";
 import { ContaProvider } from "./contexts/ContaContext";
 import { ChaveProvider } from "./contexts/ChaveContext";
-import { MovimentoProvider } from "./contexts/MovimentoContext";
+import { MovimentoProvider } from "./contexts/MovimentoContext"
 import { BrowserRouter as Router } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
