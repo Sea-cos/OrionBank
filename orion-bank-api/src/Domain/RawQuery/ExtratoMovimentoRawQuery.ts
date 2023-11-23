@@ -8,4 +8,6 @@ export interface ExtratoMovimentoRawQuery {
     Valor: string
     CodigoContaDestino: string
     CodigoContaOrigem: string
+    NomeDestino: string
+    NomeOrigem: string
 }

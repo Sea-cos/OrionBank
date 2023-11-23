@@ -236,4 +236,26 @@ export class AbrirContaRepository implements IAbrirContaRepository{
         
         return conta[0].length == 0 ? true : false
     }
+
+    async BuscarContaPorDadosContaPagamento(contaPagamento: string) : Promise<Conta> {
+
+        const sql = `
+                    SELECT 
+                        *
+                    FROM
+                        conta
+                    WHERE
+                        ContaPgto = ?
+        `;
+
+        const conta = await (await connection).query(
+            sql,
+            [
+                contaPagamento
+            ]
+        ) as any
+
+        return conta[0][0] as Conta
+
+    }
 }

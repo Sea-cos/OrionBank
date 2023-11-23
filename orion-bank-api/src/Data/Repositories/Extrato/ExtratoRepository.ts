@@ -15,14 +15,23 @@ export class ExtratoRepository implements IExtratoRepository {
         ]
 
         const sql = `SELECT
-                        DtMovimento Data,
-                        InfoAdicional Descricao,
-                        TipoTransacao,
-                        FORMAT(Valor, 2) AS Valor,
-                        CodigoContaDestino,
-                        CodigoContaOrigem
+                        m.DtMovimento Data,
+                        m.InfoAdicional Descricao,
+                        m.TipoTransacao,
+                        FORMAT(m.Valor, 2) AS Valor,
+                        m.CodigoContaDestino,
+                        m.CodigoContaOrigem,
+                        co.NomeCompleto NomeOrigem,
+                        cd.NomeCompleto NomeDestino
                     FROM
-                        movimento
+                        movimento m
+
+                    INNER JOIN conta co
+                    ON m.CodigoContaOrigem = co.Codigo
+
+                    INNER JOIN conta cd
+                    ON m.CodigoContaDestino = cd.Codigo
+                    
                     WHERE (
                         CodigoContaOrigem = ?
                     OR 
