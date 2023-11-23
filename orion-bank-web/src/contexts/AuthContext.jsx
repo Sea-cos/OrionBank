@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     const buscarTipoConta = () => {
         const token = localStorage.getItem('token');
         const tokenInfo = getTokenInfo(JSON.parse(token));
-        return tokenInfo?.TipoConta ?? "Admin";
+        return tokenInfo?.TipoConta;
     };
 
     const validarRoles = (tokenInfo) => {
@@ -80,9 +80,15 @@ export const AuthProvider = ({ children }) => {
         return jwt.decode(token);
     };
 
+    const buscarNomeUsuarioLogado = () => {
+        const token = localStorage.getItem('token');
+        const tokenInfo = getTokenInfo(JSON.parse(token));
+        return tokenInfo?.Nome;
+    }
+
     return (
         <AuthContext.Provider
-            value={{ authenticated: !!user, user, loading, login, logout, navigate, buscarTipoConta, getTokenInfo }}>
+            value={{ authenticated: !!user, user, loading, login, logout, navigate, buscarTipoConta, getTokenInfo, buscarNomeUsuarioLogado }}>
             {children}
         </AuthContext.Provider>
     );

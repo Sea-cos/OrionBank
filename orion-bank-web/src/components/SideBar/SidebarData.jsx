@@ -69,13 +69,13 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Pix',
-        path: 'pix',
+        title: 'Criar QR Code',
+        path: 'criarQRCode',
         cName: 'sub-nav'
       },
       {
-        title: 'QR Code',
-        path: '',
+        title: 'Pix',
+        path: 'pix',
         cName: 'sub-nav'
       }
     ]

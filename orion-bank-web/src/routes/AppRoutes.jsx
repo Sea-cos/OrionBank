@@ -13,6 +13,7 @@ import TermosPolitica from '../pages/TermosPolitica';
 import SolicitacoesConta from '../pages/SidebarPages/Admin/SolicitacoesConta';
 import CadastrarChave from '../pages/SidebarPages/AreaPix/CadastrarChave';
 import Pix from '../pages/SidebarPages/AreaPix/Pix';
+import QRCode from '../pages/SidebarPages/AreaPix/QRCode';
 
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
@@ -47,6 +48,7 @@ const AppRoutes = () => {
                 <Route exact path="solicitacoesConta" element={<Private><SolicitacoesConta /></Private>} />
                 <Route exact path="cadastrarChave" element={<Private><CadastrarChave /></Private>} />
                 <Route exact path="pix" element={<Private><Pix /></Private>} />
+                <Route exact path="criarQRCode" element={<Private><QRCode /></Private>} />
             </Route>
         </Routes>
     );
