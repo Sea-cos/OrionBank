@@ -8,6 +8,7 @@ import { BuscarCEPProvider } from "./contexts/BuscarCEPContext";
 import { RecuperarSenhaProvider } from "./contexts/RecuperarSenhaContext";
 import { ContaProvider } from "./contexts/ContaContext";
 import { ChaveProvider } from "./contexts/ChaveContext";
+import { QRCodeProvider } from "./contexts/QRCodeContext";
 import { MovimentoProvider } from "./contexts/MovimentoContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,8 +26,10 @@ function App() {
                   <ContaProvider>
                     <ChaveProvider>
                       <MovimentoProvider>
-                        <AppRoutes />
-                        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                        <QRCodeProvider>
+                          <AppRoutes />
+                          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                        </QRCodeProvider>
                       </MovimentoProvider>
                     </ChaveProvider>
                   </ContaProvider>

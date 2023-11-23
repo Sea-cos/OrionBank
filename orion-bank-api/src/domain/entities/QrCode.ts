@@ -1,6 +1,6 @@
 
 
-export interface QrCode {
+export interface QRCode {
     ID: number;
     Codigo: string;
     CodigoConta: string;

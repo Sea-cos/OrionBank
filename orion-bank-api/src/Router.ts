@@ -7,6 +7,7 @@ import { AlterarSenhaController } from "./API/Controllers/AlterarSenhaController
 import { SaldoController } from "./API/Controllers/SaldoController";
 import { MovimentoController } from "./API/Controllers/MovimentoController";
 import { ExtratoController } from "./API/Controllers/ExtratoController";
+import { QRCodeController } from "./API/Controllers/QRCodeController";
 
 const router = Router();
 const autenticacaoController = new AutenticacaoController();
@@ -16,6 +17,7 @@ const alterarSenhaController = new AlterarSenhaController()
 const saldoController = new SaldoController()
 const movimentoController = new MovimentoController()
 const extratoController = new ExtratoController()
+const qrCodeController = new QRCodeController()
 
 router.post("/autenticacao", 
     autenticacaoController.EfetuarAutenticacao
@@ -106,6 +108,20 @@ router.post("/movimento/transacaoPixViaChave",
 router.get("/movimento/ultimasTransacoes/:codigoConta",
     ValidacaoToken,
     movimentoController.ObterUltimasTransacoes
+)
+
+//#endregion
+
+//#region QRCode
+
+router.get("/qrCode/buscarPorEMV",
+    ValidacaoToken,
+    qrCodeController.BuscarQRCodePorEMV
+)
+
+router.post("/qrCode/criarQRCode",
+    ValidacaoToken,
+    qrCodeController.CriarQRCode
 )
 
 //#endregion

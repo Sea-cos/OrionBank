@@ -1,6 +1,3 @@
-
-
-
 export interface MovimentoPixDto {
     codigoContaOrigem: string
     codigoContaDestino: string
