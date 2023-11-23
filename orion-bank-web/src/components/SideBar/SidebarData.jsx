@@ -37,7 +37,7 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Consultar',
-        path: '',
+        path: '/extratoConta',
         cName: 'sub-nav',
       }
     ]

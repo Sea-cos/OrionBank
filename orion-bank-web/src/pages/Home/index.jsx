@@ -36,7 +36,7 @@ const Home = () => {
         const dataObj = new Date(data);
         const dia = String(dataObj.getDate()).padStart(2, '0');
         const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
+        const ano = dataObj.getFullYear().toString().slice(-2);
         const hora = dataObj.getHours();
         const minuto = dataObj.getMinutes();
         return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
@@ -55,12 +55,19 @@ const Home = () => {
         }
     }
 
+    function formatarDinDin(valor) {
+        const dindinFormatado = parseFloat(valor).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+        return dindinFormatado;
+    }
+
     useEffect(() => {
         const fetchSaldo = async () => {
             const saldo = await buscarSaldo();
             const saldoFormatado = parseFloat(saldo).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             setSaldo(saldoFormatado);
         };
+
+    
 
         const fetchNome = async () => {
             const nome = await buscarNome();
@@ -158,16 +165,19 @@ const Home = () => {
                                         <tr>
                                             <th className="pl-0  pb-2 border-bottom">Tipo</th>
                                             <th className="border-bottom pb-2">Valor</th>
-                                            <th className="border-bottom pb-2">Data</th>
+                                            <th className="border-bottom pb-2">Data/Hora</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         {movimentos.map((record, index) => (
                                             <tr key={index}>
-                                
+
                                                 <td>{formatarEnum(record.TipoTransacao)}</td>
-                                                <td>{record.CodigoContaOrigem === user.codigo ? <span style={{"color": "red"}}>-{record.Valor}</span> : <span style={{"color": "green"}}>+{record.Valor}</span> }</td>
+                                                <td>{record.CodigoContaOrigem === user.codigo ?
+                                                    <span style={{ "color": "red" }}>-{formatarDinDin(record.Valor)}</span> :
+                                                    <span style={{ "color": "green" }}>+{formatarDinDin(record.Valor)}</span>}
+                                                </td>
                                                 <td>{formatarData(record.DtMovimento)}</td>
 
                                             </tr>
