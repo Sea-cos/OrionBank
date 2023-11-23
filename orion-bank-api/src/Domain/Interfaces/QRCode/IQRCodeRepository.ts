@@ -1,5 +1,5 @@
 import { QRCodeContaRawQuery } from "../../../Domain/RawQuery/QRCodeContaRawQuery";
-import { QRCode } from "../../../Domain/Entities/QRCode";
+import { QRCode } from "../../Entities/QRCode";
 
 export interface IQRCodeRepository {
     BuscarQRCodePorEMV(emv: string, codigoContaOrigem: string): Promise<QRCodeContaRawQuery>
