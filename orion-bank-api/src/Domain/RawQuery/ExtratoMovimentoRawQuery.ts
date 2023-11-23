@@ -10,4 +10,5 @@ export interface ExtratoMovimentoRawQuery {
     CodigoContaOrigem: string
     NomeDestino: string
     NomeOrigem: string
+    IsSaida?: boolean
 }

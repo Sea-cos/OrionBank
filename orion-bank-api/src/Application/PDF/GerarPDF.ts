@@ -1,10 +1,13 @@
 import puppeteer from "puppeteer"
 import { ExtratoRepository } from "../../Data/Repositories/Extrato/ExtratoRepository";
 import { TipoTransacao } from "../../Enums/TipoTransacao";
+import { ValidarDataInicioMenor } from "../../Middleware/ValidarData";
 
 const _extratoRepository = new ExtratoRepository()
 
 export async function GerarPDF(codigoConta: string, dataInicio: Date, dataFim: Date) {
+
+    ValidarDataInicioMenor(dataInicio, dataFim)
 
     const nomeArquivo = `${codigoConta}.pdf`;
     const path = `./ImportarExtrato/${nomeArquivo}`;
