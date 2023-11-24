@@ -10,13 +10,27 @@ import "./styles.css";
 
 const ExtratoConta = () => {
     const { buscarSaldo, buscarNome } = useContext(ContaContext);
-    const { obterMovimentacao, user } = useContext(MovimentoContext);
-    const [movimentos, setMovimentos] = useState([]);
+    const { obterMovimentacao, user, obterExtrato } = useContext(MovimentoContext);
+    let [extrato, setExtrato] = useState([]);
+    const [dtInicio, setdtInicio] = useState('');
+    const [dtFim, setdtFim] = useState('');
 
-    const refresh = async () => {
-        const movimentos = await obterMovimentacao();
-        setMovimentos(movimentos);
+
+
+    const trazerExtrato = async () => {
+        debugger
+
+
+        const request = {
+            codigoConta: user.codigo,
+            dataInicio: dtInicio,
+            dataFim: dtFim
+        }
+        extrato = await obterExtrato(request);
+        setExtrato(extrato);
     };
+
+
 
     function formatarData(data) {
         const dataObj = new Date(data);
@@ -47,7 +61,7 @@ const ExtratoConta = () => {
     }
 
     useEffect(() => {
-        refresh();
+        // refresh();
     }, []);
 
     return (
@@ -64,13 +78,26 @@ const ExtratoConta = () => {
                 <div className="linha-superior">
 
                     <div>
-                        <input type="date" name="nDtInicio" id="IDtInicio" />
-                        <input type="date" name="nDtFim" id="iDtFim" />
-                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" />
+                        <input
+                            type="date"
+                            name="nDtInicio"
+                            id="IDtInicio"
+                            value={dtInicio}
+                            onChange={(e) => setdtInicio(e.target.value )}
+
+                        />
+                        <input
+                            type="date"
+                            name="nDtFim"
+                            id="iDtFim"
+                            value={dtFim}
+                            onChange={(e) => setdtFim(e.target.value )}
+                        />
+                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" onClick={trazerExtrato} />
                     </div>
 
                     <div>
-                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao" />
+                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao"  />
                     </div>
                 </div>
 
@@ -87,12 +114,12 @@ const ExtratoConta = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {movimentos.map((record, index) => (
+                            {extrato.map((record, index) => (
                                 <tr key={index}>
-                                    <td>{formatarData(record.DtMovimento)}</td>
+                                    <td>{formatarData(record.Data)}</td>
                                     <td>{formatarEnum(record.TipoTransacao)}</td>
-                                    <td>{user.codigo}</td>
-                                    <td>{formatarEnum(record.Situacao)}</td>
+                                    <td>{record.IsSaida===true?record.NomeDestino:record.NomeOrigem}</td>
+                                    <td>{record.Descricao}</td>
                                     <td>{record.CodigoContaOrigem === user.codigo ?
                                         <span style={{ "color": "red" }}>-{formatarDinDin(record.Valor)}</span> :
                                         <span style={{ "color": "green" }}>+{formatarDinDin(record.Valor)}</span>}
