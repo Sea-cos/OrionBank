@@ -9,10 +9,12 @@ import SucessoSolicitacao from '../pages/SolicitarConta/SucessoSolicitacao';
 import RecuperarSenha from '../pages/RecuperarSenha';
 import SucessoRecuperarSenha from '../pages/RecuperarSenha/SucessoRecuperar';
 import TermosPolitica from '../pages/TermosPolitica';
+import ExtratoConta from '../pages/SidebarPages/ExtratoConta';
 
 import SolicitacoesConta from '../pages/SidebarPages/Admin/SolicitacoesConta';
 import CadastrarChave from '../pages/SidebarPages/AreaPix/CadastrarChave';
 import Pix from '../pages/SidebarPages/AreaPix/Pix';
+import QRCode from '../pages/SidebarPages/AreaPix/QRCode';
 
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
@@ -46,7 +48,9 @@ const AppRoutes = () => {
                 <Route exact index element={<Private><Home /></Private>} />
                 <Route exact path="solicitacoesConta" element={<Private><SolicitacoesConta /></Private>} />
                 <Route exact path="cadastrarChave" element={<Private><CadastrarChave /></Private>} />
+                <Route exact path="extratoConta" element={<Private><ExtratoConta /></Private>} />
                 <Route exact path="pix" element={<Private><Pix /></Private>} />
+                <Route exact path="criarQRCode" element={<Private><QRCode /></Private>} />
             </Route>
         </Routes>
     );

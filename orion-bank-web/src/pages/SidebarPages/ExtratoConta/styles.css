@@ -1,0 +1,13 @@
+.linha-superior{
+    display: flex; 
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.linha-superior input[type="date"]{
+    margin-right: 10px;
+}
+.estilo-botao{
+    background-color: #DB4648;
+    border: none;
+}
