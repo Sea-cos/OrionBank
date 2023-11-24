@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { enviarPixPorChave, obterUltimaMovimentacao } from "../services/movimentoApi";
+import { enviarPixPorChave, obterUltimaMovimentacao, obterExtratoConta } from "../services/movimentoApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { AuthContext } from "./AuthContext";
 
@@ -27,8 +27,17 @@ export function MovimentoProvider({ children }) {
         }
     };
 
+    const obterExtrato = async (request) => {
+        try {
+            return await obterExtratoConta(request);
+            
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
     return (
-        <MovimentoContext.Provider value={{ user, enviarPixViaChave, obterMovimentacao }}>
+        <MovimentoContext.Provider value={{ user, enviarPixViaChave, obterMovimentacao, obterExtrato }}>
             {children}
         </MovimentoContext.Provider>
     );
