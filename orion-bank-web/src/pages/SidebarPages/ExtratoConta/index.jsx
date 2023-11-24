@@ -66,11 +66,11 @@ const ExtratoConta = () => {
                     <div>
                         <input type="date" name="nDtInicio" id="IDtInicio" />
                         <input type="date" name="nDtFim" id="iDtFim" />
-                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao"/>
+                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" />
                     </div>
-     
+
                     <div>
-                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao" />    
+                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao" />
                     </div>
                 </div>
 
@@ -91,8 +91,12 @@ const ExtratoConta = () => {
                                 <tr key={index}>
                                     <td>{formatarData(record.DtMovimento)}</td>
                                     <td>{formatarEnum(record.TipoTransacao)}</td>
-                                    <td>{formatarData(record.DtSituacao)}</td>
+                                    <td>{user.codigo}</td>
                                     <td>{formatarEnum(record.Situacao)}</td>
+                                    <td>{record.CodigoContaOrigem === user.codigo ?
+                                        <span style={{ "color": "red" }}>-{formatarDinDin(record.Valor)}</span> :
+                                        <span style={{ "color": "green" }}>+{formatarDinDin(record.Valor)}</span>}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
