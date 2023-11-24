@@ -32,10 +32,7 @@ router.get("/autenticacao/recuperarSenha/:documentoFederal",
     autenticacaoController.RecuperarSenha
 )
 
-router.get("/extrato/importar",
-    ValidacaoToken,
-    extratoController.ImportarExtrato
-)
+
 
 //#region Abrir Conta
 
@@ -116,6 +113,18 @@ router.post("/movimento/transacaoDadosBancarios",
 )
 
 //#endregion
+
+//#region Extrato
+
+router.post("/extrato/importar",
+    ValidacaoToken,
+    extratoController.ImportarExtrato
+)
+
+router.post("/extrato",
+    ValidacaoToken,
+    extratoController.Extrato
+)
 
 //#region QRCode
 
