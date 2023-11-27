@@ -5,7 +5,7 @@ import { QRCodeDto } from "../../Application/DTOs/QRCodeDto";
 const qrCodeService = new QRCodeService();
 
 export class QRCodeController {
-    async BuscarQRCodePorEMV(request: Request, response: Response) {
+    async ConsultarEMV(request: Request, response: Response) {
         try {
             const {
                 emv,

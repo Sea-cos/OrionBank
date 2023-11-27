@@ -128,9 +128,9 @@ router.post("/extrato",
 
 //#region QRCode
 
-router.get("/qrCode/buscarPorEMV",
+router.get("/qrCode/consultarEMV",
     ValidacaoToken,
-    qrCodeController.BuscarQRCodePorEMV
+    qrCodeController.ConsultarEMV
 )
 
 router.post("/qrCode/criarQRCode",

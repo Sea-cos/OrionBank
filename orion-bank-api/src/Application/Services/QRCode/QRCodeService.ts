@@ -28,7 +28,7 @@ export class QRCodeService implements IQRCodeService {
         th.ValidarParametros(qrCode);
 
         const pix = createStaticPix({
-            merchantName: qrCode.NomeCompleto,
+            merchantName: qrCode.NomeCompleto.substring(0, 25),
             merchantCity: 'Joinville',
             pixKey: qrCode.ChavePix,
             infoAdicional: qrCode.InfoAdicional,

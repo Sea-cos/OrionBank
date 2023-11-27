@@ -12,8 +12,7 @@ export class QRCodeRepository implements IQRCodeRepository {
                         ct.Agencia,
                         ct.ContaPgto,
                         ct.DocumentoFederal,
-                        ct.NomeCompleto,
-                        ct.CodigoContaDestino
+                        ct.NomeCompleto
                     FROM
                         qr_code AS qr
                     INNER JOIN conta AS ct
@@ -32,7 +31,7 @@ export class QRCodeRepository implements IQRCodeRepository {
             ]
         ) as any
 
-        return contaEMV[0] as QRCodeContaRawQuery
+        return contaEMV[0][0] as QRCodeContaRawQuery
     }
 
     async SalvarQRCode(qrCode: QRCode): Promise<void> {

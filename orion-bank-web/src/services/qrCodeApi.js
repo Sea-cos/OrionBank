@@ -18,3 +18,12 @@ export const criarQRCode = async (request) => {
         throw error.response.data;
     }
 }
+
+export const consultarEMV = async (emv, codigoConta) => {
+    try {
+        const respose = await api.get(`/qrCode/consultarEMV?emv=${emv}&codigoConta=${codigoConta}`);
+        return respose.data
+    } catch (error) {
+        throw error.response.data;
+    }
+}

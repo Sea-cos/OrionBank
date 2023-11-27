@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { TipoChavePixEnum } from '../../../../constants/enums';
 import { showErrorNotification } from '../../../../shared/notificationUtils';
 import { ChaveContext } from "../../../../contexts/ChaveContext";
+import { QRCodeContext } from "../../../../contexts/QRCodeContext";
 import { MovimentoContext } from "../../../../contexts/MovimentoContext";
 import CurrencyInput from "../../../../components/MoneyInput";
 import Icon from "../../../../assets/img/pix-icon.svg";
@@ -12,8 +13,9 @@ import Table from 'react-bootstrap/Table';
 import "./styles.css"
 
 const Pix = () => {
-    const consultarChavePix = useContext(ChaveContext).consultarChavePix;
-    const enviarPixViaChave = useContext(MovimentoContext).enviarPixViaChave;
+    const { consultarChavePix } = useContext(ChaveContext);
+    const { consultarDadosEMV } = useContext(QRCodeContext);
+    const { enviarPixViaChave } = useContext(MovimentoContext);
     const [modalPixChaveIsOpen, setOpenModalPixChave] = useState(false);
     const [modalPixCopiaColaIsOpen, setOpenModalPixCopiaCola] = useState(false);
     const [chavesFavoritas, setChavesFavoritas] = useState([]);
@@ -49,6 +51,7 @@ const Pix = () => {
     const [etapa, setEtapa] = useState(1);
 
     const avancarEtapa = async () => {
+        debugger
         const isValid = await validarAvancoEtapa();
         if (isValid) {
             setEtapa(etapa + 1);
@@ -88,16 +91,20 @@ const Pix = () => {
         }
 
         if (modalPixCopiaColaIsOpen) {
-            if (EMV === "") {
-                showErrorNotification("Informe o código EMV.");
-                return false;
-            }
+            switch (etapa) {
+                case 1:
+                    if (EMV === "") {
+                        showErrorNotification("Informe o código EMV.");
+                        return false;
+                    }
 
-            const response = undefined;//CONSULTAR-EMV
-            if (response === undefined) {
-                return false;
+                    const response = await consultarDadosEMV(EMV);
+                    if (response === undefined || response.length === 0) {
+                        return false;
+                    }
+                    setResponseConsulta(response);
+                    break;
             }
-            setResponseConsulta(response);
         }
 
 

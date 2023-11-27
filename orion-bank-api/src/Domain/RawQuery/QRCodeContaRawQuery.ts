@@ -5,5 +5,4 @@ export interface QRCodeContaRawQuery {
     ContaPgto: string
     DocumentoFederal: string
     NomeCompleto: string
-    CodigoContaDestino: string
 }

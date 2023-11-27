@@ -7,7 +7,6 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import "./styles.css";
 
-
 const ExtratoConta = () => {
     const { buscarSaldo, buscarNome } = useContext(ContaContext);
     const { obterMovimentacao, user, obterExtrato } = useContext(MovimentoContext);

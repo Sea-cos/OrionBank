@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { criarQRCode } from "../services/qrCodeApi";
+import { criarQRCode, consultarEMV } from "../services/qrCodeApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { AuthContext } from "./AuthContext";
 
@@ -22,8 +22,16 @@ export function QRCodeProvider({ children }) {
         }
     };
 
+    const consultarDadosEMV = async (emv) => {
+        try {
+            return await consultarEMV(emv, user.codigo);
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
     return (
-        <QRCodeContext.Provider value={{ user, criarQRCodeEstatico }}>
+        <QRCodeContext.Provider value={{ user, criarQRCodeEstatico, consultarDadosEMV }}>
             {children}
         </QRCodeContext.Provider>
     );
