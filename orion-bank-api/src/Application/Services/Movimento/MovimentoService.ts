@@ -52,6 +52,11 @@ export class MovimentoService implements IMovimentoService {
         let th = this;
         await th.ValidarParametrosDadosBancarios(movimento);
 
+        const saldo = await saldoRepository.ObterSaldoPorCodigo(movimento.valor);
+        if(!saldo || saldo.Saldo < parseFloat(movimento.valor)) {
+            throw new Error("Saldo insulficiente para realizar a transação.");
+        }
+        
     }
 
     private async ValidarParametros(moviDto: MovimentoPixDto): Promise<void> {

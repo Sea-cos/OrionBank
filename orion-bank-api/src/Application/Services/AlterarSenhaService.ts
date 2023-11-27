@@ -20,6 +20,10 @@ export class AlterarSenhaService implements IAlterarSenhaService {
         const numericosSenha = /\d/;
         const caracterMaiusculo = /[A-Z]/;
 
+        if (senha.length < 8) {
+            throw new Error("A senha não pode conter menos de 8 caracteres.");
+        }
+
         if(senha === null || senha.trim() === "") {
             throw new Error("Senha é obrigatória.")
         }
