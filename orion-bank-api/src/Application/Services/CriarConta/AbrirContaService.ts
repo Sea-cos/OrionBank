@@ -123,10 +123,10 @@ export class AbrirContaService implements IAbrirContaService {
         const senha = th.GerarNumeroAleatorio(8)
         const codigo = uuidv4()
         
-        conta.Agencia = th.GerarNumeroAleatorio(4)
+        conta.Agencia = "0001"
         conta.Conta = th.GerarNumeroAleatorio(8)
         conta.ContaDigito = "8"
-        conta.ContaPgto = th.GerarNumeroAleatorio(9)
+        conta.ContaPgto = `${conta.Conta}${conta.ContaDigito}` 
         conta.Senha = senha;
         conta.Codigo = codigo
 
@@ -387,4 +387,5 @@ export class AbrirContaService implements IAbrirContaService {
         return autenticador;
 
     }
+
 }
