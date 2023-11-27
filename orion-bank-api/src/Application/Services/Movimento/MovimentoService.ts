@@ -57,12 +57,15 @@ export class MovimentoService implements IMovimentoService {
             throw new Error("Conta destino inexistente.");
         }
 
+        movimento.codigoContaDestino = contaDestino.Codigo;
 
         const saldo = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem);
         if(!saldo || saldo.Saldo < parseFloat(movimento.valor)) {
             throw new Error("Saldo insulficiente para realizar a transação.");
         }
 
+        const movimentoDomain = th.DtoParaDomainTransf(movimento);
+        await movimentoRepository.RealizarTransacaoPorDadosBancarios(movimentoDomain);
     }
 
     private async ValidarParametros(moviDto: MovimentoPixDto): Promise<void> {
@@ -158,6 +161,20 @@ export class MovimentoService implements IMovimentoService {
                 moviDto.tipoTransacao === 2 ? "Ted" : "QrCode"],
             DtMovimento: new Date()
         } as Movimento
+    }
+
+    private DtoParaDomainTransf(moviDto: MovimentoDadosBancariosDto) : Movimento{
+        
+        return {
+            CodigoContaOrigem: moviDto.codigoContaOrigem,
+            CodigoContaDestino: moviDto.codigoContaDestino,
+            InfoAdicional: moviDto.descricao,
+            TipoTransacao: TipoTransacao.Transferencia,
+            DtMovimento: new Date(),
+            Valor: moviDto.valor,
+            DescTransacao: TipoTransacao.TransferenciaString
+        } as unknown as Movimento
+
     }
 
 }

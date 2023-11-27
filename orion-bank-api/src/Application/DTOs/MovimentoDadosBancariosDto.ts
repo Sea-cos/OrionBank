@@ -5,5 +5,7 @@ export interface MovimentoDadosBancariosDto{
     conta: string;
     contaDigito: string;
     valor: string;
+    descricao: string
     codigoContaOrigem: string;
+    codigoContaDestino: string
 }
