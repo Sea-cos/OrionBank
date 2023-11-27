@@ -43,7 +43,7 @@ const QRCode = () => {
 
         if (validarRequest()) {
             const response = await criarQRCodeEstatico(request);
-            if (response != undefined) {
+            if (response !== undefined) {
                 setEMV(response.emv);
                 setImagem(response.imagem);
                 closeModal();

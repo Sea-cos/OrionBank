@@ -15,22 +15,18 @@ const ExtratoConta = () => {
     const [dtInicio, setdtInicio] = useState('');
     const [dtFim, setdtFim] = useState('');
 
-
-
     const trazerExtrato = async () => {
-        debugger
-
-
+        setExtrato([]);
         const request = {
             codigoConta: user.codigo,
             dataInicio: dtInicio,
             dataFim: dtFim
         }
         extrato = await obterExtrato(request);
-        setExtrato(extrato);
+
+        if(extrato !== undefined)
+            setExtrato(extrato);
     };
-
-
 
     function formatarData(data) {
         const dataObj = new Date(data);
@@ -60,44 +56,34 @@ const ExtratoConta = () => {
         return dindinFormatado;
     }
 
-    useEffect(() => {
-        // refresh();
-    }, []);
-
     return (
-
-
         <div className="container-solicitar">
-
             <div className="title-solicitar">
                 <h3 className="titulo-h5"> <img alt="" src={pageExtrato}></img> Solicitações de Contas</h3>
             </div>
 
             <div className="card-solicitar">
-
                 <div className="linha-superior">
-
                     <div>
                         <input
                             type="date"
                             name="nDtInicio"
                             id="IDtInicio"
                             value={dtInicio}
-                            onChange={(e) => setdtInicio(e.target.value )}
-
+                            onChange={(e) => setdtInicio(e.target.value)}
                         />
                         <input
                             type="date"
                             name="nDtFim"
                             id="iDtFim"
                             value={dtFim}
-                            onChange={(e) => setdtFim(e.target.value )}
+                            onChange={(e) => setdtFim(e.target.value)}
                         />
                         <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" onClick={trazerExtrato} />
                     </div>
 
                     <div>
-                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao"  />
+                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao" />
                     </div>
                 </div>
 
@@ -118,7 +104,7 @@ const ExtratoConta = () => {
                                 <tr key={index}>
                                     <td>{formatarData(record.Data)}</td>
                                     <td>{formatarEnum(record.TipoTransacao)}</td>
-                                    <td>{record.IsSaida===true?record.NomeDestino:record.NomeOrigem}</td>
+                                    <td>{record.IsSaida === true ? record.NomeDestino : record.NomeOrigem}</td>
                                     <td>{record.Descricao}</td>
                                     <td>{record.CodigoContaOrigem === user.codigo ?
                                         <span style={{ "color": "red" }}>-{formatarDinDin(record.Valor)}</span> :
@@ -131,9 +117,6 @@ const ExtratoConta = () => {
                 </div>
             </div>
         </div>
-
-
-
     );
 
 }
