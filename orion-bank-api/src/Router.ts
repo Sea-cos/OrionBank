@@ -112,6 +112,11 @@ router.post("/movimento/transacaoDadosBancarios",
     movimentoController.TransacaoViaDadosBancarios
 )
 
+router.post("/movimento/transacaoEMV",
+    ValidacaoToken,
+    movimentoController.RealizarTransacaoPixViaEMV
+)
+
 //#endregion
 
 //#region Extrato

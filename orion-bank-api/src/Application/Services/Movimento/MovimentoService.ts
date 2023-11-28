@@ -1,10 +1,12 @@
 import { Movimento } from "../../../Domain/Entities/Movimento";
 import { MovimentoPixDto } from "../../DTOs/MovimentoDto";
+import { MovimentoEMVDto } from "../../DTOs/MovimentoEMVDto";
 import { IMovimentoService } from "../../Interfaces/Movimento/IMovimentoService";
 import { MovimentoRepository } from "../../../Data/Repositories/Movimento/MovimentoRepository";
 import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
 import { ChavePixRepository } from "../../../Data/Repositories/ChavePix/ChavePixRepository";
+import { QRCodeRepository } from "../../../Data/Repositories/QRCode/QRCodeRepository";
 import { TipoTransacao } from "../../../Enums/TipoTransacao";
 import { v4 as uuidv4 } from 'uuid';
 import { MovimentoDadosBancariosDto } from "../../DTOs/MovimentoDadosBancariosDto";
@@ -13,11 +15,11 @@ const movimentoRepository = new MovimentoRepository()
 const contaRepository = new AbrirContaRepository()
 const saldoRepository = new SaldoRepository()
 const chavePixRepository = new ChavePixRepository()
+const qrCodeRepository = new QRCodeRepository()
 
 export class MovimentoService implements IMovimentoService {
 
     async RealizarTransacaoPixViaChave(movimento: MovimentoPixDto): Promise<void> {
-
         let th = this;
         await th.ValidarParametros(movimento)
 
@@ -36,6 +38,28 @@ export class MovimentoService implements IMovimentoService {
         movimento.tipoTransacao = TipoTransacao.Pix;
 
         await movimentoRepository.RealizarTransacaoPixViaChave(th.DtoParaDomainPix(movimento))
+    }
+
+    async RealizarTransacaoPixViaEMV(movimento: MovimentoEMVDto): Promise<void> {
+        let th = this;
+        await th.ValidarParametrosEMV(movimento)
+
+        const saldoOrigem = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem)
+        let saldoFinal = saldoOrigem.Saldo - movimento.valor
+        if (saldoFinal < 0) {
+            throw new Error("Saldo insulficiente para realizar a transação.");
+        }
+
+        const qrCode = await qrCodeRepository.BuscarQRCodePorEMV(movimento.emv, movimento.codigoContaOrigem);
+        if (!qrCode) {
+            throw new Error("QR Code inexistente.");
+        }
+
+        movimento.codigoContaDestino = qrCode.CodigoConta;
+        movimento.descTransacao = TipoTransacao.QrCodeString;
+        movimento.tipoTransacao = TipoTransacao.QrCode;
+
+        await movimentoRepository.RealizarTransacaoPixViaEMV(th.DtoEmvParaDomainPix(movimento))
     }
 
     async ObterUltimasTransacoes(codigoConta: string): Promise<Array<Movimento>> {
@@ -108,6 +132,29 @@ export class MovimentoService implements IMovimentoService {
         }
     }
 
+    private async ValidarParametrosEMV(moviDto: MovimentoEMVDto): Promise<void> {
+        if (moviDto.codigoContaOrigem === undefined ||
+            moviDto.codigoContaOrigem === null ||
+            moviDto.codigoContaOrigem.trim() === "" ||
+            moviDto.codigoContaOrigem.trim().length != 36) {
+            throw new Error("Erro interno.")
+        }
+
+        if (moviDto.emv === undefined ||
+            moviDto.emv === null ||
+            moviDto.emv.trim() === "") {
+            throw new Error("EMV inválido.")
+        }
+
+        if (moviDto.valor === undefined || moviDto.valor === null || moviDto.valor < 0) {
+            throw new Error("Valor da transação inválido.")
+        }
+
+        if (!await contaRepository.BuscarContaPorCodigo(moviDto.codigoContaOrigem)) {
+            throw new Error("Erro interno.")
+        }
+    }
+
     private async ValidarParametrosDadosBancarios(movi: MovimentoDadosBancariosDto) : Promise<void> {
 
         if (movi.agencia === undefined ||
@@ -148,7 +195,6 @@ export class MovimentoService implements IMovimentoService {
     } 
 
     private DtoParaDomainPix(moviDto: MovimentoPixDto): Movimento {
-
         return {
             Codigo: uuidv4(),
             CodigoContaOrigem: moviDto.codigoContaOrigem,
@@ -157,8 +203,21 @@ export class MovimentoService implements IMovimentoService {
             Chave_Pix: moviDto.chavePix,
             InfoAdicional: moviDto.infoAdicional,
             DescTransacao: moviDto.descTransacao,
-            TipoTransacao: TipoTransacao[moviDto.tipoTransacao === 1 ? "Pix" :
-                moviDto.tipoTransacao === 2 ? "Ted" : "QrCode"],
+            TipoTransacao: moviDto.tipoTransacao,
+            DtMovimento: new Date()
+        } as Movimento
+    }
+
+    private DtoEmvParaDomainPix(moviDto: MovimentoEMVDto): Movimento {
+        return {
+            Codigo: uuidv4(),
+            CodigoContaOrigem: moviDto.codigoContaOrigem,
+            CodigoContaDestino: moviDto.codigoContaDestino,
+            Valor: moviDto.valor,
+            EMV: moviDto.emv,
+            InfoAdicional: moviDto.infoAdicional,
+            DescTransacao: moviDto.descTransacao,
+            TipoTransacao: moviDto.tipoTransacao,
             DtMovimento: new Date()
         } as Movimento
     }

@@ -29,7 +29,6 @@ const Home = () => {
     const refresh = async () => {
         const movimentos = await obterMovimentacao();
         setMovimentos(movimentos);
-        console.log(movimentos);
     };
 
     function formatarData(data) {
@@ -50,13 +49,15 @@ const Home = () => {
                 return 'Ted';
             case TipoTransacaoEnum.QrCode:
                 return 'QrCode';
+            case TipoTransacaoEnum.Transferencia:
+                return 'Transferência';
             default:
                 return 'Desconhecida';
         }
     }
 
     function formatarDinDin(valor) {
-        const dindinFormatado = parseFloat(valor).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+        const dindinFormatado = parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         return dindinFormatado;
     }
 
@@ -66,8 +67,6 @@ const Home = () => {
             const saldoFormatado = parseFloat(saldo).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             setSaldo(saldoFormatado);
         };
-
-    
 
         const fetchNome = async () => {
             const nome = await buscarNome();

@@ -5,4 +5,6 @@ export interface QRCodeContaRawQuery {
     ContaPgto: string
     DocumentoFederal: string
     NomeCompleto: string
+    ChavePix: string
+    CodigoConta: string
 }

@@ -17,8 +17,14 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem("token");
 
         if (recoveredUser && token) {
-            setUser(JSON.parse(recoveredUser));
-            api.defaults.headers.Authorization = `Bearer ${token}`;
+            const tokenInfo = getTokenInfo(JSON.parse(token));
+
+            if (tokenInfo.exp < Date.now() / 1000) {
+                logout();
+            } else {
+                setUser(JSON.parse(recoveredUser));
+                api.defaults.headers.Authorization = `Bearer ${token}`;
+            }
         }
 
         setLoading(false);

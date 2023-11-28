@@ -20,5 +20,6 @@ export const TipoChavePixEnum = {
 export const TipoTransacaoEnum = {
     PIX: 1,
     TED: 2,
-    QrCode: 3
+    QrCode: 3,
+    Transferencia: 4
 }
