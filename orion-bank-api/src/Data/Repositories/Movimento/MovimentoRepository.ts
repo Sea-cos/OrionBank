@@ -62,6 +62,7 @@ export class MovimentoRepository implements IMovimentoRepository {
     async RealizarTransacaoPorDadosBancarios(movimento: Movimento): Promise<void> {
         
         const parametros = [
+            movimento.Codigo,
             movimento.CodigoContaOrigem,
             movimento.CodigoContaDestino,
             movimento.InfoAdicional,
@@ -73,9 +74,9 @@ export class MovimentoRepository implements IMovimentoRepository {
 
         const sql = `
             INSERT INTO movimento
-                (CodigoContaOrigem, CodigoContaDestino, InfoAdicional, TipoTransacao, 
+                (Codigo, CodigoContaOrigem, CodigoContaDestino, InfoAdicional, TipoTransacao, 
                     DtMovimento, Valor, DescTransacao)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (? , ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await (await connection).query(

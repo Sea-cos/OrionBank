@@ -166,6 +166,7 @@ export class MovimentoService implements IMovimentoService {
     private DtoParaDomainTransf(moviDto: MovimentoDadosBancariosDto) : Movimento{
         
         return {
+            Codigo: uuidv4(),
             CodigoContaOrigem: moviDto.codigoContaOrigem,
             CodigoContaDestino: moviDto.codigoContaDestino,
             InfoAdicional: moviDto.descricao,
