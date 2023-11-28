@@ -1,13 +1,26 @@
-.linha-superior{
-    display: flex; 
+.linha-superior {
+    display: flex;
     margin-bottom: 10px;
     justify-content: space-between;
 }
 
-.linha-superior input[type="date"]{
+.linha-superior input[type="date"] {
     margin-right: 10px;
 }
-.estilo-botao{
+
+.estilo-botao {
     background-color: #DB4648;
     border: none;
+}
+
+.card-extrato {
+    background-color: #DB4648;
+    color: white;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 0.25rem;
+}
+
+.card-extrato p {
+    margin: 0px;
 }

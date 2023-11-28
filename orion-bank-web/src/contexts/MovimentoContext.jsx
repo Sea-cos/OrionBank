@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { enviarPixPorChave, obterUltimaMovimentacao, obterExtratoConta, enviarPixPorEMV } from "../services/movimentoApi";
+import { enviarPixPorChave, obterUltimaMovimentacao, obterExtratoConta, enviarPixPorEMV, gerarExtratoConta } from "../services/movimentoApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { AuthContext } from "./AuthContext";
 
@@ -46,8 +46,17 @@ export function MovimentoProvider({ children }) {
         }
     };
 
+    const exportarPdf = async (request) => {
+        try {
+           return await gerarExtratoConta(request);
+            
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
     return (
-        <MovimentoContext.Provider value={{ user, enviarPixViaChave, obterMovimentacao, obterExtrato, enviarPixViaEMV }}>
+        <MovimentoContext.Provider value={{ user, enviarPixViaChave, obterMovimentacao, obterExtrato, enviarPixViaEMV, exportarPdf }}>
             {children}
         </MovimentoContext.Provider>
     );
