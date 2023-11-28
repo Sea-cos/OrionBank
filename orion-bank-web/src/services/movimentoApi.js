@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as BlobUtil from 'blob-util';
 
 export const api = axios.create({
     baseURL: process.env.REACT_APP_API
@@ -39,6 +40,17 @@ export const obterExtratoConta = async (request) => {
     } catch (error) {
         debugger
         throw error.response.data;
+    }
+}
+
+export const gerarExtratoConta = async (request) => {
+    try {
+        const response = await api.post(`/extrato/importar`, request)
+        return response.data
+       
+    } catch (error) {
+        throw error.response.data;
+        
     }
 }
 
