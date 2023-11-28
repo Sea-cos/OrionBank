@@ -10,7 +10,6 @@ import * as BlobUtil from 'blob-util';
 import FileSaver, { saveAs } from "file-saver";
 
 
-
 const ExtratoConta = () => {
     const { buscarSaldo } = useContext(ContaContext);
     const { user, obterExtrato, exportarPdf } = useContext(MovimentoContext);
@@ -20,7 +19,7 @@ const ExtratoConta = () => {
     const [saldo, setSaldo] = useState(0.00);
 
     const trazerExtrato = async () => {
-
+        setExtrato([]);
         const request = {
             codigoConta: user.codigo,
             dataInicio: dtInicio,
@@ -45,17 +44,14 @@ const ExtratoConta = () => {
             const pdfContent = await exportarPdf(request);
 
             const blob = new Blob([pdfContent], { type: 'application/pdf' });
-            
+          
 
             FileSaver.saveAs(blob, 'extrato.pdf')
 
         } catch (error) {
             console.error(error);
         }
-
     };
-
-
 
     function formatarData(data) {
         const dataObj = new Date(data);
@@ -95,16 +91,12 @@ const ExtratoConta = () => {
     }, []);
 
     return (
-
-
         <div className="container-solicitar">
-
             <div className="title-solicitar">
                 <h3 className="titulo-h5"> <img alt="" src={pageExtrato}></img> Solicitações de Contas</h3>
             </div>
 
             <div className="card-solicitar">
-
                 <div className="linha-superior">
 
                     <div className="">
@@ -125,7 +117,6 @@ const ExtratoConta = () => {
                             id="IDtInicio"
                             value={dtInicio}
                             onChange={(e) => setdtInicio(e.target.value)}
-
                         />
                         <input
                             type="date"
@@ -172,9 +163,6 @@ const ExtratoConta = () => {
                 </div>
             </div>
         </div>
-
-
-
     );
 
 }

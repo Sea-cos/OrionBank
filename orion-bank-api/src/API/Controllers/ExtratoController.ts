@@ -5,7 +5,7 @@ import { GerarPDF } from "../../Application/PDF/GerarPDF";
 const extratoService = new ExtratoService()
 export class ExtratoController {
 
-    async ImportarExtrato(request: Request, response: Response) {
+    async ExportarExtrato(request: Request, response: Response) {
 
         try {
 
@@ -14,7 +14,7 @@ export class ExtratoController {
                 dataInicio,
                 dataFim
             } = request.body
-
+           
             await GerarPDF(codigoConta, dataInicio, dataFim);
             const nomeArquivo = `${codigoConta}.pdf`
             const dir = __dirname

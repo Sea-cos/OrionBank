@@ -148,8 +148,10 @@ const RecuperarSenha = () => {
                                                             A senha deve conter:
                                                             <ul>
                                                                 <li>8 dígitos;</li>
-                                                                <li>Apenas números;</li>
-                                                                <li>Sequência aleatória.</li>
+                                                                <li>Pelo menos um caractere especial;</li>
+                                                                <li>Pelo menos uma letra maiúscula;</li>
+                                                                <li>Pelo menos uma letra minúscula;</li>
+                                                                <li>Pelo menos um número.</li>
                                                             </ul>
                                                         </label>
                                                     </div>

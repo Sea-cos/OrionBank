@@ -15,7 +15,14 @@ export const enviarPixPorChave = async (request) => {
     try {
         await api.post("/movimento/transacaoPixViaChave", request);
     } catch (error) {
-        debugger
+        throw error.response.data;
+    }
+}
+
+export const enviarPixPorEMV = async (request) => {
+    try {
+        await api.post("/movimento/transacaoEMV", request);
+    } catch (error) {
         throw error.response.data;
     }
 }
@@ -23,22 +30,17 @@ export const enviarPixPorChave = async (request) => {
 export const obterUltimaMovimentacao = async (codigoConta) => {
     try {
         const response = await api.get(`/movimento/ultimasTransacoes/${codigoConta}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
-        debugger
         throw error.response.data;
     }
 }
 
-
 export const obterExtratoConta = async (request) => {
     try {
-        debugger
         const response = await api.post(`/extrato`, request);
         return response.data;
     } catch (error) {
-        debugger
         throw error.response.data;
     }
 }

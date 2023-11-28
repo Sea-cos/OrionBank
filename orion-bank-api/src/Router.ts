@@ -112,13 +112,18 @@ router.post("/movimento/transacaoDadosBancarios",
     movimentoController.TransacaoViaDadosBancarios
 )
 
+router.post("/movimento/transacaoEMV",
+    ValidacaoToken,
+    movimentoController.RealizarTransacaoPixViaEMV
+)
+
 //#endregion
 
 //#region Extrato
 
 router.post("/extrato/importar",
     ValidacaoToken,
-    extratoController.ImportarExtrato
+    extratoController.ExportarExtrato
 )
 
 router.post("/extrato",
@@ -128,9 +133,9 @@ router.post("/extrato",
 
 //#region QRCode
 
-router.get("/qrCode/buscarPorEMV",
+router.get("/qrCode/consultarEMV",
     ValidacaoToken,
-    qrCodeController.BuscarQRCodePorEMV
+    qrCodeController.ConsultarEMV
 )
 
 router.post("/qrCode/criarQRCode",

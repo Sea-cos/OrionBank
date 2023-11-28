@@ -1,10 +1,12 @@
 import { Movimento } from "../../../Domain/Entities/Movimento";
 import { MovimentoPixDto } from "../../DTOs/MovimentoDto";
+import { MovimentoEMVDto } from "../../DTOs/MovimentoEMVDto";
 import { IMovimentoService } from "../../Interfaces/Movimento/IMovimentoService";
 import { MovimentoRepository } from "../../../Data/Repositories/Movimento/MovimentoRepository";
 import { AbrirContaRepository } from "../../../Data/Repositories/CriarConta/AbrirContaRepository";
 import { SaldoRepository } from "../../../Data/Repositories/Saldo/SaldoRepository";
 import { ChavePixRepository } from "../../../Data/Repositories/ChavePix/ChavePixRepository";
+import { QRCodeRepository } from "../../../Data/Repositories/QRCode/QRCodeRepository";
 import { TipoTransacao } from "../../../Enums/TipoTransacao";
 import { v4 as uuidv4 } from 'uuid';
 import { MovimentoDadosBancariosDto } from "../../DTOs/MovimentoDadosBancariosDto";
@@ -13,11 +15,11 @@ const movimentoRepository = new MovimentoRepository()
 const contaRepository = new AbrirContaRepository()
 const saldoRepository = new SaldoRepository()
 const chavePixRepository = new ChavePixRepository()
+const qrCodeRepository = new QRCodeRepository()
 
 export class MovimentoService implements IMovimentoService {
 
     async RealizarTransacaoPixViaChave(movimento: MovimentoPixDto): Promise<void> {
-
         let th = this;
         await th.ValidarParametros(movimento)
 
@@ -38,6 +40,28 @@ export class MovimentoService implements IMovimentoService {
         await movimentoRepository.RealizarTransacaoPixViaChave(th.DtoParaDomainPix(movimento))
     }
 
+    async RealizarTransacaoPixViaEMV(movimento: MovimentoEMVDto): Promise<void> {
+        let th = this;
+        await th.ValidarParametrosEMV(movimento)
+
+        const saldoOrigem = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem)
+        let saldoFinal = saldoOrigem.Saldo - movimento.valor
+        if (saldoFinal < 0) {
+            throw new Error("Saldo insulficiente para realizar a transação.");
+        }
+
+        const qrCode = await qrCodeRepository.BuscarQRCodePorEMV(movimento.emv, movimento.codigoContaOrigem);
+        if (!qrCode) {
+            throw new Error("QR Code inexistente.");
+        }
+
+        movimento.codigoContaDestino = qrCode.CodigoConta;
+        movimento.descTransacao = TipoTransacao.QrCodeString;
+        movimento.tipoTransacao = TipoTransacao.QrCode;
+
+        await movimentoRepository.RealizarTransacaoPixViaEMV(th.DtoEmvParaDomainPix(movimento))
+    }
+
     async ObterUltimasTransacoes(codigoConta: string): Promise<Array<Movimento>> {
 
         if (codigoConta === null || codigoConta.trim() === "" || codigoConta.trim().length != 36) {
@@ -52,6 +76,20 @@ export class MovimentoService implements IMovimentoService {
         let th = this;
         await th.ValidarParametrosDadosBancarios(movimento);
 
+        const contaDestino = await contaRepository.BuscarContaPorDadosContaPagamento(`${movimento.conta}${movimento.contaDigito}`);
+        if (!contaDestino) {
+            throw new Error("Conta destino inexistente.");
+        }
+
+        movimento.codigoContaDestino = contaDestino.Codigo;
+
+        const saldo = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem);
+        if(!saldo || saldo.Saldo < parseFloat(movimento.valor)) {
+            throw new Error("Saldo insulficiente para realizar a transação.");
+        }
+
+        const movimentoDomain = th.DtoParaDomainTransf(movimento);
+        await movimentoRepository.RealizarTransacaoPorDadosBancarios(movimentoDomain);
     }
 
     private async ValidarParametros(moviDto: MovimentoPixDto): Promise<void> {
@@ -94,6 +132,29 @@ export class MovimentoService implements IMovimentoService {
         }
     }
 
+    private async ValidarParametrosEMV(moviDto: MovimentoEMVDto): Promise<void> {
+        if (moviDto.codigoContaOrigem === undefined ||
+            moviDto.codigoContaOrigem === null ||
+            moviDto.codigoContaOrigem.trim() === "" ||
+            moviDto.codigoContaOrigem.trim().length != 36) {
+            throw new Error("Erro interno.")
+        }
+
+        if (moviDto.emv === undefined ||
+            moviDto.emv === null ||
+            moviDto.emv.trim() === "") {
+            throw new Error("EMV inválido.")
+        }
+
+        if (moviDto.valor === undefined || moviDto.valor === null || moviDto.valor < 0) {
+            throw new Error("Valor da transação inválido.")
+        }
+
+        if (!await contaRepository.BuscarContaPorCodigo(moviDto.codigoContaOrigem)) {
+            throw new Error("Erro interno.")
+        }
+    }
+
     private async ValidarParametrosDadosBancarios(movi: MovimentoDadosBancariosDto) : Promise<void> {
 
         if (movi.agencia === undefined ||
@@ -122,28 +183,18 @@ export class MovimentoService implements IMovimentoService {
             throw new Error("O dígito da conta não pode ser diferente de '8'")
         }
 
-        const contaPagamento = await contaRepository.BuscarContaPorDadosContaPagamento(movi.contaPgto);
-        if (!contaPagamento) {
-            throw new Error("Conta pagamento inválida.");
-        }
-
-        if (movi.codigoContaOrigem === undefined || movi.codigoContaDestino === undefined) {
-            throw new Error("Erro interno.");
-        }
-
         const contaOrigem = await contaRepository.BuscarContaPorCodigo(movi.codigoContaOrigem);
         if (!contaOrigem) {
             throw new Error("Erro interno.");
         }
 
-        const contaDestino = await contaRepository.BuscarContaPorCodigo(movi.codigoContaDestino);
-        if (!contaDestino) {
-            throw new Error("Error interno.");
+        if (`${movi.conta}${movi.contaDigito}` === contaOrigem.ContaPgto) {
+            throw new Error("Não pode ser feita uma tranferência para si mesmo.");
         }
+
     } 
 
     private DtoParaDomainPix(moviDto: MovimentoPixDto): Movimento {
-
         return {
             Codigo: uuidv4(),
             CodigoContaOrigem: moviDto.codigoContaOrigem,
@@ -152,9 +203,38 @@ export class MovimentoService implements IMovimentoService {
             Chave_Pix: moviDto.chavePix,
             InfoAdicional: moviDto.infoAdicional,
             DescTransacao: moviDto.descTransacao,
-            TipoTransacao: TipoTransacao[moviDto.tipoTransacao === 1 ? "Pix" :
-                moviDto.tipoTransacao === 2 ? "Ted" : "QrCode"],
+            TipoTransacao: moviDto.tipoTransacao,
             DtMovimento: new Date()
         } as Movimento
     }
+
+    private DtoEmvParaDomainPix(moviDto: MovimentoEMVDto): Movimento {
+        return {
+            Codigo: uuidv4(),
+            CodigoContaOrigem: moviDto.codigoContaOrigem,
+            CodigoContaDestino: moviDto.codigoContaDestino,
+            Valor: moviDto.valor,
+            EMV: moviDto.emv,
+            InfoAdicional: moviDto.infoAdicional,
+            DescTransacao: moviDto.descTransacao,
+            TipoTransacao: moviDto.tipoTransacao,
+            DtMovimento: new Date()
+        } as Movimento
+    }
+
+    private DtoParaDomainTransf(moviDto: MovimentoDadosBancariosDto) : Movimento{
+        
+        return {
+            Codigo: uuidv4(),
+            CodigoContaOrigem: moviDto.codigoContaOrigem,
+            CodigoContaDestino: moviDto.codigoContaDestino,
+            InfoAdicional: moviDto.descricao,
+            TipoTransacao: TipoTransacao.Transferencia,
+            DtMovimento: new Date(),
+            Valor: moviDto.valor,
+            DescTransacao: TipoTransacao.TransferenciaString
+        } as unknown as Movimento
+
+    }
+
 }

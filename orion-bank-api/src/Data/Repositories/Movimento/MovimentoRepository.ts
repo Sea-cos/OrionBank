@@ -5,7 +5,6 @@ import { connection } from "../../context/ConnectionString";
 export class MovimentoRepository implements IMovimentoRepository {
 
     async RealizarTransacaoPixViaChave(movimento: Movimento): Promise<void> {
-        
         const parametros = [
             movimento.Codigo,
             movimento.CodigoContaOrigem,
@@ -28,13 +27,36 @@ export class MovimentoRepository implements IMovimentoRepository {
             sql,
             parametros
         )
-
     }
 
-    async ObterUltimasTransacoes(codigoConta: string) : Promise<Array<Movimento>> {
-
+    async RealizarTransacaoPixViaEMV(movimento: Movimento): Promise<void> {
         const parametros = [
-            codigoConta, 
+            movimento.Codigo,
+            movimento.CodigoContaOrigem,
+            movimento.CodigoContaDestino,
+            movimento.Valor,
+            movimento.EMV,
+            movimento.InfoAdicional,
+            movimento.DescTransacao,
+            movimento.TipoTransacao,
+            movimento.DtMovimento
+        ]
+
+        const sql = `INSERT INTO movimento
+                        (Codigo, CodigoContaOrigem, CodigoContaDestino, Valor, EMV, 
+                            InfoAdicional, DescTransacao, TipoTransacao, DtMovimento)
+                    VALUES 
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+        await (await connection).query(
+            sql,
+            parametros
+        )
+    }
+
+    async ObterUltimasTransacoes(codigoConta: string): Promise<Array<Movimento>> {
+        const parametros = [
+            codigoConta,
             codigoConta
         ]
 
@@ -60,8 +82,9 @@ export class MovimentoRepository implements IMovimentoRepository {
     }
 
     async RealizarTransacaoPorDadosBancarios(movimento: Movimento): Promise<void> {
-        
+
         const parametros = [
+            movimento.Codigo,
             movimento.CodigoContaOrigem,
             movimento.CodigoContaDestino,
             movimento.InfoAdicional,
@@ -73,9 +96,9 @@ export class MovimentoRepository implements IMovimentoRepository {
 
         const sql = `
             INSERT INTO movimento
-                (CodigoContaOrigem, CodigoContaDestino, InfoAdicional, TipoTransacao, 
+                (Codigo, CodigoContaOrigem, CodigoContaDestino, InfoAdicional, TipoTransacao, 
                     DtMovimento, Valor, DescTransacao)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (? , ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await (await connection).query(
