@@ -52,6 +52,20 @@ export class MovimentoService implements IMovimentoService {
         let th = this;
         await th.ValidarParametrosDadosBancarios(movimento);
 
+        const contaDestino = await contaRepository.BuscarContaPorDadosContaPagamento(`${movimento.conta}${movimento.contaDigito}`);
+        if (!contaDestino) {
+            throw new Error("Conta destino inexistente.");
+        }
+
+        movimento.codigoContaDestino = contaDestino.Codigo;
+
+        const saldo = await saldoRepository.ObterSaldoPorCodigo(movimento.codigoContaOrigem);
+        if(!saldo || saldo.Saldo < parseFloat(movimento.valor)) {
+            throw new Error("Saldo insulficiente para realizar a transação.");
+        }
+
+        const movimentoDomain = th.DtoParaDomainTransf(movimento);
+        await movimentoRepository.RealizarTransacaoPorDadosBancarios(movimentoDomain);
     }
 
     private async ValidarParametros(moviDto: MovimentoPixDto): Promise<void> {
@@ -122,24 +136,15 @@ export class MovimentoService implements IMovimentoService {
             throw new Error("O dígito da conta não pode ser diferente de '8'")
         }
 
-        const contaPagamento = await contaRepository.BuscarContaPorDadosContaPagamento(movi.contaPgto);
-        if (!contaPagamento) {
-            throw new Error("Conta pagamento inválida.");
-        }
-
-        if (movi.codigoContaOrigem === undefined || movi.codigoContaDestino === undefined) {
-            throw new Error("Erro interno.");
-        }
-
         const contaOrigem = await contaRepository.BuscarContaPorCodigo(movi.codigoContaOrigem);
         if (!contaOrigem) {
             throw new Error("Erro interno.");
         }
 
-        const contaDestino = await contaRepository.BuscarContaPorCodigo(movi.codigoContaDestino);
-        if (!contaDestino) {
-            throw new Error("Error interno.");
+        if (`${movi.conta}${movi.contaDigito}` === contaOrigem.ContaPgto) {
+            throw new Error("Não pode ser feita uma tranferência para si mesmo.");
         }
+
     } 
 
     private DtoParaDomainPix(moviDto: MovimentoPixDto): Movimento {
@@ -157,4 +162,19 @@ export class MovimentoService implements IMovimentoService {
             DtMovimento: new Date()
         } as Movimento
     }
+
+    private DtoParaDomainTransf(moviDto: MovimentoDadosBancariosDto) : Movimento{
+        
+        return {
+            CodigoContaOrigem: moviDto.codigoContaOrigem,
+            CodigoContaDestino: moviDto.codigoContaDestino,
+            InfoAdicional: moviDto.descricao,
+            TipoTransacao: TipoTransacao.Transferencia,
+            DtMovimento: new Date(),
+            Valor: moviDto.valor,
+            DescTransacao: TipoTransacao.TransferenciaString
+        } as unknown as Movimento
+
+    }
+
 }

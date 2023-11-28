@@ -118,7 +118,7 @@ router.post("/movimento/transacaoDadosBancarios",
 
 router.post("/extrato/importar",
     ValidacaoToken,
-    extratoController.ImportarExtrato
+    extratoController.ExportarExtrato
 )
 
 router.post("/extrato",
