@@ -6,7 +6,6 @@ import pageExtrato from "../../../assets/img/pageExtrato.svg";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import "./styles.css";
-import * as BlobUtil from 'blob-util';
 import FileSaver, { saveAs } from "file-saver";
 
 
@@ -18,7 +17,7 @@ const ExtratoConta = () => {
     const [dtFim, setdtFim] = useState('');
     const [saldo, setSaldo] = useState(0.00);
 
-    const trazerExtrato = async () => {
+    const gerarExtrato = async () => {
         setExtrato([]);
         const request = {
             codigoConta: user.codigo,
@@ -125,7 +124,7 @@ const ExtratoConta = () => {
                             value={dtFim}
                             onChange={(e) => setdtFim(e.target.value)}
                         />
-                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" onClick={trazerExtrato} />
+                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" onClick={gerarExtrato} />
                     </div>
 
                     <div>

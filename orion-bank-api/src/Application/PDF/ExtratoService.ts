@@ -20,7 +20,7 @@ export class ExtratoService implements IExtratoService {
         const extrato = await _extratoRepository.ObterMovimentacao(codigoConta, dataInicio, dataFim)
 
         if (extrato.length === 0) {
-            throw new Error("Sem movimentações durante esse periodo.");
+            throw new Error("Sem movimentações durante esse período.");
         }
 
         let extratoFormatado: Array<ExtratoMovimentoRawQuery> = [];

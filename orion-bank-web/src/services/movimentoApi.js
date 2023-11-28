@@ -1,5 +1,4 @@
 import axios from "axios";
-import * as BlobUtil from 'blob-util';
 
 export const api = axios.create({
     baseURL: process.env.REACT_APP_API
