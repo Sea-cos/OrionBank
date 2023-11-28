@@ -2,7 +2,7 @@ import { QRCodeRepository } from "../../../Data/Repositories/QRCode/QRCodeReposi
 import { QRCodeDto } from "../../DTOs/QRCodeDto";
 import { IQRCodeService } from "../../Interfaces/QRCode/IQRCodeService";
 import { QRCodeContaRawQuery } from "../../../Domain/RawQuery/QRCodeContaRawQuery";
-import { createStaticPix, hasError } from 'pix-utils';
+import { createStaticPix, hasError, parsePix } from 'pix-utils';
 import { QRCode } from "../../../Domain/Entities/QRCode";
 import { v4 as uuidv4 } from "uuid";
 
@@ -20,7 +20,14 @@ export class QRCodeService implements IQRCodeService {
             throw new Error("Erro interno.")
         }
 
-        return await qrCodeRepository.BuscarQRCodePorEMV(emv, codigoConta);
+        let response = await qrCodeRepository.BuscarQRCodePorEMV(emv, codigoConta);
+
+        if (response !== undefined) {
+            const pix = parsePix(emv);
+            response.ChavePix = pix.pixKey;
+        }
+
+        return response
     }
 
     async CriarQRCode(qrCode: QRCodeDto): Promise<object> {

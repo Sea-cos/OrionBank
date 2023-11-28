@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { MovimentoDadosBancariosDto } from "../../Application/DTOs/MovimentoDadosBancariosDto";
 import { MovimentoPixDto } from "../../Application/DTOs/MovimentoDto";
+import { MovimentoEMVDto } from "../../Application/DTOs/MovimentoEMVDto";
 import { MovimentoService } from "../../Application/Services/Movimento/MovimentoService";
 
 const movimentoService = new MovimentoService()
@@ -27,6 +28,34 @@ export class MovimentoController {
             } as MovimentoPixDto
 
             await movimentoService.RealizarTransacaoPixViaChave(movimento)
+            return response.status(200).send()
+
+        } catch (error: any) {
+            return response.status(400).json({
+                status: "Error",
+                message: error.message
+            })
+        }
+    }
+
+    async RealizarTransacaoPixViaEMV(request: Request, response: Response) {
+        try {
+
+            const {
+                codigoContaOrigem,
+                valor,
+                infoAdicional,
+                emv
+            } = request.body
+
+            const movimento = {
+                codigoContaOrigem: codigoContaOrigem,
+                valor: valor,
+                emv: emv,
+                infoAdicional: infoAdicional,
+            } as MovimentoEMVDto
+
+            await movimentoService.RealizarTransacaoPixViaEMV(movimento)
             return response.status(200).send()
 
         } catch (error: any) {

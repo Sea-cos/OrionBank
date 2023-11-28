@@ -12,7 +12,8 @@ export class QRCodeRepository implements IQRCodeRepository {
                         ct.Agencia,
                         ct.ContaPgto,
                         ct.DocumentoFederal,
-                        ct.NomeCompleto
+                        ct.NomeCompleto,
+                        qr.CodigoConta
                     FROM
                         qr_code AS qr
                     INNER JOIN conta AS ct
@@ -23,7 +24,7 @@ export class QRCodeRepository implements IQRCodeRepository {
                         qr.CodigoConta != ?
                     `
 
-        const contaEMV = await (await connection).query(
+        let contaEMV = await (await connection).query(
             sql,
             [
                 emv,

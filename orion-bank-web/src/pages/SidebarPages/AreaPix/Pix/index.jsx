@@ -4,9 +4,11 @@ import { showErrorNotification } from '../../../../shared/notificationUtils';
 import { ChaveContext } from "../../../../contexts/ChaveContext";
 import { QRCodeContext } from "../../../../contexts/QRCodeContext";
 import { MovimentoContext } from "../../../../contexts/MovimentoContext";
+import QRScanner from "../../../../components/QRScanner";
 import CurrencyInput from "../../../../components/MoneyInput";
 import Icon from "../../../../assets/img/pix-icon.svg";
 import NotFound from "../../../../assets/img/undraw_no_data.svg";
+import EMVImage from "../../../../assets/img/background-qrcode.svg";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
@@ -15,9 +17,10 @@ import "./styles.css"
 const Pix = () => {
     const { consultarChavePix } = useContext(ChaveContext);
     const { consultarDadosEMV } = useContext(QRCodeContext);
-    const { enviarPixViaChave } = useContext(MovimentoContext);
+    const { enviarPixViaChave, enviarPixViaEMV } = useContext(MovimentoContext);
     const [modalPixChaveIsOpen, setOpenModalPixChave] = useState(false);
     const [modalPixCopiaColaIsOpen, setOpenModalPixCopiaCola] = useState(false);
+    const [modalLerQrCodeOpen, setOpenModalLerQrCode] = useState(false);
     const [chavesFavoritas, setChavesFavoritas] = useState([]);
     const [chavePix, setChavePix] = useState('');
     const [EMV, setEMV] = useState('');
@@ -25,6 +28,13 @@ const Pix = () => {
     const [infoIsOn, setInfoIsOn] = useState(false);
     const [infoAdicional, setInfoAdicional] = useState('');
     const [responseConsulta, setResponseConsulta] = useState({});
+    const [qrCodeResult, setQRCodeResult] = useState('');
+
+    const handleScanResult = (data) => {
+        if (data) {
+            setQRCodeResult(data);
+        }
+    };
 
     const openModalPixChave = () => {
         setOpenModalPixChave(true);
@@ -46,12 +56,23 @@ const Pix = () => {
 
     const closeModalPixCopiaCola = () => {
         setOpenModalPixCopiaCola(false);
+        setResponseConsulta({});
+        setEtapa(1);
+        setEMV('');
+        setInfoAdicional('');
+    };
+
+    const openModalLerQrCode = () => {
+        setOpenModalLerQrCode(true);
+    };
+
+    const closeModalLerQrCode = () => {
+        setOpenModalLerQrCode(false);
     };
 
     const [etapa, setEtapa] = useState(1);
 
     const avancarEtapa = async () => {
-        debugger
         const isValid = await validarAvancoEtapa();
         if (isValid) {
             setEtapa(etapa + 1);
@@ -104,9 +125,27 @@ const Pix = () => {
                     }
                     setResponseConsulta(response);
                     break;
+
+                default:
+                    return false;
             }
         }
 
+        if (modalLerQrCodeOpen) {
+            switch (etapa) {
+                case 1:
+                    if (qrCodeResult === '') {
+                        showErrorNotification("Leia o QRCode.");
+                        return false;
+                    }
+
+                    //leitura
+                    break;
+
+                default:
+                    return false;
+            }
+        }
 
         return true;
     };
@@ -159,6 +198,18 @@ const Pix = () => {
         closeModalPixChave();
     };
 
+    const enviarPixPorEMV = async (e) => {
+        e.preventDefault();
+        const request = {
+            codigoContaDestino: responseConsulta.Codigo,
+            emv: EMV,
+            valor: formatarValor(responseConsulta.Valor),
+            infoAdicional: infoAdicional
+        }
+        await enviarPixViaEMV(request);
+        closeModalPixCopiaCola();
+    };
+
     return (
         <div className="container-pix">
             <div className="title-pix">
@@ -171,7 +222,7 @@ const Pix = () => {
                 <div className="card-pix-buttons">
                     <button type="submit" className="botao-um button-pix" onClick={openModalPixChave}> Pix Por Chave </button>
                     <button type="submit" className="botao-um button-pix" onClick={openModalPixCopiaCola}> Pix Copia e Cola </button>
-                    <button type="submit" className="botao-um button-pix"> Ler QRCode </button>
+                    <button type="submit" className="botao-um button-pix" onClick={openModalLerQrCode}> Ler QRCode </button>
                 </div>
 
                 <Modal show={modalPixChaveIsOpen} centered >
@@ -330,6 +381,10 @@ const Pix = () => {
                                             value={EMV}
                                             onChange={(e) => setEMV(e.target.value)}
                                         />
+                                        <div className="not-found-favoritas mt-5">
+                                            <img alt="" src={EMVImage}></img>
+                                            <label className="mt-3" style={{ color: "#3f3d56", fontSize: "13px" }}>O EMV facilita o pagamento de um QRCode.</label>
+                                        </div>
                                     </div>
                                 </>
                             )}
@@ -358,11 +413,11 @@ const Pix = () => {
                                                 </div>
                                                 <div className="dados-space">
                                                     <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Chave_Pix}</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.ChavePix}</label>
                                                 </div>
                                                 <div className="dados-space">
                                                     <label style={{ color: "#3f3d56", fontSize: '14px' }}>Valor a Pagar:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Valor}</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>R$ {parseFloat(responseConsulta.Valor)}</label>
                                                 </div>
                                             </div>
                                             <div className="mt-3">
@@ -391,7 +446,96 @@ const Pix = () => {
                             Cancelar
                         </Button>
                         {etapa === 2 && (
-                            <Button variant="success" onClick={enviarPixPorChave}>
+                            <Button variant="success" onClick={enviarPixPorEMV}>
+                                Confirmar
+                            </Button>
+                        )}
+                        {etapa === 1 && (
+                            <Button variant="primary" onClick={avancarEtapa}>
+                                Continuar
+                            </Button>
+                        )}
+                        {etapa > 1 && (
+                            <Button variant="primary" onClick={retrocederEtapa}>
+                                Voltar
+                            </Button>
+                        )}
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={modalLerQrCodeOpen} centered >
+                    <Modal.Header>
+                        <Modal.Title style={{ color: '#DB4648' }}>Ler QRCode</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="container-pix-por-chave">
+                            {etapa === 1 && (
+                                <>
+                                    <div className="ler-qr-code">
+                                        <h3 className="mt-4" style={{ color: "#3f3d56" }}>Escaneie um QRCode</h3>
+                                        <QRScanner onScan={handleScanResult} />
+                                    </div>
+                                </>
+                            )}
+
+                            {etapa === 2 && (
+                                <>
+                                    <div className="body-pagar">
+                                        <label style={{ color: "#3f3d56", fontSize: '20px' }}>Revisão</label>
+
+                                        <div className="revisao-recebedor mt-4">
+                                            <div className="quem-receber">
+                                                <label style={{ color: "#3f3d56", fontSize: '17px' }}>Quem vai receber?</label>
+                                            </div>
+                                            <div className="dados-recebedor">
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.NomeCompleto}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>CPF:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Instituição:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Orion Bank S.A.</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.ChavePix}</label>
+                                                </div>
+                                                <div className="dados-space">
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Valor a Pagar:</label>
+                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>R$ {parseFloat(responseConsulta.Valor)}</label>
+                                                </div>
+                                            </div>
+                                            <div className="mt-3">
+                                                <label className="add-mensagem" onClick={() => setInfoIsOn(!infoIsOn)}>Adicionar mensagem</label>
+                                                {infoIsOn && (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control infoAdicional"
+                                                        id="infoAdicional"
+                                                        placeholder="Mensagem"
+                                                        name="infoAdicional"
+                                                        maxLength={255}
+                                                        value={infoAdicional}
+                                                        onChange={(e) => setInfoAdicional(e.target.value)}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={closeModalLerQrCode}>
+                            Cancelar
+                        </Button>
+                        {etapa === 2 && (
+                            <Button variant="success" onClick={enviarPixPorEMV}>
                                 Confirmar
                             </Button>
                         )}
