@@ -30,7 +30,6 @@ export class ExtratoService implements IExtratoService {
             extratoFormatado.push({
                 Data: extrato[cont].Data,
                 TipoTransacao: extrato[cont].TipoTransacao,
-                Lancamento: extrato[cont].Lancamento,
                 Descricao: extrato[cont].Descricao,
                 Valor: extrato[cont].Valor,
                 CodigoContaDestino: extrato[cont].CodigoContaDestino,
