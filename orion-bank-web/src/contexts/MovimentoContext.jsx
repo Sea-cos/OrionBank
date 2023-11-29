@@ -13,7 +13,7 @@ export function MovimentoProvider({ children }) {
             request.codigoContaOrigem = user.codigo
             await enviarPixPorChave(request);
 
-            showSuccessNotification("Pix enviado!");
+            showSuccessNotification("Transação realizada!");
         } catch (error) {
             showErrorNotification(error.message);
         }
@@ -23,7 +23,7 @@ export function MovimentoProvider({ children }) {
         try {
             request.codigoContaOrigem = user.codigo
             await enviarPixPorEMV(request);
-            showSuccessNotification("EMV Pago!");
+            showSuccessNotification("Transação realizada!");
         } catch (error) {
             showErrorNotification(error.message);
         }
@@ -39,8 +39,7 @@ export function MovimentoProvider({ children }) {
 
     const obterExtrato = async (request) => {
         try {
-            return await obterExtratoConta(request);
-            
+            return await obterExtratoConta(request);  
         } catch (error) {
             showErrorNotification(error.message);
         }

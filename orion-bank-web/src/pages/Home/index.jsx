@@ -129,7 +129,7 @@ const Home = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link to="/" title="Extrato">
+                            <Link to="/extratoConta" title="Extrato">
                                 <div className="card card-light-danger">
                                     <div className="btn-body">
                                         <img src={btnExtrato} alt=""></img>

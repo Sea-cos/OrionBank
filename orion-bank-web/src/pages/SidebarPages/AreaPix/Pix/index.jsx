@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { TipoChavePixEnum } from '../../../../constants/enums';
-import { showErrorNotification } from '../../../../shared/notificationUtils';
+import { showErrorNotification, showSuccessNotification } from '../../../../shared/notificationUtils';
 import { ChaveContext } from "../../../../contexts/ChaveContext";
 import { QRCodeContext } from "../../../../contexts/QRCodeContext";
 import { MovimentoContext } from "../../../../contexts/MovimentoContext";
@@ -29,12 +29,6 @@ const Pix = () => {
     const [infoAdicional, setInfoAdicional] = useState('');
     const [responseConsulta, setResponseConsulta] = useState({});
     const [qrCodeResult, setQRCodeResult] = useState('');
-
-    const handleScanResult = (data) => {
-        if (data) {
-            setQRCodeResult(data);
-        }
-    };
 
     const openModalPixChave = () => {
         setOpenModalPixChave(true);
@@ -68,6 +62,10 @@ const Pix = () => {
 
     const closeModalLerQrCode = () => {
         setOpenModalLerQrCode(false);
+        setInfoAdicional('');
+        setResponseConsulta({});
+        setEtapa(1);
+        setQRCodeResult('');
     };
 
     const [etapa, setEtapa] = useState(1);
@@ -139,7 +137,13 @@ const Pix = () => {
                         return false;
                     }
 
-                    //leitura
+                    const response = await consultarDadosEMV(qrCodeResult);
+                    if (response === undefined || response.length === 0) {
+                        return false;
+                    }
+
+                    showSuccessNotification("QR Code encontrado!");
+                    setResponseConsulta(response);
                     break;
 
                 default:
@@ -209,6 +213,28 @@ const Pix = () => {
         await enviarPixViaEMV(request);
         closeModalPixCopiaCola();
     };
+
+    const enviarPixPorQRCode = async (e) => {
+        e.preventDefault();
+        const request = {
+            codigoContaDestino: responseConsulta.Codigo,
+            emv: qrCodeResult,
+            valor: formatarValor(responseConsulta.Valor),
+            infoAdicional: infoAdicional
+        }
+        await enviarPixViaEMV(request);
+        closeModalLerQrCode();
+    };
+
+    const obterResultScan = (emv) => {
+        setQRCodeResult(emv)
+    };
+
+    useEffect(() => {
+        if (qrCodeResult !== '') {
+            avancarEtapa();
+        }
+    }, [qrCodeResult]);
 
     return (
         <div className="container-pix">
@@ -473,7 +499,7 @@ const Pix = () => {
                                 <>
                                     <div className="ler-qr-code">
                                         <h3 className="mt-4" style={{ color: "#3f3d56" }}>Escaneie um QRCode</h3>
-                                        <QRScanner onScan={handleScanResult} />
+                                        <QRScanner onResult={obterResultScan} />
                                     </div>
                                 </>
                             )}
@@ -535,13 +561,8 @@ const Pix = () => {
                             Cancelar
                         </Button>
                         {etapa === 2 && (
-                            <Button variant="success" onClick={enviarPixPorEMV}>
+                            <Button variant="success" onClick={enviarPixPorQRCode}>
                                 Confirmar
-                            </Button>
-                        )}
-                        {etapa === 1 && (
-                            <Button variant="primary" onClick={avancarEtapa}>
-                                Continuar
                             </Button>
                         )}
                         {etapa > 1 && (

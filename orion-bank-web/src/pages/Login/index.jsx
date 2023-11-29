@@ -42,7 +42,7 @@ const Login = () => {
                                 <div className="col-lg-7">
                                     <div className="p-5">
                                         <div className="text-center">
-                                            <img src={Titulo} className="circulo-preto" alt="" />
+                                            <img src={Titulo} className="circulo-preto" alt="" draggable="false" />
                                             <h1 style={{ color: 'black', opacity: '70%' }} className="h4 mb-4 mt-0">Login</h1>
                                         </div>
 

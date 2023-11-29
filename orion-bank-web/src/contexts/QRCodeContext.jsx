@@ -15,7 +15,7 @@ export function QRCodeProvider({ children }) {
             request.nomeCompleto = buscarNomeUsuarioLogado();
             const response = await criarQRCode(request);
             
-            showSuccessNotification("QRCode criado com sucesso!")
+            showSuccessNotification("QR Code criado!")
             return response;
         } catch (error) {
             showErrorNotification(error.message);

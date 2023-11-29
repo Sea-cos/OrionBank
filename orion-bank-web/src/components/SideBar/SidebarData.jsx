@@ -51,7 +51,7 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Transferir',
-        path: '',
+        path: 'transferir',
         cName: 'sub-nav'
       }
     ]

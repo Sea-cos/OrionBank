@@ -35,6 +35,7 @@ const CadastrarChave = () => {
 
     const excluirChave = async (codigoChave) => {
         await inativarChavePix(codigoChave);
+        setChaves([]);
         await buscarChaves();
     };
 

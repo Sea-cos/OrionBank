@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import QrReader from 'react-qr-scanner';
 
-const QRScanner = () => {
-  const [result, setResult] = useState('');
+const QRScanner = ({ onResult }) => {
 
   const handleScan = (data) => {
     if (data) {
-      setResult(data);
+      onResult(data.text);
     }
   };
 
@@ -22,7 +21,6 @@ const QRScanner = () => {
         onScan={handleScan}
         style={{ width: '90%' }}
       />
-      <p>{result}</p>
     </>
   );
 };

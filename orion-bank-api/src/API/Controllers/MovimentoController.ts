@@ -91,7 +91,6 @@ export class MovimentoController {
     }
 
     async TransacaoViaDadosBancarios(request: Request, response: Response) {
-
         try {
 
             const movimento = request.body as MovimentoDadosBancariosDto

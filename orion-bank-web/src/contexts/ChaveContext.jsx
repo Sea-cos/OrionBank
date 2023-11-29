@@ -14,7 +14,7 @@ export function ChaveProvider({ children }) {
 
             request.codigoConta = user.codigo;
             await criarChave(request);
-            showSuccessNotification("Chave cadastrada com sucesso!")
+            showSuccessNotification("Chave cadastrada!")
         } catch (error) {
             showErrorNotification(error.message);
         }
@@ -31,7 +31,7 @@ export function ChaveProvider({ children }) {
     const inativarChavePix = async (codigoChave) => {
         try {
             await inativarChave(codigoChave);
-            showSuccessNotification("Chave excluída com sucesso!")
+            showSuccessNotification("Chave excluída!")
         } catch (error) {
             showErrorNotification(error.message);
         }

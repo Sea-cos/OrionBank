@@ -15,6 +15,7 @@ import SolicitacoesConta from '../pages/SidebarPages/Admin/SolicitacoesConta';
 import CadastrarChave from '../pages/SidebarPages/AreaPix/CadastrarChave';
 import Pix from '../pages/SidebarPages/AreaPix/Pix';
 import QRCode from '../pages/SidebarPages/AreaPix/QRCode';
+import Transferir from '../pages/SidebarPages/Transferencias/Transferir';
 
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
@@ -27,7 +28,7 @@ const AppRoutes = () => {
         if (loading) {
             return <div className="loading"> Carregando...</div>
         }
-        
+
         if (!authenticated) {
             return <Navigate to="/login" />
         }
@@ -44,13 +45,14 @@ const AppRoutes = () => {
             <Route exact path="/recuperar" element={<RecuperarSenha />} />
             <Route exact path="/sucessoRecuperar/:tipoSucesso" element={<SucessoRecuperarSenha />} />
             <Route exact path="/termosPoliticas" element={<TermosPolitica />} />
-            <Route path="/" element={<Layout/>}>
+            <Route path="/" element={<Layout />}>
                 <Route exact index element={<Private><Home /></Private>} />
                 <Route exact path="solicitacoesConta" element={<Private><SolicitacoesConta /></Private>} />
                 <Route exact path="cadastrarChave" element={<Private><CadastrarChave /></Private>} />
                 <Route exact path="extratoConta" element={<Private><ExtratoConta /></Private>} />
                 <Route exact path="pix" element={<Private><Pix /></Private>} />
                 <Route exact path="criarQRCode" element={<Private><QRCode /></Private>} />
+                <Route exact path="transferir" element={<Private><Transferir /></Private>} />
             </Route>
         </Routes>
     );
