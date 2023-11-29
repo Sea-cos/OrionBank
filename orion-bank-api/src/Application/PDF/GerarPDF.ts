@@ -6,27 +6,24 @@ import { ValidarDataInicioMenor } from "../../Middleware/ValidarData";
 const _extratoRepository = new ExtratoRepository()
 
 export async function GerarPDF(codigoConta: string, dataInicio: Date, dataFim: Date) {
-
     ValidarDataInicioMenor(dataInicio, dataFim)
-
-    const nomeArquivo = `${codigoConta}.pdf`;
-    const path = `./ImportarExtrato/${nomeArquivo}`;
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.setContent(await PegarHTML(codigoConta, dataInicio, dataFim));
 
-    await page.pdf({ 
-        path: path, 
+    const arquivo = await page.pdf({
+        path: 'exported_file.pdf',
         format: 'A4',
-        preferCSSPageSize: true  
+        landscape: true,
     });
 
     await browser.close();
+    return arquivo.toString('base64');
 }
 
-async function PegarHTML(codigoConta: string, dataInicio: Date, dataFim: Date) : Promise<string> {
+async function PegarHTML(codigoConta: string, dataInicio: Date, dataFim: Date): Promise<string> {
     return `
     <html>
         <body>
@@ -40,7 +37,7 @@ async function PegarHTML(codigoConta: string, dataInicio: Date, dataFim: Date) :
     `;
 }
 
-function ObterDataAtual(dataAtual: Date) : string {
+function ObterDataAtual(dataAtual: Date): string {
     const dataCompleta: Date = dataAtual.toString() === "" ? new Date() : dataAtual
 
     const ano = dataCompleta.getFullYear();
@@ -50,7 +47,7 @@ function ObterDataAtual(dataAtual: Date) : string {
     return `${dia}/${mes}/${ano}`;
 }
 
-function ObterLogo() : string {
+function ObterLogo(): string {
     return `
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
         width="168" height="70" viewBox="0 0 598.000000 193.000000"
@@ -89,10 +86,10 @@ function ObterLogo() : string {
         <path d="M2700 725 l0 -635 175 0 175 0 0 635 0 635 -175 0 -175 0 0 -635z"/>
         </g>
         </svg>`
-   ;
+        ;
 }
 
-function ObterHTMLCabecaloExtrato() : string {
+function ObterHTMLCabecaloExtrato(): string {
     return `
         <div style="
             width: 100%;
@@ -126,7 +123,7 @@ function ObterHTMLCabecaloExtrato() : string {
     `;
 }
 
-function ObterHTMLCabecalhoValores() : string {
+function ObterHTMLCabecalhoValores(): string {
     return `
         <div style="
             width: 100%;
@@ -201,18 +198,18 @@ function ObterHTMLCabecalhoValores() : string {
     `;
 }
 
-async function ObterHTMLValoresExtrato(codigoConta: string, dataInicio: Date, dataFim: Date) : Promise<string> {
+async function ObterHTMLValoresExtrato(codigoConta: string, dataInicio: Date, dataFim: Date): Promise<string> {
 
     const movimentos = await _extratoRepository.ObterMovimentacao(codigoConta, dataInicio, dataFim);
 
-    if(movimentos.length == 0)
+    if (movimentos.length == 0)
         throw new Error("Sem movimentações para está conta.");
 
     let html: string = "";
 
     for (let cont = 0; cont < movimentos.length; cont++) {
 
-        if(movimentos[cont].CodigoContaOrigem === codigoConta) {
+        if (movimentos[cont].CodigoContaOrigem === codigoConta) {
 
             html += MontarHTMLValores(
                 movimentos[cont].Data,
@@ -235,7 +232,7 @@ async function ObterHTMLValoresExtrato(codigoConta: string, dataInicio: Date, da
         }
 
     }
- 
+
 
     return `
         <div style="
@@ -258,7 +255,7 @@ async function ObterHTMLValoresExtrato(codigoConta: string, dataInicio: Date, da
     `;
 }
 
-function MontarHTMLValores(data: Date, tipoTransacao: string, descricao: string, valor: string, nome: string) : string {
+function MontarHTMLValores(data: Date, tipoTransacao: string, descricao: string, valor: string, nome: string): string {
 
     return `            
         <div style="
@@ -319,9 +316,9 @@ function MontarHTMLValores(data: Date, tipoTransacao: string, descricao: string,
 
 }
 
-function ObterTipoTransacao(tipoTransacao: number) : string {
+function ObterTipoTransacao(tipoTransacao: number): string {
     switch (tipoTransacao) {
-        
+
         case TipoTransacao.Pix:
             return "PIX"
 
@@ -330,7 +327,7 @@ function ObterTipoTransacao(tipoTransacao: number) : string {
 
         case TipoTransacao.QrCode:
             return "QRCODE"
-        
+
         default:
             return "Erro tipo transação."
     }
