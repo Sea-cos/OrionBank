@@ -15,7 +15,6 @@ export class ExtratoController {
             } = request.body
 
             const pdf = await GerarPDF(codigoConta, dataInicio, dataFim);
-
             return response.status(200).send(pdf);
         } catch (error: any) {
             return response.status(400).json({

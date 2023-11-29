@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { showErrorNotification } from '../shared/notificationUtils';
+import { showErrorNotification } from '../../../shared/notificationUtils';
 import { ContaContext } from "../../../contexts/ContaContext";
 import { MovimentoContext } from "../../../contexts/MovimentoContext";
 import { TipoTransacaoEnum } from "../../../constants/enums";
