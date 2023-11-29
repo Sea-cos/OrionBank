@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
+import path from "path";
 import { ExtratoService } from "../../Application/PDF/ExtratoService";
 import { GerarPDF } from "../../Application/PDF/GerarPDF";
+import fs from "fs";
 
 const extratoService = new ExtratoService()
 export class ExtratoController {
@@ -19,9 +21,13 @@ export class ExtratoController {
             const nomeArquivo = `${codigoConta}.pdf`
             const dir = __dirname
 
-            const path = `${dir.replace("\\src\\API\\Controllers", "\\ImportarExtrato")}\\${nomeArquivo}`
+            const ds = `${dir.replace("\\src\\API\\Controllers", "\\ImportarExtrato")}\\${nomeArquivo}`
+            const tes = path.join(dir, ds);
 
-            return response.status(200).sendFile(path);
+            var data = fs.readFileSync(ds);
+            response.contentType("application/pdf");
+
+            return response.status(200).send(data);
 
         }  catch(error: any) {
             return response.status(400).json({
