@@ -48,10 +48,9 @@ export const gerarExtratoConta = async (request) => {
     try {
         const response = await api.post(`/extrato/importar`, request)
         return response.data
-       
+
     } catch (error) {
         throw error.response.data;
-        
     }
 }
 

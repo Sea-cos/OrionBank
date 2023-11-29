@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { showErrorNotification } from '../../../shared/notificationUtils';
 import { ContaContext } from "../../../contexts/ContaContext";
 import { MovimentoContext } from "../../../contexts/MovimentoContext";
 import { TipoTransacaoEnum } from "../../../constants/enums";
@@ -6,7 +7,6 @@ import pageExtrato from "../../../assets/img/pageExtrato.svg";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import "./styles.css";
-import FileSaver, { saveAs } from "file-saver";
 
 
 const ExtratoConta = () => {
@@ -31,8 +31,6 @@ const ExtratoConta = () => {
     };
 
     const extratoPDF = async () => {
-        debugger
-
         try {
             const request = {
                 codigoConta: user.codigo,
@@ -40,14 +38,20 @@ const ExtratoConta = () => {
                 dataFim: dtFim
             }
 
-            const pdfContent = await exportarPdf(request);
+            const arquivo = await exportarPdf(request);
+            const binary = atob(arquivo);
 
-            const blob = new Blob([pdfContent], { type: 'application/pdf' });
-          
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
 
-            FileSaver.saveAs(blob, 'extrato.pdf')
+            const pdf = new Blob([bytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(pdf);
+            window.open(url);
 
         } catch (error) {
+            showErrorNotification("Erro ao exportar o PDF.");
             console.error(error);
         }
     };
