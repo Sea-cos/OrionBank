@@ -16,7 +16,7 @@ export async function GerarPDF(codigoConta: string, dataInicio: Date, dataFim: D
     const arquivo = await page.pdf({
         path: 'exported_file.pdf',
         format: 'A4',
-        landscape: true,
+        landscape: false,
     });
 
     await browser.close();
