@@ -99,8 +99,9 @@ export class AbrirContaService implements IAbrirContaService {
                                     src="cid:${conta.Email}"
                                     alt="Imagem logo orion bank"
                                     style="
-                                        width: 350px; 
-                                        height: 100px;" 
+                                        width: 200px; 
+                                        height: 80px;
+                                    "
                                 />`
 
         await EnviarEmail(conta.Email, htmlRecuperacao, TituloEmail.Recuperacao);
@@ -148,8 +149,9 @@ export class AbrirContaService implements IAbrirContaService {
                                     src="cid:${conta.Email}"
                                     alt="Imagem logo orion bank"
                                     style="
-                                        width: 350px; 
-                                        height: 100px;" 
+                                        width: 200px; 
+                                        height: 80px;
+                                    "
                                 />`;
 
         await EnviarEmail(conta.Email, htmlAprovacao, TituloEmail.Aprovado);
@@ -192,9 +194,9 @@ export class AbrirContaService implements IAbrirContaService {
                                     src="cid:${contaJson.Email}"
                                     alt="Imagem logo orion bank"
                                     style="
-                                        width: 350px; 
-                                        height: 100px
-                                    ;" 
+                                        width: 200px; 
+                                        height: 80px;
+                                    " 
                                 />`
 
 
