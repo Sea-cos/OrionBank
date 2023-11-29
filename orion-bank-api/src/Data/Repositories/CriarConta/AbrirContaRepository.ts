@@ -75,7 +75,7 @@ export class AbrirContaRepository implements IAbrirContaRepository{
         const sql = `SELECT 
                         *
                     FROM
-                        Conta
+                        conta
                     WHERE
                         DocumentoFederal = ?`
 
