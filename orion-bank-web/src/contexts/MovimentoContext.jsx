@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { enviarPixPorChave, obterUltimaMovimentacao, obterExtratoConta, enviarPixPorEMV, gerarExtratoConta } from "../services/movimentoApi";
+import { enviarPixPorChave, obterUltimaMovimentacao, obterExtratoConta, enviarPixPorEMV, gerarExtratoConta, enviarTransf } from "../services/movimentoApi";
 import { showErrorNotification, showSuccessNotification } from '../shared/notificationUtils';
 import { AuthContext } from "./AuthContext";
 
@@ -29,6 +29,18 @@ export function MovimentoProvider({ children }) {
         }
     };
 
+    const enviarTransferencia = async (request) => {
+        try {
+            request.codigoContaOrigem = user.codigo
+            await enviarTransf(request);
+            showSuccessNotification("Transação realizada!");
+            return true;
+        } catch (error) {
+            showErrorNotification(error.message);
+            return false;
+        }
+    };
+
     const obterMovimentacao = async () => {
         try {
             return await obterUltimaMovimentacao(user.codigo);
@@ -55,7 +67,7 @@ export function MovimentoProvider({ children }) {
     };
 
     return (
-        <MovimentoContext.Provider value={{ user, enviarPixViaChave, obterMovimentacao, obterExtrato, enviarPixViaEMV, exportarPdf }}>
+        <MovimentoContext.Provider value={{ user, enviarPixViaChave, obterMovimentacao, obterExtrato, enviarPixViaEMV, exportarPdf, enviarTransferencia }}>
             {children}
         </MovimentoContext.Provider>
     );

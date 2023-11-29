@@ -329,20 +329,20 @@ const Pix = () => {
                                             </div>
                                             <div className="dados-recebedor">
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.NomeCompleto}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Nome:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{responseConsulta.NomeCompleto}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>CPF:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
+                                                    <label style={{ color: "#3f3d56" }}>CPF:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Instituição:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Orion Bank S.A.</label>
+                                                    <label style={{ color: "#3f3d56" }}>Instituição:</label>
+                                                    <label style={{ color: "#3f3d56" }}>Orion Bank S.A.</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.Chave_Pix}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Chave Pix:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{responseConsulta.Chave_Pix}</label>
                                                 </div>
                                             </div>
                                             <div className="mt-3">
@@ -426,24 +426,24 @@ const Pix = () => {
                                             </div>
                                             <div className="dados-recebedor">
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.NomeCompleto}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Nome:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{responseConsulta.NomeCompleto}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>CPF:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
+                                                    <label style={{ color: "#3f3d56" }}>CPF:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Instituição:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Orion Bank S.A.</label>
+                                                    <label style={{ color: "#3f3d56" }}>Instituição:</label>
+                                                    <label style={{ color: "#3f3d56" }}>Orion Bank S.A.</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.ChavePix}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Chave Pix:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{responseConsulta.ChavePix}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Valor a Pagar:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>R$ {parseFloat(responseConsulta.Valor)}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Valor a Pagar:</label>
+                                                    <label style={{ color: "#3f3d56" }}>R$ {parseFloat(responseConsulta.Valor)}</label>
                                                 </div>
                                             </div>
                                             <div className="mt-3">
@@ -515,24 +515,24 @@ const Pix = () => {
                                             </div>
                                             <div className="dados-recebedor">
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Nome:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.NomeCompleto}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Nome:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{responseConsulta.NomeCompleto}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>CPF:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
+                                                    <label style={{ color: "#3f3d56" }}>CPF:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{formatarCPF(responseConsulta.DocumentoFederal)}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Instituição:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Orion Bank S.A.</label>
+                                                    <label style={{ color: "#3f3d56" }}>Instituição:</label>
+                                                    <label style={{ color: "#3f3d56" }}>Orion Bank S.A.</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>{responseConsulta.ChavePix}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Chave Pix:</label>
+                                                    <label style={{ color: "#3f3d56" }}>{responseConsulta.ChavePix}</label>
                                                 </div>
                                                 <div className="dados-space">
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>Valor a Pagar:</label>
-                                                    <label style={{ color: "#3f3d56", fontSize: '14px' }}>R$ {parseFloat(responseConsulta.Valor)}</label>
+                                                    <label style={{ color: "#3f3d56" }}>Valor a Pagar:</label>
+                                                    <label style={{ color: "#3f3d56" }}>R$ {parseFloat(responseConsulta.Valor)}</label>
                                                 </div>
                                             </div>
                                             <div className="mt-3">

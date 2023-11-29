@@ -26,6 +26,14 @@ export const enviarPixPorEMV = async (request) => {
     }
 }
 
+export const enviarTransf = async (request) => {
+    try {
+        await api.post("/movimento/transacaoDadosBancarios", request);
+    } catch (error) {
+        throw error.response.data;
+    }
+}
+
 export const obterUltimaMovimentacao = async (codigoConta) => {
     try {
         const response = await api.get(`/movimento/ultimasTransacoes/${codigoConta}`);
