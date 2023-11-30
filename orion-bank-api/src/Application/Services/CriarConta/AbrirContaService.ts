@@ -199,7 +199,6 @@ export class AbrirContaService implements IAbrirContaService {
                                     " 
                                 />`
 
-
         await EnviarEmail(contaJson.Email, htmlReprovacao, TituloEmail.Reprovado)
     }
 
