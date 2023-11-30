@@ -128,8 +128,8 @@ const QRCode = () => {
                     <h5 className="titulo-chaves">Para criar o QRCode selecione a chave pix desejada.</h5>
                 </div>
                 {chaves.length > 0 && (
-                    <div className="table-consulta-chave">
-                        <Table hover responsive className="table-cadastra-chave">
+                    <div className="table-qr-code">
+                        <Table hover responsive className="table-criar-qr">
                             <thead>
                                 <tr>
                                     <th className="hidden">Codigo</th>
@@ -154,7 +154,7 @@ const QRCode = () => {
                     </div>
                 )}
                 {chaves.length === 0 && (
-                    <div className="mt-3">
+                    <div className="background-qr mt-3">
                         <img alt="" src={NotFound}></img>
                         <h5 className="mt-3" style={{ color: "#3f3d56" }}>Você ainda não possui chaves cadastradas.</h5>
                     </div>
@@ -172,7 +172,7 @@ const QRCode = () => {
 
                             <div className="revisao-qrcode mt-4">
                                 <div className="dados-recebedor">
-                                    <div className="dados-space">
+                                    <div className="dados-space-qr-code">
                                         <label style={{ color: "#3f3d56", fontSize: '14px' }}>Chave Pix:</label>
                                         <label style={{ color: "#3f3d56", fontSize: '14px' }}>{chavePix}</label>
                                     </div>

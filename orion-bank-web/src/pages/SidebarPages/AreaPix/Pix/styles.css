@@ -169,4 +169,12 @@
     .button-pix {
         width: 200px;
     }
+
+    .titulo-transacao h2 {
+        font-size: 15px;
+    }
+
+    .ler-qr-code h3 {
+        font-size: 15px;
+    }
 }

@@ -55,6 +55,7 @@
     margin-top: 2%;
     border: 1px solid #cacaca;
     border-radius: 5px;
+    width: 40%;
 }
 
 .tipo-chave {
@@ -70,7 +71,7 @@
 
 .table.table-cadastra-chave {
     margin-bottom: 0px;
-    width: 300px;
+    width: 100%;
 }
 
 .campo-cadastro {
@@ -109,6 +110,10 @@
     width: 100px;
 }
 
+.background-chaves img{
+    width: 100%;
+}
+
 @media (max-width: 700px) {
     .div-descricao {
         width: 90%;
@@ -130,4 +135,11 @@
         margin-bottom: 20px;
     }
 
+    .table-consulta-chave {
+        width: 100%;
+    }
+
+    .minhas-chaves h2{
+        font-size: 20px;
+    }
 }

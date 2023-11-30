@@ -10,6 +10,7 @@ import RecuperarSenha from '../pages/RecuperarSenha';
 import SucessoRecuperarSenha from '../pages/RecuperarSenha/SucessoRecuperar';
 import TermosPolitica from '../pages/TermosPolitica';
 import ExtratoConta from '../pages/SidebarPages/ExtratoConta';
+import Dados from '../pages/SidebarPages/Conta/Dados';
 
 import SolicitacoesConta from '../pages/SidebarPages/Admin/SolicitacoesConta';
 import CadastrarChave from '../pages/SidebarPages/AreaPix/CadastrarChave';
@@ -53,6 +54,7 @@ const AppRoutes = () => {
                 <Route exact path="pix" element={<Private><Pix /></Private>} />
                 <Route exact path="criarQRCode" element={<Private><QRCode /></Private>} />
                 <Route exact path="transferir" element={<Private><Transferir /></Private>} />
+                <Route exact path="dados" element={<Private><Dados /></Private>} />
             </Route>
         </Routes>
     );

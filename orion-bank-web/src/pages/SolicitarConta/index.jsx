@@ -89,7 +89,7 @@ const SolicitarConta = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         validarPrenchimento();
         const todosPreenchidos = camposChecagem.every(fieldName => Boolean(solicitacaoRequest[fieldName]));
 

@@ -31,11 +31,24 @@ const SolicitacoesConta = () => {
     };
 
     function formatarData(data) {
-        const dataObj = new Date(data);
-        const dia = String(dataObj.getDate()).padStart(2, '0');
-        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
-        return `${dia}/${mes}/${ano}`;
+        if (data) {
+            const dataObj = new Date(data);
+            const dia = String(dataObj.getDate()).padStart(2, '0');
+            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+            const ano = dataObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
+    }
+
+    function formatarDataNascimento(data) {
+        if(data){
+            const dataObj = new Date(data);
+            dataObj.setDate(dataObj.getDate() + 1);
+            const dia = String(dataObj.getDate()).padStart(2, '0');
+            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+            const ano = dataObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
     }
 
     function formatarEnum(situacao) {
@@ -67,7 +80,7 @@ const SolicitacoesConta = () => {
         const solicitacoes = await buscarSolicitacoes();
         setSolicitacoes(solicitacoes);
     };
-    
+
     return (
         <div className="container-solicitar">
             <div className="title-solicitar">
@@ -83,7 +96,7 @@ const SolicitacoesConta = () => {
                         <p>Nome Completo: {selectedMensagemConta.NomeCompleto}</p>
                         <p>Documento Federal: {selectedMensagemConta.DocumentoFederal}</p>
                         <p>Email: {selectedMensagemConta.Email}</p>
-                        <p>Data Nascimento: {formatarData(selectedMensagemConta.DtNasc)}</p>
+                        <p>Data Nascimento: {formatarDataNascimento(selectedMensagemConta.DtNasc)}</p>
                         <p>Telefone Celular: {selectedMensagemConta.TelefoneCelular}</p>
                         <p>CEP: {selectedMensagemConta.CEP}</p>
                         <p>Logradouro: {selectedMensagemConta.Logradouro}</p>

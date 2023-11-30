@@ -89,7 +89,7 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Dados',
-        path: '',
+        path: 'dados',
         cName: 'sub-nav'
       }
     ]

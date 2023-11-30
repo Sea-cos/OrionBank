@@ -48,7 +48,7 @@ export function SolicitacoesContaProvider({ children }) {
                 documentoFederal: solicitacao.conta.DocumentoFederal,
                 nomeCompleto: solicitacao.conta.NomeCompleto,
                 email: solicitacao.conta.Email,
-                dtNasc: formatarDataBanco(solicitacao.conta.DtNasc),
+                dtNasc: formatarDataNascimento(solicitacao.conta.DtNasc),
                 telefoneCelular: solicitacao.conta.TelefoneCelular,
                 cep: solicitacao.conta.CEP,
                 logradouro: solicitacao.conta.Logradouro,
@@ -72,12 +72,15 @@ export function SolicitacoesContaProvider({ children }) {
         }
     };
 
-    function formatarDataBanco(data) {
-        const dataObj = new Date(data);
-        const dia = String(dataObj.getDate()).padStart(2, '0');
-        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
-        return `${ano}-${mes}-${dia}`;
+    function formatarDataNascimento(data) {
+        if(data){
+            const dataObj = new Date(data);
+            dataObj.setDate(dataObj.getDate() + 1);
+            const dia = String(dataObj.getDate()).padStart(2, '0');
+            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+            const ano = dataObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
     }
 
     return (

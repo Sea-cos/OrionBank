@@ -136,7 +136,7 @@ const Home = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link to="/" title="Transferência">
+                            <Link to="/transferir" title="Transferência">
                                 <div className="card card-light-danger">
                                     <div className="btn-body">
                                         <img src={btnTransf} alt=""></img>

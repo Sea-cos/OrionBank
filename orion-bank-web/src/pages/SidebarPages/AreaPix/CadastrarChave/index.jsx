@@ -195,7 +195,7 @@ const CadastrarChave = () => {
                     </Modal.Footer>
                 </Modal>
 
-                <div>
+                <div className="minhas-chaves">
                     <h2 style={{ color: '#DB4648' }}>Minhas chaves Pix</h2>
                 </div>
                 <div className="div-descricao">
@@ -234,7 +234,7 @@ const CadastrarChave = () => {
                     </div>
                 )}
                 {chaves.length === 0 && (
-                    <div className="mt-3">
+                    <div className="background-chaves mt-3">
                         <img alt="" src={NotFound}></img>
                         <h5 className="mt-3" style={{ color: "#3f3d56" }}>Você ainda não possui chaves cadastradas.</h5>
                     </div>

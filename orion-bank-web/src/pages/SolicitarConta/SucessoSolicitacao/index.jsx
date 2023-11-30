@@ -21,9 +21,9 @@ const SucessoSolicitacao = () => {
                                         <div>
                                             <div className="container-texto">
                                                 <div className="textoSucesso">
-                                                    <label>Prezado <span className="cor-padrao">{nome}</span>,</label>
+                                                    <label>Prezado(a) <span className="cor-padrao">{nome}</span>,</label>
                                                     <label>
-                                                        Informamos que seus dados foram enviados com sucesso para análise dos responsáveis.
+                                                        Seus dados foram enviados para análise dos responsáveis.
                                                         Assim que a solicitação for aprovada, você receberá um e-mail com todas as atualizações
                                                         relacionadas a sua conta. Mantenha-se atento à sua caixa de entrada!
                                                     </label>
