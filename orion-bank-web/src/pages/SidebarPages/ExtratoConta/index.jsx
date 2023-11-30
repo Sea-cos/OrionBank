@@ -4,6 +4,7 @@ import { ContaContext } from "../../../contexts/ContaContext";
 import { MovimentoContext } from "../../../contexts/MovimentoContext";
 import { TipoTransacaoEnum } from "../../../constants/enums";
 import pageExtrato from "../../../assets/img/pageExtrato.svg";
+import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import "./styles.css";
@@ -16,6 +17,15 @@ const ExtratoConta = () => {
     const [dtInicio, setdtInicio] = useState('');
     const [dtFim, setdtFim] = useState('');
     const [saldo, setSaldo] = useState(0.00);
+    const [modalFiltrarIsOpen, setModalFiltrarOpen] = useState(false);
+
+    const openModalFiltrar = () => {
+        setModalFiltrarOpen(true);
+    };
+
+    const closeModalFiltrar = () => {
+        setModalFiltrarOpen(false);
+    };
 
     const gerarExtrato = async () => {
         setExtrato([]);
@@ -25,6 +35,7 @@ const ExtratoConta = () => {
             dataFim: dtFim
         }
         extrato = await obterExtrato(request);
+        closeModalFiltrar();
 
         if (extrato !== undefined)
             setExtrato(extrato);
@@ -94,51 +105,74 @@ const ExtratoConta = () => {
     }, []);
 
     return (
+
         <div className="container-solicitar">
+            <>
+                <Modal show={modalFiltrarIsOpen} centered size="sm" >
+                    <Modal.Header>
+                        <Modal.Title style={{ color: '#DB4648' }}>Filtrar Período</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="container-data">
+                            <div>
+                                <label className="mt-4 mr-2" style={{ color: "#3f3d56" }}>Data inicial: </label>
+                                <input
+                                    type="date"
+                                    name="nDtInicio"
+                                    id="IDtInicio"
+                                    value={dtInicio}
+                                    onChange={(e) => setdtInicio(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label className="mt-4 mr-3" style={{ color: "#3f3d56" }}>Data final: </label>
+                                <input
+                                    type="date"
+                                    name="nDtFim"
+                                    id="iDtFim"
+                                    value={dtFim}
+                                    onChange={(e) => setdtFim(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer className="modal-btn">
+                        <div className="">
+                            <Button variant="danger" onClick={closeModalFiltrar} style={{ marginRight: "10px" }}>
+                                Cancelar
+                            </Button>
+                            <Button variant="success" onClick={gerarExtrato}>
+                                Filtrar
+                            </Button>
+                        </div>
+                    </Modal.Footer>
+                </Modal>
+            </>
             <div className="title-solicitar">
-                <h3 className="titulo-h5"> <img alt="" src={pageExtrato}></img> Solicitações de Contas</h3>
+                <h3 className="titulo-h5"> <img alt="" src={pageExtrato}></img> Extrato Bancário</h3>
             </div>
 
-            <div className="card-solicitar">
+            <div className="card-solicitar1">
                 <div className="linha-superior">
-
-                    <div className="">
+                    <div className="div-saldo-input">
                         <div className="card-extrato">
                             <div>
                                 <p> Saldo atual: {saldo}</p>
                             </div>
-
-
                         </div>
                     </div>
 
                     <div>
-
-                        <input
-                            type="date"
-                            name="nDtInicio"
-                            id="IDtInicio"
-                            value={dtInicio}
-                            onChange={(e) => setdtInicio(e.target.value)}
-                        />
-                        <input
-                            type="date"
-                            name="nDtFim"
-                            id="iDtFim"
-                            value={dtFim}
-                            onChange={(e) => setdtFim(e.target.value)}
-                        />
-                        <Button variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" onClick={gerarExtrato} />
-                    </div>
-
-                    <div>
-                        <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao" onClick={extratoPDF} />
+                        <div>
+                            <Button style={{marginRight: "7px"}} variant="success" as="input" type="submit" value="Filtrar" className="estilo-botao" onClick={openModalFiltrar} />
+                            <Button variant="success" as="input" type="submit" value="Exportar" className="estilo-botao" onClick={extratoPDF} />
+                        </div>
                     </div>
                 </div>
 
-                <div className="table-solicitar">
+                <div className="table-solicitar1">
 
-                    <Table striped bordered hover responsive>
+                    <Table striped bordered hover responsive="sm" className="fs">
                         <thead>
                             <tr>
                                 <th>Data/Hora</th>
@@ -154,7 +188,7 @@ const ExtratoConta = () => {
                                     <td>{formatarData(record.Data)}</td>
                                     <td>{formatarEnum(record.TipoTransacao)}</td>
                                     <td>{record.IsSaida === true ? record.NomeDestino : record.NomeOrigem}</td>
-                                    <td>{record.Descricao}</td>
+                                    <td>{record.Descricao.substring(0,30)}</td>
                                     <td>{record.CodigoContaOrigem === user.codigo ?
                                         <span style={{ "color": "red" }}>-{formatarDinDin(record.Valor)}</span> :
                                         <span style={{ "color": "green" }}>+{formatarDinDin(record.Valor)}</span>}
