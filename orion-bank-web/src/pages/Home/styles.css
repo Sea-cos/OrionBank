@@ -242,19 +242,18 @@
 @media (max-width: 627px) {
     .spaceb {
         justify-content: space-evenly;
-        gap: 0;
+        gap: 10px;
         margin-bottom: 30px;
     }
 
-    .card.card-light-danger {
-        width: 49%;
-        height: 49%;
-    }
+    /* .card.card-light-danger {
+       gap: 5px;
+    } */
 
-    .btn-body img {
+    /* .btn-body img {
         width: 100%;
 
-    }
+    } */
 }
 
 /* @media (max-width: 495px) {
