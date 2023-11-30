@@ -18,3 +18,12 @@ export const buscarSaldoConta = async (codigoConta) => {
         throw error;
     }
 }
+
+export const buscarConta = async (codigoConta) => {
+    try {
+        const response = await api.get(`/conta/buscarCodigo/${codigoConta}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

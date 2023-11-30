@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { showErrorNotification } from '../shared/notificationUtils';
-import { buscarSaldoConta } from "../services/contaApi";
+import { buscarSaldoConta, buscarConta } from "../services/contaApi";
 import { AuthContext } from "./AuthContext";
 
 export const ContaContext = createContext();
@@ -23,8 +23,16 @@ export function ContaProvider({ children }) {
         return tokenInfo?.Nome;
     };
 
+    const buscarInfoConta = async () => {
+        try {
+            return await buscarConta(user.codigo);
+        } catch (error) {
+            showErrorNotification(error.message);
+        }
+    };
+
     return (
-        <ContaContext.Provider value={{ user, buscarSaldo, buscarNome }}>
+        <ContaContext.Provider value={{ user, buscarSaldo, buscarNome, buscarInfoConta }}>
             {children}
         </ContaContext.Provider>
     );

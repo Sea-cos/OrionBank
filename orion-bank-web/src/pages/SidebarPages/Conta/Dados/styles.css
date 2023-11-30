@@ -17,3 +17,11 @@
     padding: 50px;
     border-radius: 5px;
 }
+
+.inputs-dados {
+    text-align: start;
+    width: 100%;
+    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
